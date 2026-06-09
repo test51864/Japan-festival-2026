@@ -1,0 +1,86 @@
+.game-header {
+  background: #ffffff !important;
+}
+
+.game-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 11px !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  color: #dc1e37 !important;
+  text-transform: none !important;
+}
+
+.game-brand img {
+  display: block !important;
+  width: clamp(126px, 19vw, 196px) !important;
+  height: auto !important;
+  max-height: 36px !important;
+  object-fit: contain !important;
+  flex: 0 0 auto !important;
+}
+
+.game-brand span {
+  display: inline-flex !important;
+  align-items: center !important;
+  color: #dc1e37 !important;
+  font-size: clamp(15px, 2.2vw, 24px) !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+.team-chip,
+.team-chip[style*='#102f7a'],
+.team-chip[style*='#f36c21'] {
+  min-height: 36px !important;
+  padding: 9px 12px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background-image: none !important;
+  box-shadow: 0 6px 16px rgba(16, 17, 20, 0.12) !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+
+.team-chip[style*='#102f7a'] {
+  background: #102f7a !important;
+  color: #ffffff !important;
+}
+
+.team-chip[style*='#f36c21'] {
+  background: #f36c21 !important;
+  color: #101114 !important;
+}
+
+@media (max-width: 520px) {
+  .game-header {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .game-brand {
+    min-height: 38px !important;
+    gap: 8px !important;
+  }
+
+  .game-brand img {
+    width: clamp(116px, 37vw, 154px) !important;
+    max-height: 30px !important;
+  }
+
+  .game-brand span {
+    font-size: clamp(13px, 4vw, 18px) !important;
+  }
+
+  .match-info {
+    justify-content: flex-start !important;
+  }
+}
