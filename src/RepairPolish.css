@@ -1,0 +1,343 @@
+.pitch-preview {
+  display: none !important;
+}
+
+.setup-brand-panel {
+  min-height: clamp(300px, 44svh, 480px) !important;
+}
+
+.setup-brand-panel::before {
+  display: none !important;
+}
+
+.setup-brand-panel::after {
+  bottom: 34px !important;
+  opacity: 0.78;
+}
+
+.festival-lockup {
+  margin-top: clamp(42px, 8vw, 72px) !important;
+}
+
+.setup-group .team-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.setup-group .team-card {
+  position: relative !important;
+  min-height: 110px !important;
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) 76px !important;
+  align-items: center !important;
+  gap: 13px !important;
+  overflow: hidden !important;
+  padding: 14px !important;
+  border: 1px solid rgba(16, 17, 20, 0.18) !important;
+  border-radius: 8px !important;
+  background: linear-gradient(180deg, #ffffff, #f7f8fb) !important;
+  box-shadow: 0 8px 0 rgba(16, 17, 20, 0.07), 0 18px 34px rgba(16, 17, 20, 0.08) !important;
+}
+
+.setup-group .team-card::before {
+  content: '' !important;
+  position: static !important;
+  z-index: 1 !important;
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+  width: 68px !important;
+  height: 78px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 7px 0 rgba(16, 17, 20, 0.12)) drop-shadow(0 12px 18px rgba(16, 17, 20, 0.12)) !important;
+  clip-path: polygon(19% 0, 36% 0, 50% 10%, 64% 0, 81% 0, 100% 27%, 82% 40%, 82% 100%, 18% 100%, 18% 40%, 0 27%) !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+.setup-group .team-card.team-netherlands::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.12) 0 2px, transparent 2px 9px),
+    linear-gradient(145deg, #ff8435, #f36c21 58%, #d75412) !important;
+}
+
+.setup-group .team-card.team-japan::before {
+  background:
+    linear-gradient(135deg, transparent 0 58%, #ffffff 58% 66%, #102f7a 66% 100%),
+    repeating-linear-gradient(105deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 7px),
+    #102f7a !important;
+}
+
+.setup-group .team-card::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 8px !important;
+  border: 2px solid transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.setup-group .team-card.active::after {
+  border-color: rgba(220, 30, 55, 0.78) !important;
+  box-shadow: inset 0 0 0 2px rgba(220, 30, 55, 0.12) !important;
+}
+
+.setup-group .team-card > span {
+  position: static !important;
+  z-index: 2 !important;
+  grid-column: 1 !important;
+  width: 56px !important;
+  height: 46px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(16, 17, 20, 0.2) !important;
+  border-radius: 8px !important;
+  background: #111217 !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 1000 !important;
+  box-shadow: 0 8px 20px rgba(16, 17, 20, 0.14) !important;
+}
+
+.setup-group .team-card > span::before,
+.setup-group .team-card > span::after,
+.setup-group .team-card strong::before,
+.setup-group .team-card strong::after {
+  content: none !important;
+  display: none !important;
+}
+
+.setup-group .team-card strong {
+  z-index: 2 !important;
+  grid-column: 2 !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  color: #101114 !important;
+  font-size: clamp(18px, 2.6vw, 22px) !important;
+  line-height: 1.08 !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: manual !important;
+}
+
+.team-card.team-netherlands span,
+.team-card.team-netherlands.active span,
+.team-chip[style*='#f36c21'] {
+  background: #111217 !important;
+  color: #ffffff !important;
+}
+
+.striker-sprite .sprite-body,
+.striker-sprite .sprite-arm,
+.striker-sprite .sprite-leg,
+.team-card.team-netherlands.active span {
+  --kit-trim: #f36c21;
+}
+
+.striker-sprite .sprite-body,
+.keeper-sprite .sprite-body {
+  background:
+    repeating-linear-gradient(105deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 8px),
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.1)),
+    var(--kit-color) !important;
+}
+
+.striker-sprite .sprite-arm,
+.keeper-sprite .sprite-arm,
+.striker-sprite .sprite-leg,
+.keeper-sprite .sprite-leg {
+  background: var(--kit-color) !important;
+  box-shadow: inset 0 -6px 0 rgba(16, 17, 20, 0.18) !important;
+}
+
+.arena-card:has(.result-flash.show) .field-cat {
+  display: none !important;
+}
+
+.field-cat[data-field-event='cat'],
+.field-cat[data-field-event='fox'],
+.field-cat[data-field-event='crane'] {
+  display: none !important;
+}
+
+.arena-field {
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+    repeating-linear-gradient(0deg, #087936 0 44px, #15a84f 44px 88px) !important;
+  background-size: 44px 44px, 44px 44px, auto !important;
+}
+
+.ball {
+  left: 50% !important;
+  bottom: 132px !important;
+  z-index: 15 !important;
+  width: 36px !important;
+  height: 36px !important;
+  margin-left: -18px !important;
+  border: 2px solid #101114 !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 50% 50%, #111217 0 5px, transparent 6px),
+    radial-gradient(circle at 27% 31%, #111217 0 3px, transparent 4px),
+    radial-gradient(circle at 73% 32%, #111217 0 3px, transparent 4px),
+    radial-gradient(circle at 31% 72%, #111217 0 3px, transparent 4px),
+    radial-gradient(circle at 71% 72%, #111217 0 3px, transparent 4px),
+    linear-gradient(145deg, #ffffff 0%, #f7f9fd 52%, #d8dee9 100%) !important;
+  box-shadow: 0 11px 18px rgba(0, 0, 0, 0.25), inset -5px -6px 0 rgba(16, 17, 20, 0.08) !important;
+  will-change: transform !important;
+}
+
+.ball::before {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.ball::after {
+  inset: 6px !important;
+  border-color: rgba(16, 17, 20, 0.2) !important;
+  background:
+    linear-gradient(35deg, transparent 47%, rgba(16,17,20,0.22) 48% 51%, transparent 52%),
+    linear-gradient(-35deg, transparent 47%, rgba(16,17,20,0.18) 48% 51%, transparent 52%) !important;
+}
+
+.shot-line {
+  left: 50% !important;
+  bottom: 150px !important;
+  transform-origin: bottom center !important;
+}
+
+.ball.goal-left {
+  animation: fixedGoalLeft 0.9s cubic-bezier(.17,.78,.24,1) forwards !important;
+}
+
+.ball.goal-right {
+  animation: fixedGoalRight 0.9s cubic-bezier(.17,.78,.24,1) forwards !important;
+}
+
+.ball.save-center {
+  animation: fixedSaveCenter 0.86s cubic-bezier(.18,.76,.22,1) forwards !important;
+}
+
+.ball.miss-left {
+  animation: fixedMissLeft 0.86s cubic-bezier(.18,.76,.22,1) forwards !important;
+}
+
+.ball.miss-right {
+  animation: fixedMissRight 0.86s cubic-bezier(.18,.76,.22,1) forwards !important;
+}
+
+@keyframes fixedGoalLeft {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  68% { transform: translate3d(-82px, -104px, 0) scale(0.82) rotate(540deg); }
+  100% { transform: translate3d(-116px, -168px, 0) scale(0.64) rotate(920deg); }
+}
+
+@keyframes fixedGoalRight {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  68% { transform: translate3d(76px, -104px, 0) scale(0.82) rotate(540deg); }
+  100% { transform: translate3d(112px, -168px, 0) scale(0.64) rotate(920deg); }
+}
+
+@keyframes fixedSaveCenter {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  72% { transform: translate3d(-2px, -86px, 0) scale(0.88) rotate(520deg); }
+  100% { transform: translate3d(-10px, -78px, 0) scale(0.84) rotate(620deg); }
+}
+
+@keyframes fixedMissLeft {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  62% { transform: translate3d(-120px, -72px, 0) scale(0.82) rotate(-440deg); }
+  100% { transform: translate3d(-360px, -82px, 0) scale(0.68) rotate(-780deg); }
+}
+
+@keyframes fixedMissRight {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  62% { transform: translate3d(130px, -72px, 0) scale(0.82) rotate(440deg); }
+  100% { transform: translate3d(360px, -82px, 0) scale(0.68) rotate(780deg); }
+}
+
+@media (min-width: 760px) {
+  .setup-brand-panel {
+    min-height: min(560px, calc(100svh - 48px)) !important;
+  }
+
+  .ball {
+    bottom: 176px !important;
+    width: 40px !important;
+    height: 40px !important;
+    margin-left: -20px !important;
+  }
+
+  .shot-line {
+    bottom: 196px !important;
+  }
+
+  @keyframes fixedGoalLeft {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    68% { transform: translate3d(-118px, -176px, 0) scale(0.82) rotate(540deg); }
+    100% { transform: translate3d(-160px, -270px, 0) scale(0.64) rotate(920deg); }
+  }
+
+  @keyframes fixedGoalRight {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    68% { transform: translate3d(112px, -176px, 0) scale(0.82) rotate(540deg); }
+    100% { transform: translate3d(158px, -270px, 0) scale(0.64) rotate(920deg); }
+  }
+
+  @keyframes fixedSaveCenter {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    72% { transform: translate3d(-4px, -150px, 0) scale(0.88) rotate(520deg); }
+    100% { transform: translate3d(-14px, -136px, 0) scale(0.84) rotate(620deg); }
+  }
+
+  @keyframes fixedMissLeft {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    62% { transform: translate3d(-178px, -132px, 0) scale(0.82) rotate(-440deg); }
+    100% { transform: translate3d(-480px, -152px, 0) scale(0.68) rotate(-780deg); }
+  }
+
+  @keyframes fixedMissRight {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    62% { transform: translate3d(178px, -132px, 0) scale(0.82) rotate(440deg); }
+    100% { transform: translate3d(480px, -152px, 0) scale(0.68) rotate(780deg); }
+  }
+}
+
+@media (max-width: 520px) {
+  .setup-group .team-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .setup-group .team-card {
+    grid-template-columns: 56px minmax(0, 1fr) 70px !important;
+    min-height: 102px !important;
+  }
+
+  .setup-group .team-card::before {
+    width: 58px !important;
+    height: 68px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .setup-brand-panel {
+    min-height: 330px !important;
+  }
+
+  .festival-lockup::after {
+    font-size: clamp(38px, 12vw, 52px) !important;
+  }
+
+  .ball {
+    bottom: 122px !important;
+  }
+
+  .shot-line {
+    bottom: 140px !important;
+  }
+}
