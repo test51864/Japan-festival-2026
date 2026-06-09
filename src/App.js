@@ -4,6 +4,7 @@ import './QuizPolish.css';
 import './FestivalUpgrade.css';
 
 const FORM_URL = 'https://forms.office.com/r/mbXENTrknQ';
+const YANMAR_WORDMARK_URL = 'https://commons.wikimedia.org/wiki/Special:FilePath/Yanmar_logo_2013_full_horizontal.svg';
 const GAME_TITLE = 'Yanmar Festival Cup';
 const TIMER_SECONDS = 15;
 const BASE_POINTS = 100;
@@ -436,7 +437,7 @@ export default function App() {
     <main className='app app-game'>
       <section className='game-shell'>
         <header className='game-header'>
-          <div className='game-brand'>{GAME_TITLE}</div>
+          <div className='game-brand'><img src={YANMAR_WORDMARK_URL} alt='YANMAR' /><span>Festival Cup</span></div>
           <div className='match-info'><span className='team-chip' style={{ '--chip-color': match.playerTeam.color, '--chip-text': match.playerTeam.text }}>{playerName.trim() || match.playerTeam.labels[language]}</span><strong>{t.round} {current + 1}/{questions.length}</strong></div>
         </header>
         <div className='progress-bar' aria-label={`${t.progress}: ${progress}%`}><span style={{ width: `${progress}%` }} /></div>
