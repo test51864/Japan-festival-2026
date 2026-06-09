@@ -33,7 +33,8 @@ body {
 .game-header {
   background: linear-gradient(90deg, #ffffff 0%, #fff7f8 58%, #ffffff 100%);
   border-bottom: 1px solid rgba(16, 17, 20, 0.1);
-}\n
+}
+
 .game-brand,
 .question-copy h1 {
   letter-spacing: 0;
