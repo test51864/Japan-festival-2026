@@ -28,136 +28,135 @@ const teams = {
 
 const keeperKits = {
   netherlands: {
-    id: 'ned-orange',
     primary: '#f47b20',
     trim: '#ffffff',
     text: '#101114',
-    label: 'NED GK',
   },
   japan: {
-    id: 'jpn-blue',
     primary: '#174a9c',
     trim: '#e30613',
     text: '#ffffff',
-    label: 'JPN GK',
   },
 };
 
 const setupCopy = {
-  title: 'Yanmar Power League',
-  event: 'Japan Festival 2026',
-  intro: 'Pick a name, choose your team, and take the penalty quiz.',
+  title: 'Japan Festival 2026',
+  intro: 'Pick a name, choose your team, and play the Yanmar challenge.',
   language: 'Quiz language',
   name: 'Player name',
   namePlaceholder: 'Enter your name',
   team: 'Your team',
-  keeper: 'Opponent keeper is automatic',
-  start: 'Kick off',
+  start: 'Start game',
 };
 
 const copy = {
   en: {
     round: 'Round',
     progress: 'Progress',
-    answer: 'Choose your shot',
+    answer: 'Choose your answer',
     goal: 'GOAL!',
     save: 'SAVED!',
     next: 'Next round',
-    finish: 'Finish match',
-    complete: 'Full time',
-    score: 'Score',
+    finish: 'Finish game',
+    complete: 'Finished',
     playAgain: 'Play again',
     changeSetup: 'Change setup',
     formsTitle: 'Join the prize draw',
     formsText: 'Open Microsoft Forms to submit your entry.',
     formsButton: 'Open prize form',
     finalLead: (score, total, name) => `${name ? `${name}, y` : 'Y'}ou scored ${score} of ${total}.`,
-    perfect: 'Perfect striker.',
-    solid: 'Strong performance.',
-    nice: 'Good effort.',
+    perfect: 'Perfect score.',
+    solid: 'Strong score.',
+    nice: 'Nice effort.',
   },
   nl: {
     round: 'Ronde',
     progress: 'Voortgang',
-    answer: 'Kies je schot',
+    answer: 'Kies je antwoord',
     goal: 'GOAL!',
     save: 'GEPAKT!',
     next: 'Volgende ronde',
-    finish: 'Wedstrijd afronden',
-    complete: 'Full time',
-    score: 'Score',
+    finish: 'Game afronden',
+    complete: 'Klaar',
     playAgain: 'Speel opnieuw',
     changeSetup: 'Setup wijzigen',
     formsTitle: 'Doe mee aan de winactie',
     formsText: 'Open Microsoft Forms om je deelname in te sturen.',
     formsButton: 'Open winactie formulier',
     finalLead: (score, total, name) => `${name ? `${name}, j` : 'J'}e scoorde ${score} van ${total}.`,
-    perfect: 'Perfecte spits.',
+    perfect: 'Perfecte score.',
     solid: 'Sterke score.',
     nice: 'Netjes gedaan.',
   },
   ja: {
     round: 'ラウンド',
     progress: '進行状況',
-    answer: 'シュートを選択',
+    answer: '答えを選択',
     goal: 'ゴール！',
     save: 'セーブ！',
     next: '次のラウンド',
-    finish: '試合終了',
-    complete: '試合終了',
-    score: 'スコア',
+    finish: 'ゲーム終了',
+    complete: '終了',
     playAgain: 'もう一度プレイ',
     changeSetup: '設定変更',
     formsTitle: '抽選に参加',
     formsText: 'Microsoft Formsを開いて参加してください。',
     formsButton: 'フォームを開く',
     finalLead: (score, total, name) => `${name ? `${name}: ` : ''}${total}問中${score}問正解。`,
-    perfect: '完璧なストライカー。',
-    solid: '素晴らしい成績です。',
+    perfect: '完璧なスコア。',
+    solid: '素晴らしいスコアです。',
     nice: 'よくできました。',
   },
 };
 
 const questions = [
   {
-    id: 'origin',
+    id: 'brand-mark',
     correct: 0,
-    visuals: ['japan-flag', 'usa-flag', 'germany-flag'],
-    en: { question: 'Where does Yanmar come from?', answers: ['Japan', 'USA', 'Germany'] },
-    nl: { question: 'Waar komt Yanmar vandaan?', answers: ['Japan', 'VS', 'Duitsland'] },
-    ja: { question: 'Yanmarはどこで生まれましたか？', answers: ['日本', 'アメリカ', 'ドイツ'] },
+    visuals: ['flying-y', 'target', 'diamonds'],
+    en: { question: 'Which logo mark belongs to Yanmar?', answers: ['Flying-Y', 'Target symbol', 'Mitsubishi diamonds'] },
+    nl: { question: 'Welk logo mark hoort bij Yanmar?', answers: ['Flying-Y', 'Target-symbool', 'Mitsubishi-diamanten'] },
+    ja: { question: 'Yanmarに関連するロゴマークはどれですか？', answers: ['Flying-Y', 'ターゲット', '三菱ダイヤ'] },
   },
   {
-    id: 'site-power',
+    id: 'products',
     correct: 0,
-    visuals: ['generator', 'tractor', 'boat'],
-    en: { question: 'No power on site?', answers: ['Generator', 'Tractor', 'Boat'] },
-    nl: { question: 'Geen stroom op locatie?', answers: ['Generator', 'Tractor', 'Boot'] },
-    ja: { question: '現場に電源がない時は？', answers: ['発電機', 'トラクター', 'ボート'] },
+    visuals: ['products', 'phone', 'shirt'],
+    en: { question: 'What does Yanmar produce?', answers: ['Engines, generators, pumps and machinery', 'Only smartphones', 'Only clothing'] },
+    nl: { question: 'Wat produceert Yanmar?', answers: ['Motoren, generatoren, pompen en machines', 'Alleen smartphones', 'Alleen kleding'] },
+    ja: { question: 'Yanmarは何をつくっていますか？', answers: ['エンジン・発電機・ポンプ・機械', 'スマートフォンだけ', '衣服だけ'] },
   },
   {
-    id: 'tractor-power',
-    correct: 1,
-    visuals: ['hp-low', 'hp-mid', 'hp-high'],
-    en: { question: 'Compact tractor power?', answers: ['10 hp', '25-50 hp', '200 hp'] },
-    nl: { question: 'Hoeveel vermogen heeft een compacte tractor ongeveer?', answers: ['10 pk', '25-50 pk', '200 pk'] },
-    ja: { question: 'コンパクトトラクターの出力は？', answers: ['10馬力', '25-50馬力', '200馬力'] },
+    id: 'premium-red',
+    correct: 0,
+    visuals: ['premium-red', 'purple', 'pink'],
+    en: { question: 'Which color is strongly linked to Yanmar branding?', answers: ['Premium Red', 'Neon Purple', 'Pastel Pink'] },
+    nl: { question: 'Welke kleur hoort sterk bij Yanmar branding?', answers: ['Premium Red', 'Neonpaars', 'Pastelroze'] },
+    ja: { question: 'Yanmarのブランドに強く結びつく色は？', answers: ['プレミアムレッド', 'ネオンパープル', 'パステルピンク'] },
   },
   {
-    id: 'pump',
+    id: 'oniyanma',
     correct: 0,
-    visuals: ['water', 'power', 'cooling'],
-    en: { question: 'What does a pump do?', answers: ['Move water', 'Make energy', 'Cool air'] },
-    nl: { question: 'Wat doet een pomp?', answers: ['Water verplaatsen', 'Energie maken', 'Lucht koelen'] },
-    ja: { question: 'ポンプは何をしますか？', answers: ['水を動かす', 'エネルギーを作る', '空気を冷やす'] },
+    visuals: ['oniyanma', 'mountain', 'football'],
+    en: { question: 'What is an Oniyanma?', answers: ['A dragonfly', 'A mountain', 'A football club'] },
+    nl: { question: 'Wat is een Oniyanma?', answers: ['Een libel', 'Een berg', 'Een voetbalclub'] },
+    ja: { question: 'オニヤンマとは何ですか？', answers: ['トンボ', '山', 'サッカークラブ'] },
   },
   {
-    id: 'marine',
+    id: 'osaka',
     correct: 0,
-    visuals: ['boat', 'car', 'train'],
-    en: { question: 'Where is a Yanmar marine engine used?', answers: ['Boat', 'Car', 'Train'] },
-    nl: { question: 'Waar gebruik je een Yanmar marine engine?', answers: ['Boot', 'Auto', 'Trein'] },
-    ja: { question: 'Yanmarのマリンエンジンはどこで使いますか？', answers: ['ボート', '車', '電車'] },
+    visuals: ['osaka', 'paris', 'new-york'],
+    en: { question: 'In which Japanese city was Yanmar founded?', answers: ['Osaka', 'Paris', 'New York'] },
+    nl: { question: 'In welke Japanse stad is Yanmar opgericht?', answers: ['Osaka', 'Parijs', 'New York'] },
+    ja: { question: 'Yanmarは日本のどの都市で創業しましたか？', answers: ['大阪', 'パリ', 'ニューヨーク'] },
+  },
+  {
+    id: 'football-clubs',
+    correct: 0,
+    visuals: ['club-pair', 'generic-clubs', 'generic-clubs'],
+    en: { question: 'Which clubs connect Yanmar with football?', answers: ['Almere City FC and Cerezo Osaka', 'Real Madrid and Chelsea', 'Ajax and Barcelona'] },
+    nl: { question: 'Welke clubs verbinden Yanmar met voetbal?', answers: ['Almere City FC en Cerezo Osaka', 'Real Madrid en Chelsea', 'Ajax en Barcelona'] },
+    ja: { question: 'Yanmarとサッカーをつなぐクラブは？', answers: ['アルメレ・シティFCとセレッソ大阪', 'レアル・マドリードとチェルシー', 'アヤックスとバルセロナ'] },
   },
 ];
 
@@ -189,16 +188,13 @@ function AnswerVisual({ type }) {
 }
 
 function SetupScreen({ language, setLanguage, team, setTeam, playerName, setPlayerName, onStart }) {
-  const match = getMatch(team);
-
   return (
     <main className='app app-setup'>
       <section className='setup-shell'>
         <div className='setup-brand-panel'>
           <div className='wordmark-only'>YANMAR</div>
           <div className='festival-lockup'>
-            <span>{setupCopy.event}</span>
-            <strong>PK Quiz</strong>
+            <span>Japan Festival 2026</span>
           </div>
           <div className='pitch-preview' aria-hidden='true'>
             <span className='preview-goal' />
@@ -208,7 +204,7 @@ function SetupScreen({ language, setLanguage, team, setTeam, playerName, setPlay
         </div>
 
         <div className='setup-panel'>
-          <p className='eyebrow'>{setupCopy.event}</p>
+          <p className='eyebrow'>Japan Festival 2026</p>
           <h1>{setupCopy.title}</h1>
           <p className='intro-copy'>{setupCopy.intro}</p>
 
@@ -238,11 +234,6 @@ function SetupScreen({ language, setLanguage, team, setTeam, playerName, setPlay
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className='keeper-auto' style={{ '--keeper-color': match.keeperKit.primary, '--keeper-text': match.keeperKit.text }}>
-            <span>{setupCopy.keeper}</span>
-            <strong>{match.keeperTeam.code} GK</strong>
           </div>
 
           <button className='primary-cta' type='button' onClick={onStart}>{setupCopy.start}</button>
@@ -426,7 +417,7 @@ export default function App() {
     <main className='app app-game'>
       <section className='game-shell'>
         <header className='game-header'>
-          <div className='game-brand'>Yanmar Power League</div>
+          <div className='game-brand'>Japan Festival 2026</div>
           <div className='match-info'>
             <span className='team-chip' style={{ '--chip-color': match.playerTeam.color, '--chip-text': match.playerTeam.text }}>{playerName.trim() || match.playerTeam.labels[language]}</span>
             <span className='team-chip keeper-chip' style={{ '--chip-color': match.keeperKit.primary, '--chip-text': match.keeperKit.text }}>{match.keeperTeam.code} GK</span>
