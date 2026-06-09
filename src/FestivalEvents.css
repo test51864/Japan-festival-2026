@@ -1,0 +1,179 @@
+.field-cat[data-field-event] {
+  transform-origin: center;
+}
+
+.field-cat[data-field-event='none'] {
+  display: none !important;
+}
+
+.field-cat[data-field-event='cat'] .cat-body,
+.field-cat[data-field-event='cat'] .cat-head,
+.field-cat[data-field-event='cat'] .cat-tail,
+.field-cat[data-field-event='cat'] .cat-ear,
+.field-cat[data-field-event='cat'] .cat-leg {
+  background: #20242b !important;
+}
+
+.field-cat[data-field-event='fox'] .cat-body,
+.field-cat[data-field-event='fox'] .cat-head,
+.field-cat[data-field-event='fox'] .cat-ear,
+.field-cat[data-field-event='fox'] .cat-leg {
+  background: #d66b25 !important;
+}
+
+.field-cat[data-field-event='fox'] .cat-tail {
+  width: 28px !important;
+  height: 11px !important;
+  background: linear-gradient(90deg, #d66b25 0 62%, #ffffff 62% 100%) !important;
+}
+
+.field-cat[data-field-event='crane'] .cat-body {
+  left: 18px !important;
+  top: 20px !important;
+  width: 31px !important;
+  height: 11px !important;
+  border: 2px solid #101114 !important;
+  border-radius: 999px !important;
+  background: #f9faf6 !important;
+}
+
+.field-cat[data-field-event='crane'] .cat-head {
+  right: 8px !important;
+  top: 13px !important;
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #101114 !important;
+  background: #f9faf6 !important;
+}
+
+.field-cat[data-field-event='crane'] .cat-tail {
+  left: 8px !important;
+  top: 14px !important;
+  width: 27px !important;
+  height: 12px !important;
+  border: 2px solid #101114 !important;
+  border-radius: 999px 999px 999px 0 !important;
+  background: rgba(249, 250, 246, 0.88) !important;
+  transform: rotate(-20deg) !important;
+}
+
+.field-cat[data-field-event='crane'] .cat-ear {
+  display: none !important;
+}
+
+.field-cat[data-field-event='crane'] .cat-leg {
+  top: 29px !important;
+  width: 3px !important;
+  height: 15px !important;
+  border-radius: 999px !important;
+  background: #101114 !important;
+}
+
+.field-cat[data-field-event='streamer'] .cat-body {
+  left: 4px !important;
+  top: 16px !important;
+  width: 52px !important;
+  height: 12px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #dc1e37 0 36%, #ffffff 36% 52%, #f7c948 52% 72%, #102f7a 72% 100%) !important;
+  transform: rotate(-11deg) !important;
+}
+
+.field-cat[data-field-event='streamer'] .cat-tail {
+  left: 0 !important;
+  top: 8px !important;
+  width: 22px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: #f7c948 !important;
+  transform: rotate(22deg) !important;
+}
+
+.field-cat[data-field-event='streamer'] .cat-head,
+.field-cat[data-field-event='streamer'] .cat-ear,
+.field-cat[data-field-event='streamer'] .cat-leg {
+  display: none !important;
+}
+
+.field-cat[data-field-event='paper-plane'] .cat-body {
+  left: 12px !important;
+  top: 9px !important;
+  width: 42px !important;
+  height: 28px !important;
+  background: linear-gradient(135deg, #ffffff 0 48%, #dfe7f5 48% 100%) !important;
+  border: 2px solid #101114 !important;
+  border-radius: 0 !important;
+  clip-path: polygon(0 50%, 100% 0, 72% 55%, 100% 100%) !important;
+  transform: rotate(-8deg) !important;
+}
+
+.field-cat[data-field-event='paper-plane'] .cat-tail {
+  left: 14px !important;
+  top: 22px !important;
+  width: 23px !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  transform: rotate(-8deg) !important;
+}
+
+.field-cat[data-field-event='paper-plane'] .cat-head,
+.field-cat[data-field-event='paper-plane'] .cat-ear,
+.field-cat[data-field-event='paper-plane'] .cat-leg {
+  display: none !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-body,
+.field-cat[data-field-event='confetti'] .cat-head,
+.field-cat[data-field-event='confetti'] .cat-tail,
+.field-cat[data-field-event='confetti'] .cat-ear,
+.field-cat[data-field-event='confetti'] .cat-leg {
+  border-radius: 2px !important;
+  transform: rotate(16deg) !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-body {
+  left: 8px !important;
+  top: 12px !important;
+  width: 12px !important;
+  height: 20px !important;
+  background: #dc1e37 !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-head {
+  left: 25px !important;
+  top: 8px !important;
+  width: 10px !important;
+  height: 18px !important;
+  background: #ffffff !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-tail {
+  left: 40px !important;
+  top: 17px !important;
+  width: 11px !important;
+  height: 19px !important;
+  background: #f7c948 !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-ear-left {
+  left: 19px !important;
+  top: 27px !important;
+  width: 10px !important;
+  height: 10px !important;
+  clip-path: none !important;
+  background: #102f7a !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-ear-right {
+  left: 36px !important;
+  top: 2px !important;
+  width: 9px !important;
+  height: 9px !important;
+  clip-path: none !important;
+  background: #14a64d !important;
+}
+
+.field-cat[data-field-event='confetti'] .cat-leg {
+  display: none !important;
+}
