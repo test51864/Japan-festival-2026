@@ -10,12 +10,12 @@ const teams = {
   netherlands: {
     code: "NL",
     color: "#f47b20",
-    labels: { en: "Team Netherlands", nl: "Team Netherlands" },
+    labels: { en: "Team Netherlands", nl: "Team Netherlands", ja: "Team Netherlands" },
   },
   japan: {
     code: "JP",
     color: "#e30613",
-    labels: { en: "Team Japan", nl: "Team Japan" },
+    labels: { en: "Team Japan", nl: "Team Japan", ja: "Team Japan" },
   },
 };
 
@@ -168,6 +168,80 @@ const questionBank = {
       fact: "Deze quiz verbindt het Yanmar brand verhaal met voetbal in Nederland en Japan.",
     },
   ],
+  ja: [
+    {
+      id: "brand-mark",
+      question: "Yanmarに関連するロゴマークはどれですか？",
+      answers: [
+        { label: "Flying-Y", visual: "flying-y" },
+        { label: "ターゲット", visual: "target" },
+        { label: "三菱ダイヤ", visual: "diamonds" },
+      ],
+      correct: 0,
+      visual: "brand-focus",
+      fact: "YanmarのブランドマークはFlying-Yです。YanmarのYとオニヤンマの羽をモチーフにしています。",
+    },
+    {
+      id: "products",
+      question: "Yanmarは何をつくっていますか？",
+      answers: [
+        { label: "エンジン・発電機・ポンプ・機械", visual: "products" },
+        { label: "スマートフォンだけ", visual: "phone" },
+        { label: "衣服だけ", visual: "shirt" },
+      ],
+      correct: 0,
+      visual: "products-stage",
+      fact: "Yanmarはパワー、マリン、農業、建設機械、エネルギー分野で事業を展開しています。",
+    },
+    {
+      id: "premium-red",
+      question: "Yanmarのブランドに強く結びつく色は？",
+      answers: [
+        { label: "プレミアムレッド", visual: "premium-red" },
+        { label: "ネオンパープル", visual: "purple" },
+        { label: "パステルピンク", visual: "pink" },
+      ],
+      correct: 0,
+      visual: "red-stage",
+      fact: "Yanmarの赤は、開拓精神、情熱、太陽、自然の豊かさを表しています。",
+    },
+    {
+      id: "oniyanma",
+      question: "オニヤンマとは何ですか？",
+      answers: [
+        { label: "トンボ", visual: "oniyanma" },
+        { label: "山", visual: "mountain" },
+        { label: "サッカークラブ", visual: "football" },
+      ],
+      correct: 0,
+      visual: "oniyanma-stage",
+      fact: "Yanmarの名前は、日本で豊かな収穫の象徴とされるオニヤンマに由来しています。",
+    },
+    {
+      id: "osaka",
+      question: "Yanmarは日本のどの都市で創業しましたか？",
+      answers: [
+        { label: "大阪", visual: "osaka" },
+        { label: "パリ", visual: "paris" },
+        { label: "ニューヨーク", visual: "new-york" },
+      ],
+      correct: 0,
+      visual: "city-stage",
+      fact: "Yanmarは1912年に日本の大阪で創業しました。",
+    },
+    {
+      id: "football",
+      question: "Yanmarとサッカーをつなぐクラブは？",
+      answers: [
+        { label: "アルメレ・シティFCとセレッソ大阪", visual: "club-pair" },
+        { label: "レアル・マドリードとチェルシー", visual: "generic-clubs" },
+        { label: "アヤックスとバルセロナ", visual: "generic-clubs" },
+      ],
+      correct: 0,
+      visual: "football-stage",
+      fact: "このクイズは、Yanmarのブランドストーリーとオランダ・日本でのサッカーのつながりを表しています。",
+    },
+  ],
 };
 
 const copy = {
@@ -230,6 +304,36 @@ const copy = {
     emailError: "Vul een geldig e-mailadres in.",
     submit: "Doe mee",
     thanks: "Inschrijving opgeslagen.",
+  },
+  ja: {
+    title: "Yanmar Power League",
+    event: "Japan Festival 2026",
+    intro: "Yanmarのブランドストーリーを楽しむプレミアムPKクイズ。",
+    chooseLanguage: "言語",
+    chooseTeam: "チーム",
+    start: "試合開始",
+    goals: "ゴール",
+    round: "ラウンド",
+    progress: "進行状況",
+    answer: "答えを選択",
+    goal: "正解。ゴール。",
+    save: "不正解。セーブ。",
+    miss: "不正解。ミス。",
+    next: "次の問題",
+    finish: "試合終了",
+    complete: "試合終了",
+    playAgain: "もう一度プレイ",
+    changeSetup: "設定を変更",
+    finalLead: (score, total) => `${total}問中${score}問正解。`,
+    perfect: "完璧なブランドストライカー。",
+    solid: "素晴らしい成績です。",
+    nice: "よくできました。",
+    prizeTitle: "抽選参加",
+    prizeText: "抽選に参加するにはメールアドレスを入力してください。",
+    emailPlaceholder: "メールアドレス",
+    emailError: "有効なメールアドレスを入力してください。",
+    submit: "参加する",
+    thanks: "登録しました。",
   },
 };
 
@@ -370,6 +474,7 @@ function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
             <div className="segmented-control" aria-label={t.chooseLanguage}>
               <button className={cx(language === "nl" && "active")} type="button" onClick={() => setLanguage("nl")}>NL</button>
               <button className={cx(language === "en" && "active")} type="button" onClick={() => setLanguage("en")}>EN</button>
+              <button className={cx(language === "ja" && "active")} type="button" onClick={() => setLanguage("ja")}>JP</button>
             </div>
           </div>
 
