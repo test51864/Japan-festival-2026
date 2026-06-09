@@ -1,4 +1,4 @@
-const FIELD_EVENTS = ['cat', 'fox', 'crane', 'streamer', 'paper-plane', 'confetti'];
+const FIELD_EVENTS = ['streamer', 'paper-plane', 'confetti'];
 
 let sessionPoints = 0;
 const countedPointNodes = new WeakSet();
@@ -18,7 +18,7 @@ function updateSessionPoints(root = document) {
 }
 
 function distractionChance() {
-  return Math.min(0.82, 0.18 + sessionPoints / 900);
+  return Math.min(0.78, 0.14 + sessionPoints / 1000);
 }
 
 function pickFieldEvent() {
