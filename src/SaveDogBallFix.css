@@ -1,0 +1,177 @@
+.field-cat:not([data-field-event='dog']) {
+  display: none !important;
+}
+
+.field-cat[data-field-event='dog'] {
+  width: 68px !important;
+  height: 44px !important;
+  z-index: 18 !important;
+  filter: drop-shadow(0 8px 4px rgba(0, 0, 0, 0.26)) !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-body {
+  display: block !important;
+  left: 16px !important;
+  top: 16px !important;
+  width: 34px !important;
+  height: 18px !important;
+  border: 3px solid #101114 !important;
+  border-radius: 999px 999px 10px 10px !important;
+  background:
+    radial-gradient(circle at 70% 40%, #ffffff 0 4px, transparent 5px),
+    linear-gradient(135deg, #8a5a35, #c8894b) !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-head {
+  display: block !important;
+  right: 4px !important;
+  top: 8px !important;
+  width: 22px !important;
+  height: 22px !important;
+  border: 3px solid #101114 !important;
+  border-radius: 48% 52% 45% 55% !important;
+  background:
+    radial-gradient(circle at 64% 48%, #101114 0 2px, transparent 3px),
+    radial-gradient(circle at 86% 58%, #101114 0 3px, transparent 4px),
+    #d89b62 !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-tail {
+  display: block !important;
+  left: 2px !important;
+  top: 11px !important;
+  width: 25px !important;
+  height: 8px !important;
+  border: 3px solid #101114 !important;
+  border-right: 0 !important;
+  border-radius: 999px 0 0 999px !important;
+  background: #8a5a35 !important;
+  transform: rotate(-34deg) !important;
+  transform-origin: right center !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-ear {
+  display: block !important;
+  width: 10px !important;
+  height: 13px !important;
+  border: 3px solid #101114 !important;
+  border-radius: 999px 999px 4px 4px !important;
+  clip-path: none !important;
+  background: #6d4126 !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-ear-left {
+  right: 17px !important;
+  top: 1px !important;
+  transform: rotate(-18deg) !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-ear-right {
+  right: 2px !important;
+  top: 3px !important;
+  transform: rotate(22deg) !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-leg {
+  display: block !important;
+  top: 30px !important;
+  width: 8px !important;
+  height: 12px !important;
+  border: 3px solid #101114 !important;
+  border-radius: 999px !important;
+  background: #6d4126 !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-leg-one {
+  left: 22px !important;
+}
+
+.field-cat[data-field-event='dog'] .cat-leg-two {
+  left: 39px !important;
+}
+
+.arena-card:has(.result-flash.show) .field-cat[data-field-event='dog'] {
+  display: none !important;
+}
+
+.ball {
+  overflow: hidden !important;
+  border: 3px solid #08090c !important;
+  background:
+    radial-gradient(circle at 50% 50%, #050506 0 6px, transparent 7px),
+    radial-gradient(circle at 23% 27%, #050506 0 6px, transparent 7px),
+    radial-gradient(circle at 77% 29%, #050506 0 6px, transparent 7px),
+    radial-gradient(circle at 29% 78%, #050506 0 6px, transparent 7px),
+    radial-gradient(circle at 74% 76%, #050506 0 6px, transparent 7px),
+    #ffffff !important;
+  box-shadow:
+    0 11px 18px rgba(0, 0, 0, 0.26),
+    inset -6px -7px 0 rgba(16, 17, 20, 0.08),
+    inset 4px 4px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.ball::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 14px !important;
+  height: 14px !important;
+  background: #050506 !important;
+  clip-path: polygon(50% 0, 97% 35%, 79% 94%, 21% 94%, 3% 35%) !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.ball::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 4px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background:
+    linear-gradient(20deg, transparent 45%, #08090c 46% 49%, transparent 50%),
+    linear-gradient(-20deg, transparent 45%, #08090c 46% 49%, transparent 50%),
+    linear-gradient(86deg, transparent 46%, rgba(8,9,12,0.9) 47% 49%, transparent 50%),
+    radial-gradient(circle at 50% 50%, transparent 0 12px, #08090c 13px 14px, transparent 15px) !important;
+  opacity: 0.9 !important;
+}
+
+.ball.save-center {
+  z-index: 60 !important;
+  animation: saveInFrontMobile 0.78s cubic-bezier(.2,.72,.2,1) forwards !important;
+}
+
+.ball.goal-left {
+  z-index: 36 !important;
+}
+
+.ball.goal-right {
+  z-index: 36 !important;
+}
+
+.ball.miss-left,
+.ball.miss-right {
+  z-index: 36 !important;
+}
+
+.keeper-sprite.save-center {
+  z-index: 42 !important;
+}
+
+@keyframes saveInFrontMobile {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  58% { transform: translate3d(-4px, -44px, 0) scale(0.94) rotate(360deg); }
+  100% { transform: translate3d(-8px, -38px, 0) scale(0.9) rotate(420deg); }
+}
+
+@media (min-width: 760px) {
+  .ball.save-center {
+    animation-name: saveInFrontDesktop !important;
+  }
+
+  @keyframes saveInFrontDesktop {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    58% { transform: translate3d(-5px, -92px, 0) scale(0.94) rotate(380deg); }
+    100% { transform: translate3d(-12px, -86px, 0) scale(0.9) rotate(450deg); }
+  }
+}
