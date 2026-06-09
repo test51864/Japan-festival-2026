@@ -8,6 +8,7 @@ import "./TeamSelectPremium.css";
 import "./FinalPolish.css";
 import "./RepairPolish.css";
 import "./SaveDogBallFix.css";
+import "./HeaderTeamFix.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
