@@ -1,9 +1,29 @@
-const FIELD_EVENTS = ['cat', 'fox', 'crane', 'streamer', 'paper-plane', 'confetti', 'none'];
+const FIELD_EVENTS = ['cat', 'fox', 'crane', 'streamer', 'paper-plane', 'confetti'];
+
+let sessionPoints = 0;
+const countedPointNodes = new WeakSet();
+
+function updateSessionPoints(root = document) {
+  root.querySelectorAll?.('.points-pop').forEach((node) => {
+    if (countedPointNodes.has(node)) return;
+    countedPointNodes.add(node);
+
+    const value = Number.parseInt(node.textContent.replace(/[^0-9]/g, ''), 10);
+    if (Number.isFinite(value)) sessionPoints += value;
+  });
+
+  if (document.querySelector('.app-setup')) {
+    sessionPoints = 0;
+  }
+}
+
+function distractionChance() {
+  return Math.min(0.82, 0.18 + sessionPoints / 900);
+}
 
 function pickFieldEvent() {
-  const roll = Math.random();
-  if (roll < 0.14) return 'none';
-  return FIELD_EVENTS[Math.floor(Math.random() * (FIELD_EVENTS.length - 1))];
+  if (Math.random() > distractionChance()) return 'none';
+  return FIELD_EVENTS[Math.floor(Math.random() * FIELD_EVENTS.length)];
 }
 
 function sideFromClass(node) {
@@ -14,6 +34,8 @@ function applyRandomFieldEvent(node) {
   if (!(node instanceof HTMLElement) || !node.matches('.field-cat')) return;
   if (node.dataset.randomized === 'true') return;
 
+  updateSessionPoints();
+
   const eventName = pickFieldEvent();
   const side = sideFromClass(node);
   node.dataset.randomized = 'true';
@@ -22,6 +44,7 @@ function applyRandomFieldEvent(node) {
 }
 
 function scanFieldEvents(root = document) {
+  updateSessionPoints(root);
   root.querySelectorAll?.('.field-cat').forEach(applyRandomFieldEvent);
 }
 
@@ -32,6 +55,7 @@ if (typeof window !== 'undefined') {
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (!(node instanceof HTMLElement)) return;
+        updateSessionPoints(node);
         applyRandomFieldEvent(node);
         scanFieldEvents(node);
       });
