@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import './App.css';
+import './QuizPolish.css';
 
 const FORM_URL = 'https://forms.office.com/r/mbXENTrknQ';
 
@@ -40,8 +41,8 @@ const keeperKits = {
 };
 
 const setupCopy = {
-  title: 'Japan Festival 2026',
-  intro: 'Pick a name, choose your team, and play the Yanmar challenge.',
+  title: 'Yanmar Quiz Arena',
+  intro: 'Pick a name, choose your team, and play the Japan Festival challenge.',
   language: 'Quiz language',
   name: 'Player name',
   namePlaceholder: 'Enter your name',
@@ -109,54 +110,70 @@ const copy = {
   },
 };
 
+const visualImages = {
+  'flying-y': {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Yanmar_logo_flying-Y.svg',
+  },
+  dragonfly: {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Damselfly_07844.jpg?width=720',
+  },
+  'red-panda': {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Red_Panda_by_Robert_Hoevels.jpg?width=720',
+  },
+  koi: {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Koi_carp%3B_March_2009.jpg?width=720',
+  },
+};
+
 const questions = [
   {
-    id: 'brand-mark',
+    id: 'yanmar-logo',
     correct: 0,
+    visualOnly: true,
     visuals: ['flying-y', 'target', 'diamonds'],
-    en: { question: 'Which logo mark belongs to Yanmar?', answers: ['Flying-Y', 'Target symbol', 'Mitsubishi diamonds'] },
-    nl: { question: 'Welk logo mark hoort bij Yanmar?', answers: ['Flying-Y', 'Target-symbool', 'Mitsubishi-diamanten'] },
-    ja: { question: 'Yanmarに関連するロゴマークはどれですか？', answers: ['Flying-Y', 'ターゲット', '三菱ダイヤ'] },
+    en: { question: 'Which logo truly fits Yanmar?', answers: ['Flying-Y', 'Target symbol', 'Mitsubishi diamonds'] },
+    nl: { question: 'Welk logo past echt bij Yanmar?', answers: ['Flying-Y', 'Target-symbool', 'Mitsubishi-diamanten'] },
+    ja: { question: 'Yanmarに本当に合うロゴはどれですか？', answers: ['Flying-Y', 'ターゲットシンボル', '三菱のダイヤ'] },
   },
   {
-    id: 'products',
+    id: 'yanmar-products',
     correct: 0,
-    visuals: ['products', 'phone', 'shirt'],
-    en: { question: 'What does Yanmar produce?', answers: ['Engines, generators, pumps and machinery', 'Only smartphones', 'Only clothing'] },
-    nl: { question: 'Wat produceert Yanmar?', answers: ['Motoren, generatoren, pompen en machines', 'Alleen smartphones', 'Alleen kleding'] },
-    ja: { question: 'Yanmarは何をつくっていますか？', answers: ['エンジン・発電機・ポンプ・機械', 'スマートフォンだけ', '衣服だけ'] },
+    visuals: ['machine', 'luxury', 'console'],
+    en: { question: 'What does Yanmar mainly make?', answers: ['Powerful machines, such as tractors and engines', 'Luxury clothing and watches', 'Video game consoles'] },
+    nl: { question: 'Wat maakt Yanmar vooral?', answers: ['Krachtige machines, zoals tractoren en motoren', 'Luxe kleding en horloges', 'Spelcomputers en consoles'] },
+    ja: { question: 'Yanmarは主に何を作っていますか？', answers: ['トラクターやエンジンなどの力強い機械', '高級服や時計', 'ゲーム機'] },
   },
   {
-    id: 'premium-red',
-    correct: 0,
-    visuals: ['premium-red', 'purple', 'pink'],
-    en: { question: 'Which color is strongly linked to Yanmar branding?', answers: ['Premium Red', 'Neon Purple', 'Pastel Pink'] },
-    nl: { question: 'Welke kleur hoort sterk bij Yanmar branding?', answers: ['Premium Red', 'Neonpaars', 'Pastelroze'] },
-    ja: { question: 'Yanmarのブランドに強く結びつく色は？', answers: ['プレミアムレッド', 'ネオンパープル', 'パステルピンク'] },
+    id: 'yanmar-color',
+    correct: 1,
+    visuals: ['forest-green', 'premium-red', 'bright-yellow'],
+    en: { question: 'Which color do you often see on Yanmar machines?', answers: ['Forest green', 'Premium Red', 'Bright yellow'] },
+    nl: { question: 'Welke kleur zie je vaak terug bij de machines van Yanmar?', answers: ['Bosgroen', 'Premium Rood', 'Felgeel'] },
+    ja: { question: 'Yanmarの機械でよく見る色はどれですか？', answers: ['フォレストグリーン', 'プレミアムレッド', '明るい黄色'] },
   },
   {
-    id: 'oniyanma',
+    id: 'oniyanma-animal',
     correct: 0,
-    visuals: ['oniyanma', 'mountain', 'football'],
-    en: { question: 'What is an Oniyanma?', answers: ['A dragonfly', 'A mountain', 'A football club'] },
-    nl: { question: 'Wat is een Oniyanma?', answers: ['Een libel', 'Een berg', 'Een voetbalclub'] },
-    ja: { question: 'オニヤンマとは何ですか？', answers: ['トンボ', '山', 'サッカークラブ'] },
+    visuals: ['dragonfly', 'red-panda', 'koi'],
+    en: { question: "The name 'Yanmar' comes from the 'Oniyanma'. What Japanese animal is that?", answers: ['A large, fast dragonfly', 'A fluffy red panda', 'A colorful koi carp'] },
+    nl: { question: "De naam 'Yanmar' komt van de 'Oniyanma'. Wat voor Japans dier is dat?", answers: ['Een grote, snelle libel', 'Een pluizige rode panda', 'Een kleurrijke Koi karper'] },
+    ja: { question: '「Yanmar」という名前は「オニヤンマ」に由来します。これはどんな日本の生き物ですか？', answers: ['大きくて速いトンボ', 'ふわふわのレッサーパンダ', '色鮮やかな錦鯉'] },
   },
   {
-    id: 'osaka',
-    correct: 0,
-    visuals: ['osaka', 'paris', 'new-york'],
-    en: { question: 'In which Japanese city was Yanmar founded?', answers: ['Osaka', 'Paris', 'New York'] },
-    nl: { question: 'In welke Japanse stad is Yanmar opgericht?', answers: ['Osaka', 'Parijs', 'New York'] },
-    ja: { question: 'Yanmarは日本のどの都市で創業しましたか？', answers: ['大阪', 'パリ', 'ニューヨーク'] },
+    id: 'football-owner',
+    correct: 1,
+    visuals: ['ajax-vissel', 'almere-cerezo', 'feyenoord-urawa'],
+    en: { question: 'Which two football clubs is Yanmar owner of?', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
+    nl: { question: 'Van welke twee voetbalclubs is Yanmar eigenaar?', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
+    ja: { question: 'Yanmarがオーナーである2つのサッカークラブはどれですか？', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
   },
   {
-    id: 'football-clubs',
-    correct: 0,
-    visuals: ['club-pair', 'generic-clubs', 'generic-clubs'],
-    en: { question: 'Which clubs connect Yanmar with football?', answers: ['Almere City FC and Cerezo Osaka', 'Real Madrid and Chelsea', 'Ajax and Barcelona'] },
-    nl: { question: 'Welke clubs verbinden Yanmar met voetbal?', answers: ['Almere City FC en Cerezo Osaka', 'Real Madrid en Chelsea', 'Ajax en Barcelona'] },
-    ja: { question: 'Yanmarとサッカーをつなぐクラブは？', answers: ['アルメレ・シティFCとセレッソ大阪', 'レアル・マドリードとチェルシー', 'アヤックスとバルセロナ'] },
+    id: 'yanmar-city',
+    correct: 1,
+    visuals: ['tokyo', 'osaka', 'kyoto'],
+    en: { question: 'In which Japanese city is Yanmar based?', answers: ['Tokyo', 'Osaka', 'Kyoto'] },
+    nl: { question: 'In welke Japanse stad is Yanmar gevestigd?', answers: ['Tokyo', 'Osaka', 'Kyoto'] },
+    ja: { question: 'Yanmarは日本のどの都市に拠点がありますか？', answers: ['東京', '大阪', '京都'] },
   },
 ];
 
@@ -178,8 +195,11 @@ function getMatch(team) {
 }
 
 function AnswerVisual({ type }) {
+  const image = visualImages[type];
+
   return (
-    <span className={cx('answer-visual', `visual-${type}`)} aria-hidden='true'>
+    <span className={cx('answer-visual', image && 'has-image', `visual-${type}`)} aria-hidden='true'>
+      {image ? <img src={image.src} alt='' loading='lazy' /> : null}
       <i />
       <b />
       <em />
@@ -318,7 +338,7 @@ function FinalScreen({ score, total, playerName, t, onPlayAgain, onChangeSetup }
 }
 
 export default function App() {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState('nl');
   const [team, setTeam] = useState('netherlands');
   const [playerName, setPlayerName] = useState('');
   const [started, setStarted] = useState(false);
@@ -417,7 +437,7 @@ export default function App() {
     <main className='app app-game'>
       <section className='game-shell'>
         <header className='game-header'>
-          <div className='game-brand'>Japan Festival 2026</div>
+          <div className='game-brand'>Yanmar Quiz Arena</div>
           <div className='match-info'>
             <span className='team-chip' style={{ '--chip-color': match.playerTeam.color, '--chip-text': match.playerTeam.text }}>{playerName.trim() || match.playerTeam.labels[language]}</span>
             <span className='team-chip keeper-chip' style={{ '--chip-color': match.keeperKit.primary, '--chip-text': match.keeperKit.text }}>{match.keeperTeam.code} GK</span>
@@ -430,7 +450,7 @@ export default function App() {
         </div>
 
         <div className='game-grid'>
-          <section className='question-card'>
+          <section className={cx('question-card', questionData.visualOnly && 'visual-only-question')}>
             <div className='question-copy'>
               <p className='eyebrow'>{t.round} {current + 1}</p>
               <h1>{localizedQuestion.question}</h1>
@@ -438,10 +458,10 @@ export default function App() {
 
             <div className='answer-grid'>
               {localizedQuestion.answers.map((answer, index) => (
-                <button className={cx('answer-button', answerClass(index))} disabled={answered} key={`${questionData.id}-${answer}`} type='button' onClick={() => handleAnswer(index)}>
+                <button className={cx('answer-button', answerClass(index))} disabled={answered} key={`${questionData.id}-${answer}`} type='button' onClick={() => handleAnswer(index)} aria-label={answer}>
                   <AnswerVisual type={questionData.visuals[index]} />
                   <span className='answer-letter'>{String.fromCharCode(65 + index)}</span>
-                  <strong>{answer}</strong>
+                  <strong className='answer-title'>{answer}</strong>
                 </button>
               ))}
             </div>
