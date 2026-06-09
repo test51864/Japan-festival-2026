@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App";
 import "./FestivalEvents.css";
+import "./StartScreenPremium.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
