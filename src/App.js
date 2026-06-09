@@ -6,240 +6,70 @@ const assets = {
   mark: "https://upload.wikimedia.org/wikipedia/commons/4/42/Yanmar_logo_flying-Y.svg",
 };
 
+const languages = [
+  { id: "nl", label: "NL" },
+  { id: "en", label: "EN" },
+  { id: "ja", label: "JPN" },
+];
+
 const teams = {
   netherlands: {
-    code: "NL",
+    code: "NED",
     color: "#f47b20",
-    labels: { en: "Team Netherlands", nl: "Team Netherlands", ja: "Team Netherlands" },
+    labels: { en: "Team Netherlands", nl: "Team Nederland", ja: "チーム・オランダ" },
   },
   japan: {
-    code: "JP",
+    code: "JPN",
     color: "#e30613",
-    labels: { en: "Team Japan", nl: "Team Japan", ja: "Team Japan" },
+    labels: { en: "Team Japan", nl: "Team Japan", ja: "チーム・日本" },
   },
 };
 
-const questionBank = {
-  en: [
+const kits = {
+  netherlands: [
     {
-      id: "brand-mark",
-      question: "Which logo mark is associated with Yanmar?",
-      answers: [
-        { label: "Flying-Y", visual: "flying-y" },
-        { label: "Target symbol", visual: "target" },
-        { label: "Mitsubishi diamonds", visual: "diamonds" },
-      ],
-      correct: 0,
-      visual: "brand-focus",
-      fact: "Yanmar's brand mark is the Flying-Y, inspired by the Y in Yanmar and the wings of the Oniyanma.",
+      id: "orange",
+      primary: "#f47b20",
+      trim: "#ffffff",
+      text: "#111111",
+      labels: { en: "Orange keeper", nl: "Oranje keeper", ja: "オレンジ" },
     },
     {
-      id: "products",
-      question: "What does Yanmar produce?",
-      answers: [
-        { label: "Engines, generators, pumps and machinery", visual: "products" },
-        { label: "Only smartphones", visual: "phone" },
-        { label: "Only clothing", visual: "shirt" },
-      ],
-      correct: 0,
-      visual: "products-stage",
-      fact: "Yanmar works across power, marine, agriculture, construction and energy solutions.",
+      id: "graphite",
+      primary: "#15171b",
+      trim: "#f47b20",
+      text: "#ffffff",
+      labels: { en: "Graphite keeper", nl: "Graphite keeper", ja: "グラファイト" },
     },
     {
-      id: "premium-red",
-      question: "Which color is strongly linked to Yanmar branding?",
-      answers: [
-        { label: "Premium Red", visual: "premium-red" },
-        { label: "Neon Purple", visual: "purple" },
-        { label: "Pastel Pink", visual: "pink" },
-      ],
-      correct: 0,
-      visual: "red-stage",
-      fact: "Yanmar red represents pioneering spirit, passion, sunlight and natural wealth.",
-    },
-    {
-      id: "oniyanma",
-      question: "What is an Oniyanma?",
-      answers: [
-        { label: "A dragonfly", visual: "oniyanma" },
-        { label: "A mountain", visual: "mountain" },
-        { label: "A football club", visual: "football" },
-      ],
-      correct: 0,
-      visual: "oniyanma-stage",
-      fact: "The Yanmar name is connected to the Oniyanma, a powerful Japanese dragonfly and harvest symbol.",
-    },
-    {
-      id: "osaka",
-      question: "In which Japanese city was Yanmar founded?",
-      answers: [
-        { label: "Osaka", visual: "osaka" },
-        { label: "Paris", visual: "paris" },
-        { label: "New York", visual: "new-york" },
-      ],
-      correct: 0,
-      visual: "city-stage",
-      fact: "Yanmar was founded in Osaka, Japan in 1912.",
-    },
-    {
-      id: "football",
-      question: "Which clubs connect Yanmar with football?",
-      answers: [
-        { label: "Almere City FC and Cerezo Osaka", visual: "club-pair" },
-        { label: "Real Madrid and Chelsea", visual: "generic-clubs" },
-        { label: "Ajax and Barcelona", visual: "generic-clubs" },
-      ],
-      correct: 0,
-      visual: "football-stage",
-      fact: "This quiz links the Yanmar brand story with its football presence in the Netherlands and Japan.",
+      id: "white",
+      primary: "#ffffff",
+      trim: "#f47b20",
+      text: "#111111",
+      labels: { en: "White keeper", nl: "Witte keeper", ja: "ホワイト" },
     },
   ],
-  nl: [
+  japan: [
     {
-      id: "brand-mark",
-      question: "Welk logo mark hoort bij Yanmar?",
-      answers: [
-        { label: "Flying-Y", visual: "flying-y" },
-        { label: "Target-symbool", visual: "target" },
-        { label: "Mitsubishi-diamanten", visual: "diamonds" },
-      ],
-      correct: 0,
-      visual: "brand-focus",
-      fact: "Het Yanmar brand mark is de Flying-Y, geinspireerd door de Y van Yanmar en de vleugels van de Oniyanma.",
+      id: "samurai-blue",
+      primary: "#174a9c",
+      trim: "#e30613",
+      text: "#ffffff",
+      labels: { en: "Samurai blue", nl: "Samurai blue", ja: "サムライブルー" },
     },
     {
-      id: "products",
-      question: "Wat produceert Yanmar?",
-      answers: [
-        { label: "Motoren, generatoren, pompen en machines", visual: "products" },
-        { label: "Alleen smartphones", visual: "phone" },
-        { label: "Alleen kleding", visual: "shirt" },
-      ],
-      correct: 0,
-      visual: "products-stage",
-      fact: "Yanmar werkt aan power, marine, landbouw, bouwmachines en energie-oplossingen.",
+      id: "yanmar-red",
+      primary: "#e30613",
+      trim: "#ffffff",
+      text: "#ffffff",
+      labels: { en: "Yanmar red", nl: "Yanmar rood", ja: "ヤンマーレッド" },
     },
     {
-      id: "premium-red",
-      question: "Welke kleur hoort sterk bij Yanmar branding?",
-      answers: [
-        { label: "Premium Red", visual: "premium-red" },
-        { label: "Neonpaars", visual: "purple" },
-        { label: "Pastelroze", visual: "pink" },
-      ],
-      correct: 0,
-      visual: "red-stage",
-      fact: "Yanmar rood staat voor pioniersgeest, passie, zonlicht en natuurlijke rijkdom.",
-    },
-    {
-      id: "oniyanma",
-      question: "Wat is een Oniyanma?",
-      answers: [
-        { label: "Een libel", visual: "oniyanma" },
-        { label: "Een berg", visual: "mountain" },
-        { label: "Een voetbalclub", visual: "football" },
-      ],
-      correct: 0,
-      visual: "oniyanma-stage",
-      fact: "De naam Yanmar is verbonden met de Oniyanma, een krachtige Japanse libel en symbool voor oogst.",
-    },
-    {
-      id: "osaka",
-      question: "In welke Japanse stad is Yanmar opgericht?",
-      answers: [
-        { label: "Osaka", visual: "osaka" },
-        { label: "Parijs", visual: "paris" },
-        { label: "New York", visual: "new-york" },
-      ],
-      correct: 0,
-      visual: "city-stage",
-      fact: "Yanmar is in 1912 opgericht in Osaka, Japan.",
-    },
-    {
-      id: "football",
-      question: "Welke clubs verbinden Yanmar met voetbal?",
-      answers: [
-        { label: "Almere City FC en Cerezo Osaka", visual: "club-pair" },
-        { label: "Real Madrid en Chelsea", visual: "generic-clubs" },
-        { label: "Ajax en Barcelona", visual: "generic-clubs" },
-      ],
-      correct: 0,
-      visual: "football-stage",
-      fact: "Deze quiz verbindt het Yanmar brand verhaal met voetbal in Nederland en Japan.",
-    },
-  ],
-  ja: [
-    {
-      id: "brand-mark",
-      question: "Yanmarに関連するロゴマークはどれですか？",
-      answers: [
-        { label: "Flying-Y", visual: "flying-y" },
-        { label: "ターゲット", visual: "target" },
-        { label: "三菱ダイヤ", visual: "diamonds" },
-      ],
-      correct: 0,
-      visual: "brand-focus",
-      fact: "YanmarのブランドマークはFlying-Yです。YanmarのYとオニヤンマの羽をモチーフにしています。",
-    },
-    {
-      id: "products",
-      question: "Yanmarは何をつくっていますか？",
-      answers: [
-        { label: "エンジン・発電機・ポンプ・機械", visual: "products" },
-        { label: "スマートフォンだけ", visual: "phone" },
-        { label: "衣服だけ", visual: "shirt" },
-      ],
-      correct: 0,
-      visual: "products-stage",
-      fact: "Yanmarはパワー、マリン、農業、建設機械、エネルギー分野で事業を展開しています。",
-    },
-    {
-      id: "premium-red",
-      question: "Yanmarのブランドに強く結びつく色は？",
-      answers: [
-        { label: "プレミアムレッド", visual: "premium-red" },
-        { label: "ネオンパープル", visual: "purple" },
-        { label: "パステルピンク", visual: "pink" },
-      ],
-      correct: 0,
-      visual: "red-stage",
-      fact: "Yanmarの赤は、開拓精神、情熱、太陽、自然の豊かさを表しています。",
-    },
-    {
-      id: "oniyanma",
-      question: "オニヤンマとは何ですか？",
-      answers: [
-        { label: "トンボ", visual: "oniyanma" },
-        { label: "山", visual: "mountain" },
-        { label: "サッカークラブ", visual: "football" },
-      ],
-      correct: 0,
-      visual: "oniyanma-stage",
-      fact: "Yanmarの名前は、日本で豊かな収穫の象徴とされるオニヤンマに由来しています。",
-    },
-    {
-      id: "osaka",
-      question: "Yanmarは日本のどの都市で創業しましたか？",
-      answers: [
-        { label: "大阪", visual: "osaka" },
-        { label: "パリ", visual: "paris" },
-        { label: "ニューヨーク", visual: "new-york" },
-      ],
-      correct: 0,
-      visual: "city-stage",
-      fact: "Yanmarは1912年に日本の大阪で創業しました。",
-    },
-    {
-      id: "football",
-      question: "Yanmarとサッカーをつなぐクラブは？",
-      answers: [
-        { label: "アルメレ・シティFCとセレッソ大阪", visual: "club-pair" },
-        { label: "レアル・マドリードとチェルシー", visual: "generic-clubs" },
-        { label: "アヤックスとバルセロナ", visual: "generic-clubs" },
-      ],
-      correct: 0,
-      visual: "football-stage",
-      fact: "このクイズは、Yanmarのブランドストーリーとオランダ・日本でのサッカーのつながりを表しています。",
+      id: "black-red",
+      primary: "#101114",
+      trim: "#e30613",
+      text: "#ffffff",
+      labels: { en: "Black red", nl: "Zwart rood", ja: "ブラックレッド" },
     },
   ],
 };
@@ -251,8 +81,8 @@ const copy = {
     intro: "A premium penalty quiz built around Yanmar's brand story.",
     chooseLanguage: "Language",
     chooseTeam: "Team",
+    chooseKit: "Keeper kit",
     start: "Start match",
-    goals: "Goals",
     round: "Round",
     progress: "Progress",
     answer: "Choose your answer",
@@ -281,8 +111,8 @@ const copy = {
     intro: "Een premium penaltyquiz rond het merkverhaal van Yanmar.",
     chooseLanguage: "Taal",
     chooseTeam: "Team",
+    chooseKit: "Keepertenue",
     start: "Start wedstrijd",
-    goals: "Goals",
     round: "Ronde",
     progress: "Voortgang",
     answer: "Kies je antwoord",
@@ -311,8 +141,8 @@ const copy = {
     intro: "Yanmarのブランドストーリーを楽しむプレミアムPKクイズ。",
     chooseLanguage: "言語",
     chooseTeam: "チーム",
+    chooseKit: "GKユニフォーム",
     start: "試合開始",
-    goals: "ゴール",
     round: "ラウンド",
     progress: "進行状況",
     answer: "答えを選択",
@@ -337,8 +167,145 @@ const copy = {
   },
 };
 
+const questions = [
+  {
+    id: "brand-mark",
+    correct: 0,
+    visual: "brand-focus",
+    en: {
+      question: "Which logo mark is associated with Yanmar?",
+      answers: ["Flying-Y", "Target symbol", "Mitsubishi diamonds"],
+      fact: "Yanmar's brand mark is the Flying-Y, inspired by the Y in Yanmar and the wings of the Oniyanma.",
+    },
+    nl: {
+      question: "Welk logo mark hoort bij Yanmar?",
+      answers: ["Flying-Y", "Target-symbool", "Mitsubishi-diamanten"],
+      fact: "Het Yanmar brand mark is de Flying-Y, geinspireerd door de Y van Yanmar en de vleugels van de Oniyanma.",
+    },
+    ja: {
+      question: "Yanmarに関連するロゴマークはどれですか？",
+      answers: ["Flying-Y", "ターゲット", "三菱ダイヤ"],
+      fact: "YanmarのブランドマークはFlying-Yです。YanmarのYとオニヤンマの羽をモチーフにしています。",
+    },
+    answerVisuals: ["flying-y", "target", "diamonds"],
+  },
+  {
+    id: "products",
+    correct: 0,
+    visual: "products-stage",
+    en: {
+      question: "What does Yanmar produce?",
+      answers: ["Engines, generators, pumps and machinery", "Only smartphones", "Only clothing"],
+      fact: "Yanmar works across power, marine, agriculture, construction and energy solutions.",
+    },
+    nl: {
+      question: "Wat produceert Yanmar?",
+      answers: ["Motoren, generatoren, pompen en machines", "Alleen smartphones", "Alleen kleding"],
+      fact: "Yanmar werkt aan power, marine, landbouw, bouwmachines en energie-oplossingen.",
+    },
+    ja: {
+      question: "Yanmarは何をつくっていますか？",
+      answers: ["エンジン・発電機・ポンプ・機械", "スマートフォンだけ", "衣服だけ"],
+      fact: "Yanmarはパワー、マリン、農業、建設機械、エネルギー分野で事業を展開しています。",
+    },
+    answerVisuals: ["products", "phone", "shirt"],
+  },
+  {
+    id: "premium-red",
+    correct: 0,
+    visual: "red-stage",
+    en: {
+      question: "Which color is strongly linked to Yanmar branding?",
+      answers: ["Premium Red", "Neon Purple", "Pastel Pink"],
+      fact: "Yanmar red represents pioneering spirit, passion, sunlight and natural wealth.",
+    },
+    nl: {
+      question: "Welke kleur hoort sterk bij Yanmar branding?",
+      answers: ["Premium Red", "Neonpaars", "Pastelroze"],
+      fact: "Yanmar rood staat voor pioniersgeest, passie, zonlicht en natuurlijke rijkdom.",
+    },
+    ja: {
+      question: "Yanmarのブランドに強く結びつく色は？",
+      answers: ["プレミアムレッド", "ネオンパープル", "パステルピンク"],
+      fact: "Yanmarの赤は、開拓精神、情熱、太陽、自然の豊かさを表しています。",
+    },
+    answerVisuals: ["premium-red", "purple", "pink"],
+  },
+  {
+    id: "oniyanma",
+    correct: 0,
+    visual: "oniyanma-stage",
+    en: {
+      question: "What is an Oniyanma?",
+      answers: ["A dragonfly", "A mountain", "A football club"],
+      fact: "The Yanmar name is connected to the Oniyanma, a powerful Japanese dragonfly and harvest symbol.",
+    },
+    nl: {
+      question: "Wat is een Oniyanma?",
+      answers: ["Een libel", "Een berg", "Een voetbalclub"],
+      fact: "De naam Yanmar is verbonden met de Oniyanma, een krachtige Japanse libel en symbool voor oogst.",
+    },
+    ja: {
+      question: "オニヤンマとは何ですか？",
+      answers: ["トンボ", "山", "サッカークラブ"],
+      fact: "Yanmarの名前は、日本で豊かな収穫の象徴とされるオニヤンマに由来しています。",
+    },
+    answerVisuals: ["oniyanma", "mountain", "football"],
+  },
+  {
+    id: "osaka",
+    correct: 0,
+    visual: "city-stage",
+    en: {
+      question: "In which Japanese city was Yanmar founded?",
+      answers: ["Osaka", "Paris", "New York"],
+      fact: "Yanmar was founded in Osaka, Japan in 1912.",
+    },
+    nl: {
+      question: "In welke Japanse stad is Yanmar opgericht?",
+      answers: ["Osaka", "Parijs", "New York"],
+      fact: "Yanmar is in 1912 opgericht in Osaka, Japan.",
+    },
+    ja: {
+      question: "Yanmarは日本のどの都市で創業しましたか？",
+      answers: ["大阪", "パリ", "ニューヨーク"],
+      fact: "Yanmarは1912年に日本の大阪で創業しました。",
+    },
+    answerVisuals: ["osaka", "paris", "new-york"],
+  },
+  {
+    id: "football",
+    correct: 0,
+    visual: "football-stage",
+    en: {
+      question: "Which clubs connect Yanmar with football?",
+      answers: ["Almere City FC and Cerezo Osaka", "Real Madrid and Chelsea", "Ajax and Barcelona"],
+      fact: "This quiz links the Yanmar brand story with its football presence in the Netherlands and Japan.",
+    },
+    nl: {
+      question: "Welke clubs verbinden Yanmar met voetbal?",
+      answers: ["Almere City FC en Cerezo Osaka", "Real Madrid en Chelsea", "Ajax en Barcelona"],
+      fact: "Deze quiz verbindt het Yanmar brand verhaal met voetbal in Nederland en Japan.",
+    },
+    ja: {
+      question: "Yanmarとサッカーをつなぐクラブは？",
+      answers: ["アルメレ・シティFCとセレッソ大阪", "レアル・マドリードとチェルシー", "アヤックスとバルセロナ"],
+      fact: "このクイズは、Yanmarのブランドストーリーとオランダ・日本でのサッカーのつながりを表しています。",
+    },
+    answerVisuals: ["club-pair", "generic-clubs", "generic-clubs"],
+  },
+];
+
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
+}
+
+function getDefaultKit(team) {
+  return kits[team][0].id;
+}
+
+function getActiveKit(team, kitId) {
+  return kits[team].find((kit) => kit.id === kitId) || kits[team][0];
 }
 
 function Visual({ type, size = "regular" }) {
@@ -384,10 +351,7 @@ function Visual({ type, size = "regular" }) {
 function ProductIcons({ stage = false, size = "regular" }) {
   return (
     <div className={cx("product-icons", stage && "stage-visual", !stage && `visual-${size}`)} aria-hidden="true">
-      <span>ENG</span>
-      <span>GEN</span>
-      <span>PUMP</span>
-      <span>MACH</span>
+      <span>ENG</span><span>GEN</span><span>PUMP</span><span>MACH</span>
     </div>
   );
 }
@@ -422,35 +386,30 @@ function FootballVisual({ stage = false }) {
 function CityVisual({ label, stage = false }) {
   return (
     <div className={cx(stage ? "stage-visual" : "visual", "city-visual")} aria-hidden="true">
-      <span>{label}</span>
-      <i />
-      <i />
-      <i />
+      <span>{label}</span><i /><i /><i />
     </div>
   );
 }
 
 function ClubPair() {
-  return (
-    <div className="visual club-pair" aria-hidden="true">
-      <span>ALM</span>
-      <span>CER</span>
-    </div>
-  );
+  return <div className="visual club-pair" aria-hidden="true"><span>ALM</span><span>CER</span></div>;
 }
 
 function GenericClubs() {
+  return <div className="visual club-pair muted-clubs" aria-hidden="true"><span>FC</span><span>FC</span></div>;
+}
+
+function KitPreview({ kit }) {
   return (
-    <div className="visual club-pair muted-clubs" aria-hidden="true">
-      <span>FC</span>
-      <span>FC</span>
-    </div>
+    <span className="kit-preview" style={{ "--kit-primary": kit.primary, "--kit-trim": kit.trim, "--kit-text": kit.text }}>
+      <i />
+    </span>
   );
 }
 
-function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
+function SetupScreen({ language, setLanguage, team, onTeamChange, kit, setKit, onStart }) {
   const t = copy[language];
-  const canStart = Boolean(language && team);
+  const canStart = Boolean(language && team && kit);
 
   return (
     <main className="app app-setup">
@@ -472,9 +431,11 @@ function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
           <div className="setup-group">
             <div className="group-label">{t.chooseLanguage}</div>
             <div className="segmented-control" aria-label={t.chooseLanguage}>
-              <button className={cx(language === "nl" && "active")} type="button" onClick={() => setLanguage("nl")}>NL</button>
-              <button className={cx(language === "en" && "active")} type="button" onClick={() => setLanguage("en")}>EN</button>
-              <button className={cx(language === "ja" && "active")} type="button" onClick={() => setLanguage("ja")}>JP</button>
+              {languages.map((option) => (
+                <button className={cx(language === option.id && "active")} key={option.id} type="button" onClick={() => setLanguage(option.id)}>
+                  {option.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -482,13 +443,7 @@ function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
             <div className="group-label">{t.chooseTeam}</div>
             <div className="team-grid">
               {Object.entries(teams).map(([id, value]) => (
-                <button
-                  className={cx("team-card", team === id && "active")}
-                  key={id}
-                  style={{ "--team-color": value.color }}
-                  type="button"
-                  onClick={() => setTeam(id)}
-                >
+                <button className={cx("team-card", team === id && "active")} key={id} style={{ "--team-color": value.color }} type="button" onClick={() => onTeamChange(id)}>
                   <span>{value.code}</span>
                   <strong>{value.labels[language]}</strong>
                 </button>
@@ -496,29 +451,37 @@ function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
             </div>
           </div>
 
-          <button className="primary-cta" disabled={!canStart} type="button" onClick={onStart}>
-            {t.start}
-          </button>
+          <div className="setup-group">
+            <div className="group-label">{t.chooseKit}</div>
+            <div className="kit-grid">
+              {kits[team].map((option) => (
+                <button className={cx("kit-card", kit === option.id && "active")} key={option.id} type="button" onClick={() => setKit(option.id)}>
+                  <KitPreview kit={option} />
+                  <strong>{option.labels[language]}</strong>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button className="primary-cta" disabled={!canStart} type="button" onClick={onStart}>{t.start}</button>
         </div>
       </section>
     </main>
   );
 }
 
-function PenaltyArena({ outcome, animationId, teamColor, t }) {
+function PenaltyArena({ outcome, animationId, kit, t }) {
   const active = outcome !== "idle";
   const banner = outcome === "goal" ? "GOAL" : outcome === "save" ? "SAVE" : outcome === "miss" ? "MISS" : "";
 
   return (
-    <aside className="arena-card" style={{ "--team-color": teamColor }}>
+    <aside className="arena-card" style={{ "--team-color": kit.primary, "--kit-trim": kit.trim, "--kit-text": kit.text }}>
       <div className="arena-topline">
         <span>Penalty Arena</span>
         <span>{active ? banner : t.answer}</span>
       </div>
       <div className={cx("result-flash", active && "show", outcome)}>{banner}</div>
-      <div className={cx("confetti", outcome === "goal" && "show")} aria-hidden="true">
-        <span /><span /><span /><span /><span /><span /><span />
-      </div>
+      <div className={cx("confetti", outcome === "goal" && "show")} aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /></div>
       <div className="arena-field">
         <div className={cx("goal-net", outcome === "goal" && "shake")} />
         <div className="goal-line" />
@@ -539,7 +502,6 @@ function FinalScreen({ score, total, t, onPlayAgain, onChangeSetup }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-
   const label = score === total ? t.perfect : score >= Math.ceil(total * 0.66) ? t.solid : t.nice;
 
   function submitEmail(event) {
@@ -594,6 +556,7 @@ function FinalScreen({ score, total, t, onPlayAgain, onChangeSetup }) {
 export default function App() {
   const [language, setLanguage] = useState("nl");
   const [team, setTeam] = useState("netherlands");
+  const [kit, setKit] = useState(getDefaultKit("netherlands"));
   const [started, setStarted] = useState(false);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
@@ -602,15 +565,16 @@ export default function App() {
   const [animationId, setAnimationId] = useState(0);
 
   const t = copy[language];
-  const questions = questionBank[language];
-  const question = questions[current];
   const activeTeam = teams[team];
+  const activeKit = getActiveKit(team, kit);
+  const questionData = questions[current];
+  const localizedQuestion = questionData?.[language];
   const isFinal = current >= questions.length;
   const answered = selected !== null;
   const progress = useMemo(() => {
     const base = isFinal ? questions.length : current + (answered ? 1 : 0);
     return Math.round((base / questions.length) * 100);
-  }, [answered, current, isFinal, questions.length]);
+  }, [answered, current, isFinal]);
 
   function resetRound() {
     setCurrent(0);
@@ -620,6 +584,11 @@ export default function App() {
     setAnimationId((value) => value + 1);
   }
 
+  function chooseTeam(nextTeam) {
+    setTeam(nextTeam);
+    setKit(getDefaultKit(nextTeam));
+  }
+
   function startGame() {
     resetRound();
     setStarted(true);
@@ -627,10 +596,8 @@ export default function App() {
 
   function handleAnswer(index) {
     if (answered || isFinal) return;
-
-    const isCorrect = index === question.correct;
+    const isCorrect = index === questionData.correct;
     const nextOutcome = isCorrect ? "goal" : current % 2 === 0 ? "save" : "miss";
-
     setSelected(index);
     setOutcome(nextOutcome);
     setAnimationId((value) => value + 1);
@@ -644,7 +611,6 @@ export default function App() {
       setOutcome("idle");
       return;
     }
-
     setCurrent((value) => value + 1);
     setSelected(null);
     setOutcome("idle");
@@ -653,13 +619,13 @@ export default function App() {
 
   function answerClass(index) {
     if (!answered) return "";
-    if (index === question.correct) return "is-correct";
+    if (index === questionData.correct) return "is-correct";
     if (index === selected) return "is-wrong";
     return "is-muted";
   }
 
   if (!started) {
-    return <SetupScreen language={language} setLanguage={setLanguage} team={team} setTeam={setTeam} onStart={startGame} />;
+    return <SetupScreen language={language} setLanguage={setLanguage} team={team} onTeamChange={chooseTeam} kit={kit} setKit={setKit} onStart={startGame} />;
   }
 
   if (isFinal) {
@@ -686,6 +652,7 @@ export default function App() {
           <img className="game-logo" src={assets.logo} alt="YANMAR" />
           <div className="match-info">
             <span style={{ "--team-color": activeTeam.color }}>{activeTeam.labels[language]}</span>
+            <span style={{ "--team-color": activeKit.primary, color: activeKit.text }}>{activeKit.labels[language]}</span>
             <strong>{t.round} {current + 1}/{questions.length}</strong>
           </div>
         </header>
@@ -696,27 +663,18 @@ export default function App() {
 
         <div className="game-grid">
           <section className="question-card">
-            <div className="question-stage">
-              <Visual type={question.visual} />
-            </div>
-
+            <div className="question-stage"><Visual type={questionData.visual} /></div>
             <div className="question-copy">
               <p className="eyebrow">{t.round} {current + 1}</p>
-              <h1>{question.question}</h1>
+              <h1>{localizedQuestion.question}</h1>
             </div>
 
             <div className="answer-grid">
-              {question.answers.map((answer, index) => (
-                <button
-                  className={cx("answer-button", answerClass(index))}
-                  disabled={answered}
-                  key={answer.label}
-                  type="button"
-                  onClick={() => handleAnswer(index)}
-                >
-                  <Visual type={answer.visual} size="small" />
+              {localizedQuestion.answers.map((answer, index) => (
+                <button className={cx("answer-button", answerClass(index))} disabled={answered} key={answer} type="button" onClick={() => handleAnswer(index)}>
+                  <Visual type={questionData.answerVisuals[index]} size="small" />
                   <span className="answer-letter">{String.fromCharCode(65 + index)}</span>
-                  <strong>{answer.label}</strong>
+                  <strong>{answer}</strong>
                 </button>
               ))}
             </div>
@@ -724,17 +682,15 @@ export default function App() {
             <div className={cx("feedback", answered && "show", outcome)}>
               <div>
                 <strong>{statusText}</strong>
-                {answered ? <p>{question.fact}</p> : null}
+                {answered ? <p>{localizedQuestion.fact}</p> : null}
               </div>
               {answered ? (
-                <button className="next-action" type="button" onClick={nextQuestion}>
-                  {current + 1 >= questions.length ? t.finish : t.next}
-                </button>
+                <button className="next-action" type="button" onClick={nextQuestion}>{current + 1 >= questions.length ? t.finish : t.next}</button>
               ) : null}
             </div>
           </section>
 
-          <PenaltyArena outcome={outcome} animationId={animationId} teamColor={activeTeam.color} t={t} />
+          <PenaltyArena outcome={outcome} animationId={animationId} kit={activeKit} t={t} />
         </div>
       </section>
     </main>
