@@ -114,14 +114,17 @@ const visualImages = {
   'flying-y': {
     src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Yanmar_logo_flying-Y.svg',
   },
+  mitsubishi: {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mitsubishi_logo.svg',
+  },
   dragonfly: {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Damselfly_07844.jpg?width=720',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Green_eyes_dragonfly_HNP_dorsal_%2816257832922%29.jpg?width=900',
   },
   'red-panda': {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Red_Panda_by_Robert_Hoevels.jpg?width=720',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Red_Panda_just_chillin.jpg?width=900',
   },
   koi: {
-    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Koi_carp%3B_March_2009.jpg?width=720',
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Koi_head_closeup.jpg?width=900',
   },
 };
 
@@ -130,7 +133,7 @@ const questions = [
     id: 'yanmar-logo',
     correct: 0,
     visualOnly: true,
-    visuals: ['flying-y', 'target', 'diamonds'],
+    visuals: ['flying-y', 'target', 'mitsubishi'],
     en: { question: 'Which logo truly fits Yanmar?', answers: ['Flying-Y', 'Target symbol', 'Mitsubishi diamonds'] },
     nl: { question: 'Welk logo past echt bij Yanmar?', answers: ['Flying-Y', 'Target-symbool', 'Mitsubishi-diamanten'] },
     ja: { question: 'Yanmarに本当に合うロゴはどれですか？', answers: ['Flying-Y', 'ターゲットシンボル', '三菱のダイヤ'] },
@@ -138,7 +141,7 @@ const questions = [
   {
     id: 'yanmar-products',
     correct: 0,
-    visuals: ['machine', 'luxury', 'console'],
+    plain: true,
     en: { question: 'What does Yanmar mainly make?', answers: ['Powerful machines, such as tractors and engines', 'Luxury clothing and watches', 'Video game consoles'] },
     nl: { question: 'Wat maakt Yanmar vooral?', answers: ['Krachtige machines, zoals tractoren en motoren', 'Luxe kleding en horloges', 'Spelcomputers en consoles'] },
     ja: { question: 'Yanmarは主に何を作っていますか？', answers: ['トラクターやエンジンなどの力強い機械', '高級服や時計', 'ゲーム機'] },
@@ -146,6 +149,7 @@ const questions = [
   {
     id: 'yanmar-color',
     correct: 1,
+    swatches: true,
     visuals: ['forest-green', 'premium-red', 'bright-yellow'],
     en: { question: 'Which color do you often see on Yanmar machines?', answers: ['Forest green', 'Premium Red', 'Bright yellow'] },
     nl: { question: 'Welke kleur zie je vaak terug bij de machines van Yanmar?', answers: ['Bosgroen', 'Premium Rood', 'Felgeel'] },
@@ -154,6 +158,7 @@ const questions = [
   {
     id: 'oniyanma-animal',
     correct: 0,
+    imageChoices: true,
     visuals: ['dragonfly', 'red-panda', 'koi'],
     en: { question: "The name 'Yanmar' comes from the 'Oniyanma'. What Japanese animal is that?", answers: ['A large, fast dragonfly', 'A fluffy red panda', 'A colorful koi carp'] },
     nl: { question: "De naam 'Yanmar' komt van de 'Oniyanma'. Wat voor Japans dier is dat?", answers: ['Een grote, snelle libel', 'Een pluizige rode panda', 'Een kleurrijke Koi karper'] },
@@ -162,7 +167,7 @@ const questions = [
   {
     id: 'football-owner',
     correct: 1,
-    visuals: ['ajax-vissel', 'almere-cerezo', 'feyenoord-urawa'],
+    plain: true,
     en: { question: 'Which two football clubs is Yanmar owner of?', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
     nl: { question: 'Van welke twee voetbalclubs is Yanmar eigenaar?', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
     ja: { question: 'Yanmarがオーナーである2つのサッカークラブはどれですか？', answers: ['Ajax & Vissel Kobe', 'Almere City FC & Cerezo Osaka', 'Feyenoord & Urawa Reds'] },
@@ -170,7 +175,7 @@ const questions = [
   {
     id: 'yanmar-city',
     correct: 1,
-    visuals: ['tokyo', 'osaka', 'kyoto'],
+    plain: true,
     en: { question: 'In which Japanese city is Yanmar based?', answers: ['Tokyo', 'Osaka', 'Kyoto'] },
     nl: { question: 'In welke Japanse stad is Yanmar gevestigd?', answers: ['Tokyo', 'Osaka', 'Kyoto'] },
     ja: { question: 'Yanmarは日本のどの都市に拠点がありますか？', answers: ['東京', '大阪', '京都'] },
@@ -271,13 +276,15 @@ function PlayerSprite({ className }) {
       <span className='sprite-body' />
       <span className='sprite-arm sprite-arm-left' />
       <span className='sprite-arm sprite-arm-right' />
+      <span className='sprite-hand sprite-hand-left' />
+      <span className='sprite-hand sprite-hand-right' />
       <span className='sprite-leg sprite-leg-left' />
       <span className='sprite-leg sprite-leg-right' />
     </div>
   );
 }
 
-function PenaltyArena({ outcome, animationId, playerTeam, keeperTeam, keeperKit }) {
+function PenaltyArena({ outcome, animationId, playerTeam, keeperKit }) {
   const active = outcome !== 'idle';
   const banner = outcome === 'goal' ? 'GOAL' : outcome === 'save' ? 'SAVE' : '';
 
@@ -293,10 +300,6 @@ function PenaltyArena({ outcome, animationId, playerTeam, keeperTeam, keeperKit 
         '--keeper-text': keeperKit.text,
       }}
     >
-      <div className='arena-topline'>
-        <span>Penalty Arena</span>
-        <span>{keeperTeam.code} GK</span>
-      </div>
       <div className={cx('result-flash', active && 'show', outcome)}>{banner}</div>
       <div className={cx('confetti', outcome === 'goal' && 'show')} aria-hidden='true'><span /><span /><span /><span /><span /><span /><span /></div>
       <div className='arena-field'>
@@ -440,7 +443,6 @@ export default function App() {
           <div className='game-brand'>Yanmar Quiz Arena</div>
           <div className='match-info'>
             <span className='team-chip' style={{ '--chip-color': match.playerTeam.color, '--chip-text': match.playerTeam.text }}>{playerName.trim() || match.playerTeam.labels[language]}</span>
-            <span className='team-chip keeper-chip' style={{ '--chip-color': match.keeperKit.primary, '--chip-text': match.keeperKit.text }}>{match.keeperTeam.code} GK</span>
             <strong>{t.round} {current + 1}/{questions.length}</strong>
           </div>
         </header>
@@ -450,20 +452,37 @@ export default function App() {
         </div>
 
         <div className='game-grid'>
-          <section className={cx('question-card', questionData.visualOnly && 'visual-only-question')}>
+          <section className={cx(
+            'question-card',
+            questionData.visualOnly && 'visual-only-question',
+            questionData.imageChoices && 'image-choice-question',
+            questionData.swatches && 'swatch-question',
+            questionData.plain && 'plain-question'
+          )}>
             <div className='question-copy'>
               <p className='eyebrow'>{t.round} {current + 1}</p>
               <h1>{localizedQuestion.question}</h1>
             </div>
 
             <div className='answer-grid'>
-              {localizedQuestion.answers.map((answer, index) => (
-                <button className={cx('answer-button', answerClass(index))} disabled={answered} key={`${questionData.id}-${answer}`} type='button' onClick={() => handleAnswer(index)} aria-label={answer}>
-                  <AnswerVisual type={questionData.visuals[index]} />
-                  <span className='answer-letter'>{String.fromCharCode(65 + index)}</span>
-                  <strong className='answer-title'>{answer}</strong>
-                </button>
-              ))}
+              {localizedQuestion.answers.map((answer, index) => {
+                const visualType = questionData.visuals?.[index];
+
+                return (
+                  <button
+                    className={cx('answer-button', !visualType && 'no-visual-answer', answerClass(index))}
+                    disabled={answered}
+                    key={`${questionData.id}-${answer}`}
+                    type='button'
+                    onClick={() => handleAnswer(index)}
+                    aria-label={answer}
+                  >
+                    {visualType ? <AnswerVisual type={visualType} /> : null}
+                    <span className='answer-letter'>{String.fromCharCode(65 + index)}</span>
+                    <strong className='answer-title'>{answer}</strong>
+                  </button>
+                );
+              })}
             </div>
 
             <div className={cx('feedback', answered && 'show', outcome)}>
