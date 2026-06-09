@@ -1,8 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import './QuizPolish.css';
 
 const FORM_URL = 'https://forms.office.com/r/mbXENTrknQ';
+const TIMER_SECONDS = 15;
+const BASE_POINTS = 100;
+const SPEED_POINTS = 150;
+const LEADERBOARD_KEY = 'yanmar-quiz-arena-leaderboard';
 
 const languages = [
   { id: 'en', label: 'EN' },
@@ -55,6 +59,7 @@ const copy = {
     round: 'Round',
     progress: 'Progress',
     answer: 'Choose your answer',
+    timeout: 'TIME OUT!',
     goal: 'GOAL!',
     save: 'SAVED!',
     next: 'Next round',
@@ -63,9 +68,13 @@ const copy = {
     playAgain: 'Play again',
     changeSetup: 'Change setup',
     formsTitle: 'Join the prize draw',
-    formsText: 'Open Microsoft Forms to submit your entry.',
+    formsText: 'Open Microsoft Forms to submit your entry. Winners are selected at random.',
     formsButton: 'Open prize form',
-    finalLead: (score, total, name) => `${name ? `${name}, y` : 'Y'}ou scored ${score} of ${total}.`,
+    points: 'points',
+    correct: 'correct',
+    leaderboard: 'Leaderboard',
+    noScores: 'No scores yet.',
+    finalLead: (score, total, points, name) => `${name ? `${name}, y` : 'Y'}ou scored ${points} points (${score}/${total}).`,
     perfect: 'Perfect score.',
     solid: 'Strong score.',
     nice: 'Nice effort.',
@@ -74,6 +83,7 @@ const copy = {
     round: 'Ronde',
     progress: 'Voortgang',
     answer: 'Kies je antwoord',
+    timeout: 'TIJD OM!',
     goal: 'GOAL!',
     save: 'GEPAKT!',
     next: 'Volgende ronde',
@@ -82,9 +92,13 @@ const copy = {
     playAgain: 'Speel opnieuw',
     changeSetup: 'Setup wijzigen',
     formsTitle: 'Doe mee aan de winactie',
-    formsText: 'Open Microsoft Forms om je deelname in te sturen.',
+    formsText: 'Open Microsoft Forms om je deelname in te sturen. De winnaar wordt willekeurig gekozen.',
     formsButton: 'Open winactie formulier',
-    finalLead: (score, total, name) => `${name ? `${name}, j` : 'J'}e scoorde ${score} van ${total}.`,
+    points: 'punten',
+    correct: 'goed',
+    leaderboard: 'Leaderboard',
+    noScores: 'Nog geen scores.',
+    finalLead: (score, total, points, name) => `${name ? `${name}, j` : 'J'}e scoorde ${points} punten (${score}/${total}).`,
     perfect: 'Perfecte score.',
     solid: 'Sterke score.',
     nice: 'Netjes gedaan.',
@@ -93,6 +107,7 @@ const copy = {
     round: 'ラウンド',
     progress: '進行状況',
     answer: '答えを選択',
+    timeout: '時間切れ！',
     goal: 'ゴール！',
     save: 'セーブ！',
     next: '次のラウンド',
@@ -101,9 +116,13 @@ const copy = {
     playAgain: 'もう一度プレイ',
     changeSetup: '設定変更',
     formsTitle: '抽選に参加',
-    formsText: 'Microsoft Formsを開いて参加してください。',
+    formsText: 'Microsoft Formsを開いて参加してください。 Gewinner はランダムに選ばれます。',
     formsButton: 'フォームを開く',
-    finalLead: (score, total, name) => `${name ? `${name}: ` : ''}${total}問中${score}問正解。`,
+    points: 'ポイント',
+    correct: '正解',
+    leaderboard: 'リーダーボード',
+    noScores: 'まだスコアがありません。',
+    finalLead: (score, total, points, name) => `${name ? `${name}: ` : ''}${points}ポイント（${total}問中${score}問正解）。`,
     perfect: '完璧なスコア。',
     solid: '素晴らしいスコアです。',
     nice: 'よくできました。',
@@ -113,6 +132,9 @@ const copy = {
 const visualImages = {
   'flying-y': {
     src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Yanmar_logo_flying-Y.svg',
+  },
+  target: {
+    src: 'https://rabbitlogo.com/wp-content/uploads/2026/01/target.jpg',
   },
   mitsubishi: {
     src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mitsubishi_logo.svg',
@@ -184,6 +206,33 @@ const questions = [
 
 function cx(...classes) {
   return classes.filter(Boolean).join(' ');
+}
+
+function readLeaderboard() {
+  if (typeof window === 'undefined') return [];
+
+  try {
+    const value = window.localStorage.getItem(LEADERBOARD_KEY);
+    const parsed = value ? JSON.parse(value) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLeaderboard(entries) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(entries));
+  } catch {
+    // Local storage is optional; the game still works without it.
+  }
+}
+
+function getAnswerPoints(timeLeft) {
+  const speedBonus = Math.round((Math.max(0, timeLeft) / TIMER_SECONDS) * SPEED_POINTS);
+  return BASE_POINTS + speedBonus;
 }
 
 function opponentOf(team) {
@@ -314,7 +363,7 @@ function PenaltyArena({ outcome, animationId, playerTeam, keeperKit }) {
   );
 }
 
-function FinalScreen({ score, total, playerName, t, onPlayAgain, onChangeSetup }) {
+function FinalScreen({ score, total, points, leaderboard, playerName, t, onPlayAgain, onChangeSetup }) {
   const label = score === total ? t.perfect : score >= Math.ceil(total * 0.6) ? t.solid : t.nice;
 
   return (
@@ -322,13 +371,33 @@ function FinalScreen({ score, total, playerName, t, onPlayAgain, onChangeSetup }
       <section className='final-card'>
         <div className='wordmark-final'>YANMAR</div>
         <p className='eyebrow'>{t.complete}</p>
-        <h1>{t.finalLead(score, total, playerName.trim())}</h1>
+        <h1>{t.finalLead(score, total, points, playerName.trim())}</h1>
         <div className='result-medal'>{label}</div>
+
+        <div className='score-summary'>
+          <span><strong>{points}</strong>{t.points}</span>
+          <span><strong>{score}/{total}</strong>{t.correct}</span>
+        </div>
 
         <div className='forms-panel'>
           <h2>{t.formsTitle}</h2>
           <p>{t.formsText}</p>
           <a className='primary-cta form-link' href={FORM_URL} target='_blank' rel='noreferrer'>{t.formsButton}</a>
+        </div>
+
+        <div className='leaderboard-panel'>
+          <h2>{t.leaderboard}</h2>
+          {leaderboard.length ? (
+            <ol>
+              {leaderboard.map((entry, index) => (
+                <li key={`${entry.date}-${entry.name}-${index}`}>
+                  <span>{index + 1}</span>
+                  <strong>{entry.name}</strong>
+                  <em>{entry.points} {t.points}</em>
+                </li>
+              ))}
+            </ol>
+          ) : <p>{t.noScores}</p>}
         </div>
 
         <div className='final-actions'>
@@ -347,9 +416,15 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
+  const [points, setPoints] = useState(0);
   const [selected, setSelected] = useState(null);
   const [outcome, setOutcome] = useState('idle');
   const [animationId, setAnimationId] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
+  const [lastPoints, setLastPoints] = useState(0);
+  const [timedOut, setTimedOut] = useState(false);
+  const [leaderboard, setLeaderboard] = useState(readLeaderboard);
+  const [leaderboardSaved, setLeaderboardSaved] = useState(false);
 
   const t = copy[language];
   const match = getMatch(team);
@@ -357,16 +432,62 @@ export default function App() {
   const localizedQuestion = questionData?.[language];
   const isFinal = current >= questions.length;
   const answered = selected !== null;
+  const timerPercent = Math.max(0, Math.min(100, (timeLeft / TIMER_SECONDS) * 100));
   const progress = useMemo(() => {
     const base = isFinal ? questions.length : current + (answered ? 1 : 0);
     return Math.round((base / questions.length) * 100);
   }, [answered, current, isFinal]);
 
+  useEffect(() => {
+    if (!started || isFinal) return;
+    setTimeLeft(TIMER_SECONDS);
+  }, [started, current, isFinal]);
+
+  useEffect(() => {
+    if (!started || isFinal || answered) return undefined;
+
+    const timer = window.setInterval(() => {
+      setTimeLeft((value) => Math.max(0, Math.round((value - 0.1) * 10) / 10));
+    }, 100);
+
+    return () => window.clearInterval(timer);
+  }, [started, isFinal, answered, current]);
+
+  useEffect(() => {
+    if (!started || isFinal || answered || timeLeft > 0) return;
+    handleTimeout();
+  }, [timeLeft, started, isFinal, answered]);
+
+  useEffect(() => {
+    if (!isFinal || leaderboardSaved) return;
+
+    const fallbackName = teams[team].labels[language] || teams[team].labels.en;
+    const entry = {
+      name: playerName.trim() || fallbackName,
+      points,
+      correct: score,
+      total: questions.length,
+      date: new Date().toISOString(),
+    };
+    const nextLeaderboard = [entry, ...readLeaderboard()]
+      .sort((a, b) => b.points - a.points || b.correct - a.correct)
+      .slice(0, 5);
+
+    writeLeaderboard(nextLeaderboard);
+    setLeaderboard(nextLeaderboard);
+    setLeaderboardSaved(true);
+  }, [isFinal, leaderboardSaved, language, playerName, points, score, team]);
+
   function resetRound() {
     setCurrent(0);
     setScore(0);
+    setPoints(0);
     setSelected(null);
     setOutcome('idle');
+    setTimeLeft(TIMER_SECONDS);
+    setLastPoints(0);
+    setTimedOut(false);
+    setLeaderboardSaved(false);
     setAnimationId((value) => value + 1);
   }
 
@@ -378,13 +499,33 @@ export default function App() {
   function handleAnswer(index) {
     if (answered || isFinal) return;
     const isCorrect = index === questionData.correct;
+    const gained = isCorrect ? getAnswerPoints(timeLeft) : 0;
+
     setSelected(index);
     setOutcome(isCorrect ? 'goal' : 'save');
+    setTimedOut(false);
+    setLastPoints(gained);
     setAnimationId((value) => value + 1);
-    if (isCorrect) setScore((value) => value + 1);
+    if (isCorrect) {
+      setScore((value) => value + 1);
+      setPoints((value) => value + gained);
+    }
+  }
+
+  function handleTimeout() {
+    if (answered || isFinal) return;
+    setSelected(-1);
+    setOutcome('save');
+    setTimedOut(true);
+    setLastPoints(0);
+    setAnimationId((value) => value + 1);
   }
 
   function nextQuestion() {
+    setTimeLeft(TIMER_SECONDS);
+    setTimedOut(false);
+    setLastPoints(0);
+
     if (current + 1 >= questions.length) {
       setCurrent(questions.length);
       setSelected(null);
@@ -423,6 +564,8 @@ export default function App() {
       <FinalScreen
         score={score}
         total={questions.length}
+        points={points}
+        leaderboard={leaderboard}
         playerName={playerName}
         t={t}
         onPlayAgain={startGame}
@@ -434,7 +577,7 @@ export default function App() {
     );
   }
 
-  const statusText = answered ? (outcome === 'goal' ? t.goal : t.save) : t.answer;
+  const statusText = timedOut ? t.timeout : answered ? (outcome === 'goal' ? t.goal : t.save) : t.answer;
 
   return (
     <main className='app app-game'>
@@ -449,6 +592,10 @@ export default function App() {
 
         <div className='progress-bar' aria-label={`${t.progress}: ${progress}%`}>
           <span style={{ width: `${progress}%` }} />
+        </div>
+        <div className={cx('timer-row', timeLeft <= 4 && !answered && 'danger')} aria-label={`Timer: ${Math.ceil(timeLeft)} seconds`}>
+          <span className='timer-track'><span style={{ width: `${timerPercent}%` }} /></span>
+          <strong>{Math.ceil(timeLeft)}s</strong>
         </div>
 
         <div className='game-grid'>
@@ -485,8 +632,8 @@ export default function App() {
               })}
             </div>
 
-            <div className={cx('feedback', answered && 'show', outcome)}>
-              <strong>{statusText}</strong>
+            <div className={cx('feedback', answered && 'show', outcome, timedOut && 'timeout')}>
+              <strong>{statusText}{lastPoints > 0 ? <span className='points-pop'>+{lastPoints}</span> : null}</strong>
               {answered ? (
                 <button className='next-action' type='button' onClick={nextQuestion}>{current + 1 >= questions.length ? t.finish : t.next}</button>
               ) : null}
