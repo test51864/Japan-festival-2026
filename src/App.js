@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 const questionBank = {
@@ -80,85 +80,36 @@ const questionBank = {
 
 const copy = {
   en: {
-    title: "Yanmar Quiz Arena",
-    kicker: "Japan Festival 2026",
-    setupTitle: "Ready for kick-off?",
-    intro: "Answer fast, score penalties and finish with your result.",
-    language: "Language",
-    team: "Team",
-    start: "Start quiz",
+    subtitle: "Answer correctly to score a penalty.",
+    choose: "Choose your answer.",
     goals: "Goals",
-    round: "Round",
     question: "Question",
-    goalText: "GOAL!",
-    saveText: "SAVED!",
-    missText: "MISS!",
-    correctText: "Correct answer",
-    wrongText: "Wrong answer",
+    arena: "Penalty Arena",
+    team: "Team Yanmar",
+    correct: "Correct answer. GOAL!",
+    save: "Wrong answer. SAVED by the keeper!",
+    miss: "Wrong answer. MISS!",
     next: "Next question",
     finish: "Finish quiz",
-    complete: "Full time",
-    score: "Score",
-    prizeTitle: "Prize draw",
-    prizeText: "Leave your email address below for a chance to win.",
-    emailPlaceholder: "Enter your email address",
-    emailError1: "Please enter your email address.",
-    emailError2: "Please enter a valid email address.",
-    prizeBtn: "Enter prize draw",
-    thanks: "You're in!",
-    thanksSub: "Thanks for joining the prize draw.",
+    finalTitle: "Full Time",
+    finalText: (score, total) => `You scored ${score} out of ${total} penalties.`,
     playAgain: "Play again",
-    changeSetup: "Change setup",
-    perfect: "Perfect striker",
-    solid: "Strong performance",
-    nice: "Nice effort",
   },
   nl: {
-    title: "Yanmar Quiz Arena",
-    kicker: "Japan Festival 2026",
-    setupTitle: "Klaar voor de aftrap?",
-    intro: "Beantwoord snel, scoor penalties en eindig met je resultaat.",
-    language: "Taal",
-    team: "Team",
-    start: "Start quiz",
+    subtitle: "Beantwoord goed om een penalty te scoren.",
+    choose: "Kies je antwoord.",
     goals: "Goals",
-    round: "Ronde",
     question: "Vraag",
-    goalText: "GOAL!",
-    saveText: "GEPAKT!",
-    missText: "MIS!",
-    correctText: "Goed antwoord",
-    wrongText: "Fout antwoord",
+    arena: "Penalty Arena",
+    team: "Team Yanmar",
+    correct: "Goed antwoord. GOAL!",
+    save: "Fout antwoord. GEPAKT door de keeper!",
+    miss: "Fout antwoord. MIS!",
     next: "Volgende vraag",
     finish: "Quiz afronden",
-    complete: "Full time",
-    score: "Score",
-    prizeTitle: "Winactie",
-    prizeText: "Laat hieronder je e-mailadres achter en maak kans om te winnen.",
-    emailPlaceholder: "Vul je e-mailadres in",
-    emailError1: "Vul je e-mailadres in.",
-    emailError2: "Vul een geldig e-mailadres in.",
-    prizeBtn: "Doe mee aan de winactie",
-    thanks: "Je doet mee!",
-    thanksSub: "Bedankt voor het meedoen aan de winactie.",
+    finalTitle: "Full Time",
+    finalText: (score, total) => `Je scoorde ${score} van de ${total} penalties.`,
     playAgain: "Speel opnieuw",
-    changeSetup: "Instellingen wijzigen",
-    perfect: "Perfecte spits",
-    solid: "Sterke score",
-    nice: "Netjes gedaan",
-  },
-};
-
-const teams = {
-  netherlands: {
-    code: "NL",
-    color: "#f58220",
-    labels: { en: "Team Netherlands", nl: "Team Netherlands" },
-  },
-  japan: {
-    code: "JP",
-    color: "#111111",
-    labels: { en: "Team Japan", nl: "Team Japan" },
   },
 };
 
@@ -166,403 +117,208 @@ function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function BrandLockup({ compact = false }) {
-  return (
-    <div className={cx("brand-lockup", compact && "brand-lockup--compact")}>
-      <div className="flying-y" aria-hidden="true">
-        <span />
-      </div>
-      <div className="wordmark">YANMAR</div>
-    </div>
-  );
-}
-
-function SegmentedButton({ active, children, onClick }) {
-  return (
-    <button
-      className={cx("segmented-button", active && "is-active")}
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-    >
-      {children}
-    </button>
-  );
-}
-
-function SetupScreen({ language, setLanguage, team, setTeam, onStart }) {
-  const t = copy[language];
-
-  return (
-    <main className="app-screen setup-screen">
-      <section className="setup-panel" aria-labelledby="setup-title">
-        <BrandLockup />
-        <p className="kicker">{t.kicker}</p>
-        <h1 id="setup-title">{t.setupTitle}</h1>
-        <p className="intro-copy">{t.intro}</p>
-
-        <div className="setup-controls">
-          <fieldset>
-            <legend>{t.language}</legend>
-            <div className="segmented-control">
-              <SegmentedButton active={language === "nl"} onClick={() => setLanguage("nl")}>
-                NL
-              </SegmentedButton>
-              <SegmentedButton active={language === "en"} onClick={() => setLanguage("en")}>
-                EN
-              </SegmentedButton>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>{t.team}</legend>
-            <div className="team-grid">
-              {Object.entries(teams).map(([key, option]) => (
-                <button
-                  className={cx("team-card", team === key && "is-active")}
-                  key={key}
-                  type="button"
-                  onClick={() => setTeam(key)}
-                  style={{ "--team-color": option.color }}
-                  aria-pressed={team === key}
-                >
-                  <span>{option.code}</span>
-                  <strong>{option.labels[language]}</strong>
-                </button>
-              ))}
-            </div>
-          </fieldset>
-        </div>
-
-        <button className="primary-action" type="button" onClick={onStart}>
-          {t.start}
-        </button>
-      </section>
-    </main>
-  );
-}
-
-function PenaltyArena({ shotState, shotKey, t, team }) {
-  const active = shotState !== "idle";
-  const shotClass = active ? `is-${shotState}` : "";
-  const bannerText =
-    shotState === "goal"
-      ? t.goalText
-      : shotState === "save"
-      ? t.saveText
-      : shotState === "miss"
-      ? t.missText
-      : "";
-
-  return (
-    <section className="arena-panel" aria-label="Penalty Arena">
-      <div className="arena-topline">
-        <span>Penalty Arena</span>
-        <span>{teams[team].code}</span>
-      </div>
-
-      <div className={cx("result-badge", active && "show", shotClass)} aria-live="polite">
-        {bannerText}
-      </div>
-
-      <div className={cx("confetti", shotState === "goal" && "show")} aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
-
-      <div className="field">
-        <div className={cx("goal-frame", shotState === "goal" && "is-shaking")} />
-        <div className="goal-line" />
-
-        <div className={cx("keeper", shotClass)}>
-          <span className="keeper-head" />
-          <span className="keeper-body" />
-          <span className="keeper-legs" />
-        </div>
-
-        <div key={`line-${shotKey}`} className={cx("shot-line", shotClass)} />
-        <div key={`ball-${shotKey}`} className={cx("ball", shotClass)} />
-      </div>
-    </section>
-  );
-}
-
-function ResultLabel({ score, total, t }) {
-  let label = t.nice;
-  if (score === total) label = t.perfect;
-  else if (score >= Math.ceil(total * 0.6)) label = t.solid;
-
-  return <div className="result-label">{label}</div>;
+function getOutcomeText(outcome) {
+  if (outcome === "goal") return "GOAL!";
+  if (outcome === "save") return "SAVED!";
+  if (outcome === "miss") return "MISS!";
+  return "";
 }
 
 export default function App() {
   const [language, setLanguage] = useState("nl");
-  const [team, setTeam] = useState("netherlands");
-  const [started, setStarted] = useState(false);
-  const [current, setCurrent] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
-  const [displayScore, setDisplayScore] = useState(0);
   const [selected, setSelected] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [shotState, setShotState] = useState("idle");
-  const [shotKey, setShotKey] = useState(0);
-  const [email, setEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [outcome, setOutcome] = useState("idle");
+  const [animationKey, setAnimationKey] = useState(0);
 
-  const t = copy[language];
   const questions = questionBank[language];
-  const q = questions[current];
-  const isLastQuestion = current === questions.length - 1;
-  const activeTeam = useMemo(() => teams[team], [team]);
-  const progress = Math.min(((current + 1) / questions.length) * 100, 100);
+  const t = copy[language];
+  const isFinal = currentQuestion >= questions.length;
+  const q = questions[currentQuestion];
+  const answered = selected !== null;
 
-  useEffect(() => {
-    if (displayScore === score) return undefined;
-
-    const timeout = setTimeout(() => {
-      setDisplayScore((previous) => (previous < score ? previous + 1 : score));
-    }, 110);
-
-    return () => clearTimeout(timeout);
-  }, [displayScore, score]);
-
-  function resetRun() {
-    setCurrent(0);
-    setScore(0);
-    setDisplayScore(0);
+  function resetQuestion() {
     setSelected(null);
-    setShowFeedback(false);
-    setShotState("idle");
-    setShotKey((key) => key + 1);
-    setEmail("");
-    setEmailSubmitted(false);
-    setEmailError("");
+    setOutcome("idle");
+    setAnimationKey((key) => key + 1);
   }
 
-  function startGame() {
-    resetRun();
-    setStarted(true);
+  function resetGame(nextLanguage = language) {
+    setLanguage(nextLanguage);
+    setCurrentQuestion(0);
+    setScore(0);
+    setSelected(null);
+    setOutcome("idle");
+    setAnimationKey((key) => key + 1);
   }
 
   function handleAnswer(index) {
-    if (showFeedback || selected !== null) return;
+    if (answered || isFinal) return;
 
-    const isCorrect = index === q.correct;
-    const outcome = isCorrect ? "goal" : current % 2 === 0 ? "save" : "miss";
+    const correct = index === q.correct;
+    const nextOutcome = correct ? "goal" : currentQuestion % 2 === 0 ? "save" : "miss";
 
     setSelected(index);
-    setShotKey((key) => key + 1);
-    setShotState(outcome);
-
-    setTimeout(() => {
-      if (isCorrect) setScore((value) => value + 1);
-      setShowFeedback(true);
-    }, 520);
+    setOutcome(nextOutcome);
+    setAnimationKey((key) => key + 1);
+    if (correct) setScore((value) => value + 1);
   }
 
   function nextQuestion() {
-    if (isLastQuestion) {
-      setCurrent((value) => value + 1);
+    if (currentQuestion + 1 >= questions.length) {
+      setCurrentQuestion(questions.length);
       return;
     }
 
-    setCurrent((value) => value + 1);
-    setSelected(null);
-    setShowFeedback(false);
-    setShotState("idle");
-    setShotKey((key) => key + 1);
+    setCurrentQuestion((value) => value + 1);
+    resetQuestion();
   }
 
-  function playAgain() {
-    resetRun();
-    setStarted(true);
+  function answerClass(index) {
+    if (!answered) return "";
+    if (index === q.correct) return "correct";
+    if (index === selected) return "wrong";
+    return "muted";
   }
 
-  function changeSetup() {
-    resetRun();
-    setStarted(false);
-  }
-
-  function submitEmail(event) {
-    event.preventDefault();
-
-    const trimmed = email.trim();
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-
-    if (!trimmed) {
-      setEmailError(t.emailError1);
-      return;
-    }
-
-    if (!valid) {
-      setEmailError(t.emailError2);
-      return;
-    }
-
-    const entry = {
-      email: trimmed,
-      score,
-      team,
-      language,
-      date: new Date().toISOString(),
-    };
-
-    const existing = JSON.parse(localStorage.getItem("yanmar_leads") || "[]");
-    existing.push(entry);
-    localStorage.setItem("yanmar_leads", JSON.stringify(existing));
-
-    setEmailError("");
-    setEmailSubmitted(true);
-  }
-
-  function getAnswerClass(index) {
-    if (!showFeedback && selected !== index) return "";
-    if (showFeedback && index === q.correct) return "is-correct";
-    if (showFeedback && selected === index && index !== q.correct) return "is-wrong";
-    return "";
-  }
-
-  if (!started) {
-    return (
-      <SetupScreen
-        language={language}
-        setLanguage={setLanguage}
-        team={team}
-        setTeam={setTeam}
-        onStart={startGame}
-      />
-    );
-  }
-
-  if (current >= questions.length) {
-    return (
-      <main className="app-screen final-screen">
-        <section className="final-panel">
-          <BrandLockup />
-          <p className="kicker">{t.complete}</p>
-          <h1>
-            {t.score}: {score}/{questions.length}
-          </h1>
-          <ResultLabel score={score} total={questions.length} t={t} />
-
-          <form className="prize-form" onSubmit={submitEmail} noValidate>
-            <h2>{t.prizeTitle}</h2>
-            <p>{emailSubmitted ? t.thanksSub : t.prizeText}</p>
-
-            {!emailSubmitted ? (
-              <>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder={t.emailPlaceholder}
-                  aria-label={t.emailPlaceholder}
-                />
-                {emailError ? <div className="form-error">{emailError}</div> : null}
-                <button className="primary-action" type="submit">
-                  {t.prizeBtn}
-                </button>
-              </>
-            ) : (
-              <div className="thanks-message">{t.thanks}</div>
-            )}
-          </form>
-
-          <div className="final-actions">
-            <button className="secondary-action" type="button" onClick={changeSetup}>
-              {t.changeSetup}
-            </button>
-            <button className="primary-action" type="button" onClick={playAgain}>
-              {t.playAgain}
-            </button>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
-  const shotOutcomeText =
-    shotState === "goal"
-      ? t.goalText
-      : shotState === "save"
-      ? t.saveText
-      : shotState === "miss"
-      ? t.missText
-      : "";
-  const feedbackTitle =
-    selected === q.correct
-      ? `${t.correctText}. ${t.goalText}`
-      : `${t.wrongText}. ${shotOutcomeText}`;
+  const statusText = answered
+    ? outcome === "goal"
+      ? t.correct
+      : outcome === "save"
+      ? t.save
+      : t.miss
+    : t.choose;
 
   return (
-    <main className="app-screen game-screen">
-      <section className="game-frame">
-        <header className="game-header">
-          <BrandLockup compact />
-          <div className="score-strip" aria-label="Scoreboard">
-            <div className="score-chip" style={{ "--team-color": activeTeam.color }}>
-              <strong>{activeTeam.code}</strong>
-              <span>{activeTeam.labels[language]}</span>
-            </div>
-            <div className="score-chip">
-              <strong>{displayScore}</strong>
-              <span>{t.goals}</span>
-            </div>
-            <div className="score-chip">
-              <strong>
-                {current + 1}/{questions.length}
-              </strong>
-              <span>{t.round}</span>
-            </div>
+    <main className="game">
+      <header className="header">
+        <div className="brand">
+          <div className="brand-mark" aria-hidden="true">
+            <span />
           </div>
-        </header>
-
-        <div className="progress-track" aria-hidden="true">
-          <span style={{ width: `${progress}%` }} />
+          <div>
+            <h1>Yanmar Quiz Arena</h1>
+            <p>{t.subtitle}</p>
+          </div>
         </div>
 
-        <div className="play-grid">
-          <section className="question-panel" aria-labelledby="question-title">
-            <p className="question-kicker">
-              {t.question} {current + 1}
-            </p>
-            <h1 id="question-title">{q.question}</h1>
+        <div className="scoreboard">
+          <div className="language-toggle" aria-label="Language">
+            <button
+              className={cx(language === "nl" && "active")}
+              type="button"
+              onClick={() => resetGame("nl")}
+            >
+              NL
+            </button>
+            <button
+              className={cx(language === "en" && "active")}
+              type="button"
+              onClick={() => resetGame("en")}
+            >
+              EN
+            </button>
+          </div>
+          <div className="score-card">
+            <strong>{score}</strong>
+            <span>{t.goals}</span>
+          </div>
+          <div className="score-card">
+            <strong>
+              {Math.min(currentQuestion + 1, questions.length)}/{questions.length}
+            </strong>
+            <span>{t.question}</span>
+          </div>
+        </div>
+      </header>
 
-            <div className="answer-list">
+      {!isFinal ? (
+        <section className="content">
+          <div className="question-panel">
+            <div className="question-count">
+              {t.question} {currentQuestion + 1}
+            </div>
+            <h2 className="question">{q.question}</h2>
+            <div className="answers">
               {q.answers.map((answer, index) => (
                 <button
+                  className={cx("answer-btn", answerClass(index))}
+                  disabled={answered}
                   key={answer}
-                  className={cx("answer-button", getAnswerClass(index))}
                   type="button"
-                  disabled={showFeedback || selected !== null}
                   onClick={() => handleAnswer(index)}
                 >
                   <span>{String.fromCharCode(65 + index)}</span>
-                  <strong>{answer}</strong>
+                  {answer}
                 </button>
               ))}
             </div>
 
-            {showFeedback ? (
-              <div className={cx("feedback-box", shotState === "goal" ? "is-good" : "is-bad")}>
-                <h2>{feedbackTitle}</h2>
-                <p>{q.fact}</p>
-                <button className="primary-action" type="button" onClick={nextQuestion}>
-                  {isLastQuestion ? t.finish : t.next}
+            <div className="meta">
+              <div className={cx("status", outcome !== "idle" && outcome)}>{statusText}</div>
+              {answered ? (
+                <button className="next-btn show" type="button" onClick={nextQuestion}>
+                  {currentQuestion + 1 >= questions.length ? t.finish : t.next}
                 </button>
-              </div>
-            ) : null}
-          </section>
+              ) : null}
+            </div>
 
-          <PenaltyArena shotState={shotState} shotKey={shotKey} t={t} team={team} />
-        </div>
-      </section>
+            {answered ? <p className="fact-box">{q.fact}</p> : null}
+          </div>
+
+          <div className="penalty-panel">
+            <div className="arena-title">
+              <span>{t.arena}</span>
+              <span>{t.team}</span>
+            </div>
+
+            <div className={cx("result-banner", outcome !== "idle" && "show", outcome)}>
+              {getOutcomeText(outcome)}
+            </div>
+
+            <div className={cx("confetti", outcome === "goal" && "show")} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+
+            <div className="field">
+              <div className="net-label">NET</div>
+              <div className={cx("goal-frame", outcome === "goal" && "net-shake")} />
+              <div className="goal-line" />
+
+              <div
+                className={cx(
+                  "keeper",
+                  outcome === "goal" && "dive-left",
+                  outcome === "save" && "save-center",
+                  outcome === "miss" && "dive-left"
+                )}
+              >
+                <div className="head" />
+                <div className="body" />
+                <div className="legs" />
+              </div>
+
+              <div key={`line-${animationKey}`} className={cx("shot-line", outcome)} />
+              <div key={`ball-${animationKey}`} className={cx("ball", outcome)} />
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="final-screen show">
+          <h2>{t.finalTitle}</h2>
+          <p>{t.finalText(score, questions.length)}</p>
+          <button className="restart-btn show" type="button" onClick={() => resetGame(language)}>
+            {t.playAgain}
+          </button>
+        </section>
+      )}
     </main>
   );
 }
