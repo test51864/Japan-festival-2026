@@ -17,13 +17,13 @@ const languages = [
 ];
 
 const teams = {
-  netherlands: { code: 'NED', color: '#f47b20', trim: '#ffffff', text: '#101114', labels: { en: 'Team Netherlands', nl: 'Team Nederland', ja: '\u30c1\u30fc\u30e0\u30fb\u30aa\u30e9\u30f3\u30c0' } },
-  japan: { code: 'JPN', color: '#ffffff', trim: '#174a9c', text: '#101114', labels: { en: 'Team Japan', nl: 'Team Japan', ja: '\u30c1\u30fc\u30e0\u30fb\u65e5\u672c' } },
+  netherlands: { code: 'NED', color: '#f36c21', trim: '#123f8c', text: '#101114', labels: { en: 'Team Netherlands', nl: 'Team Nederland', ja: '\u30c1\u30fc\u30e0\u30fb\u30aa\u30e9\u30f3\u30c0' } },
+  japan: { code: 'JPN', color: '#102f7a', trim: '#ffffff', text: '#ffffff', labels: { en: 'Team Japan', nl: 'Team Japan', ja: '\u30c1\u30fc\u30e0\u30fb\u65e5\u672c' } },
 };
 
 const keeperKits = {
-  netherlands: { primary: '#f47b20', trim: '#ffffff', text: '#101114' },
-  japan: { primary: '#ffffff', trim: '#174a9c', text: '#101114' },
+  netherlands: { primary: '#f36c21', trim: '#123f8c', text: '#101114' },
+  japan: { primary: '#102f7a', trim: '#ffffff', text: '#ffffff' },
 };
 
 const setupCopy = {
@@ -135,11 +135,11 @@ function outcomeFromVariant(variant) {
   return variant === 'save-center' ? 'save' : 'miss';
 }
 
-function randomFieldDistraction() {
-  const roll = Math.random();
-  if (roll < 0.22) return 'cat-left';
-  if (roll < 0.44) return 'cat-right';
-  return '';
+function randomFieldDistraction(roundIndex = 0) {
+  const animals = ['cat', 'fox', 'crane'];
+  const animal = animals[roundIndex % animals.length];
+  const side = Math.random() < 0.5 ? 'left' : 'right';
+  return `${animal}-${side}`;
 }
 
 function readLeaderboard() {
@@ -239,7 +239,7 @@ function PlayerSprite({ className }) {
 function FieldCat({ direction, animationId }) {
   if (!direction) return null;
   return (
-    <div key={`cat-${animationId}-${direction}`} className={cx('field-cat', direction)} aria-hidden='true'>
+    <div key={`field-distraction-${animationId}-${direction}`} className={cx('field-cat', direction)} aria-hidden='true'>
       <span className='cat-tail' /><span className='cat-body' /><span className='cat-head' />
       <span className='cat-ear cat-ear-left' /><span className='cat-ear cat-ear-right' />
       <span className='cat-leg cat-leg-one' /><span className='cat-leg cat-leg-two' />
@@ -367,7 +367,7 @@ export default function App() {
     setTimeLeft(TIMER_SECONDS);
     setLastPoints(0);
     setTimedOut(false);
-    setFieldDistraction(randomFieldDistraction());
+    setFieldDistraction(randomFieldDistraction(0));
     setLeaderboardSaved(false);
     setAnimationId((value) => value + 1);
   }
@@ -412,7 +412,7 @@ export default function App() {
     setCurrent(nextIndex);
     setSelected(null);
     setOutcome('idle');
-    setFieldDistraction(randomFieldDistraction());
+    setFieldDistraction(randomFieldDistraction(nextIndex));
     setAnimationId((value) => value + 1);
   }
 
