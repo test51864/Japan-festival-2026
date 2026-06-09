@@ -5,6 +5,7 @@ import App from "./App";
 import "./FestivalEvents.css";
 import "./StartScreenPremium.css";
 import "./TeamSelectPremium.css";
+import "./FinalPolish.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
