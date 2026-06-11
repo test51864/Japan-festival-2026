@@ -19,69 +19,40 @@
   border: 3px solid #101114 !important;
   border-radius: 50% !important;
   overflow: hidden !important;
-  background:
-    radial-gradient(circle at 23% 27%, #101114 0 10%, transparent 11%),
-    radial-gradient(circle at 77% 28%, #101114 0 10%, transparent 11%),
-    radial-gradient(circle at 26% 76%, #101114 0 10%, transparent 11%),
-    radial-gradient(circle at 75% 75%, #101114 0 10%, transparent 11%),
-    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.96) 0 9%, transparent 10%),
-    radial-gradient(circle at 68% 72%, rgba(220, 30, 55, 0.12) 0 18%, transparent 19%),
-    #ffffff !important;
+  background-color: #ffffff !important;
+  background-image:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.92) 0 8%, transparent 9%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='shade' cx='35%25' cy='25%25' r='70%25'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='0.58' stop-color='%23f8fafc'/%3E%3Cstop offset='1' stop-color='%23d9dde5'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23shade)'/%3E%3Cg fill='none' stroke='%23101114' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M50 21 67 34 61 56 39 56 33 34Z' fill='%23101114'/%3E%3Cpath d='M33 34 16 31 8 49 22 64 39 56'/%3E%3Cpath d='M67 34 84 31 92 49 78 64 61 56'/%3E%3Cpath d='M39 56 30 78 50 93 70 78 61 56'/%3E%3Cpath d='M16 31 23 13 41 9 50 21'/%3E%3Cpath d='M84 31 77 13 59 9 50 21'/%3E%3C/g%3E%3Cg fill='%23101114'%3E%3Cpath d='M12 45 4 56 14 73 25 66Z'/%3E%3Cpath d='M88 45 96 56 86 73 75 66Z'/%3E%3Cpath d='M30 82 50 98 70 82 50 90Z'/%3E%3Cpath d='M23 12 39 3 50 18 40 10Z'/%3E%3Cpath d='M77 12 61 3 50 18 60 10Z'/%3E%3C/g%3E%3Cpath d='M31 18C38 11 51 8 63 13' fill='none' stroke='%23ffffff' stroke-width='5' stroke-linecap='round' opacity='.75'/%3E%3C/svg%3E") !important;
+  background-size: 100% 100% !important;
   box-shadow:
-    0 12px 19px rgba(0, 0, 0, 0.28),
-    inset -6px -7px 0 rgba(16, 17, 20, 0.12),
-    inset 4px 4px 0 rgba(255, 255, 255, 0.78) !important;
+    0 12px 18px rgba(0, 0, 0, 0.3),
+    inset -5px -6px 0 rgba(16, 17, 20, 0.12),
+    inset 4px 4px 0 rgba(255, 255, 255, 0.72) !important;
 }
 
-.ball::before {
-  content: '' !important;
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  width: 39% !important;
-  height: 37% !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: #101114 !important;
-  clip-path: polygon(50% 0, 96% 35%, 79% 94%, 21% 94%, 4% 35%) !important;
-  transform: translate(-50%, -50%) !important;
-  opacity: 1 !important;
-}
-
+.ball::before,
 .ball::after {
   content: '' !important;
-  position: absolute !important;
-  inset: 5px !important;
-  width: auto !important;
-  height: auto !important;
-  border: 1px solid rgba(16, 17, 20, 0.3) !important;
-  border-radius: 50% !important;
-  background:
-    linear-gradient(21deg, transparent 45%, rgba(16, 17, 20, 0.62) 46% 48%, transparent 49%),
-    linear-gradient(-21deg, transparent 45%, rgba(16, 17, 20, 0.62) 46% 48%, transparent 49%),
-    linear-gradient(92deg, transparent 47%, rgba(16, 17, 20, 0.44) 48% 50%, transparent 51%),
-    radial-gradient(circle at 50% 50%, transparent 0 28%, rgba(220, 30, 55, 0.18) 29% 32%, transparent 33%) !important;
-  transform: none !important;
-  opacity: 1 !important;
+  display: none !important;
 }
 
 @media (min-width: 760px) {
   .ball {
-    bottom: 158px !important;
+    bottom: 136px !important;
   }
 
   .shot-line {
-    bottom: 178px !important;
+    bottom: 156px !important;
   }
 }
 
 @media (max-width: 759px) {
   .ball {
-    bottom: clamp(78px, 24.5vw, 110px) !important;
+    bottom: clamp(66px, 20vw, 88px) !important;
   }
 
   .shot-line {
-    bottom: calc(clamp(78px, 24.5vw, 110px) + 14px) !important;
+    bottom: calc(clamp(66px, 20vw, 88px) + 14px) !important;
   }
 
   .visual-only-question .visual-mitsubishi.has-image {
@@ -95,11 +66,11 @@
 
 @media (max-width: 370px) {
   .ball {
-    bottom: clamp(74px, 23vw, 92px) !important;
+    bottom: clamp(62px, 18vw, 76px) !important;
   }
 
   .shot-line {
-    bottom: calc(clamp(74px, 23vw, 92px) + 14px) !important;
+    bottom: calc(clamp(62px, 18vw, 76px) + 14px) !important;
   }
 
   .visual-only-question .visual-mitsubishi.has-image {
