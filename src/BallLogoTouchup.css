@@ -1,0 +1,112 @@
+.visual-only-question .visual-mitsubishi.has-image {
+  overflow: hidden !important;
+  padding: clamp(14px, 2.1vw, 22px) !important;
+  background: #ffffff !important;
+}
+
+.visual-only-question .visual-mitsubishi.has-image img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: scale(0.82) !important;
+  transform-origin: center !important;
+}
+
+.ball {
+  border: 3px solid #101114 !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 23% 27%, #101114 0 10%, transparent 11%),
+    radial-gradient(circle at 77% 28%, #101114 0 10%, transparent 11%),
+    radial-gradient(circle at 26% 76%, #101114 0 10%, transparent 11%),
+    radial-gradient(circle at 75% 75%, #101114 0 10%, transparent 11%),
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.96) 0 9%, transparent 10%),
+    radial-gradient(circle at 68% 72%, rgba(220, 30, 55, 0.12) 0 18%, transparent 19%),
+    #ffffff !important;
+  box-shadow:
+    0 12px 19px rgba(0, 0, 0, 0.28),
+    inset -6px -7px 0 rgba(16, 17, 20, 0.12),
+    inset 4px 4px 0 rgba(255, 255, 255, 0.78) !important;
+}
+
+.ball::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 39% !important;
+  height: 37% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #101114 !important;
+  clip-path: polygon(50% 0, 96% 35%, 79% 94%, 21% 94%, 4% 35%) !important;
+  transform: translate(-50%, -50%) !important;
+  opacity: 1 !important;
+}
+
+.ball::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 5px !important;
+  width: auto !important;
+  height: auto !important;
+  border: 1px solid rgba(16, 17, 20, 0.3) !important;
+  border-radius: 50% !important;
+  background:
+    linear-gradient(21deg, transparent 45%, rgba(16, 17, 20, 0.62) 46% 48%, transparent 49%),
+    linear-gradient(-21deg, transparent 45%, rgba(16, 17, 20, 0.62) 46% 48%, transparent 49%),
+    linear-gradient(92deg, transparent 47%, rgba(16, 17, 20, 0.44) 48% 50%, transparent 51%),
+    radial-gradient(circle at 50% 50%, transparent 0 28%, rgba(220, 30, 55, 0.18) 29% 32%, transparent 33%) !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+@media (min-width: 760px) {
+  .ball {
+    bottom: 158px !important;
+  }
+
+  .shot-line {
+    bottom: 178px !important;
+  }
+}
+
+@media (max-width: 759px) {
+  .ball {
+    bottom: clamp(78px, 24.5vw, 110px) !important;
+  }
+
+  .shot-line {
+    bottom: calc(clamp(78px, 24.5vw, 110px) + 14px) !important;
+  }
+
+  .visual-only-question .visual-mitsubishi.has-image {
+    padding: clamp(10px, 3.2vw, 14px) !important;
+  }
+
+  .visual-only-question .visual-mitsubishi.has-image img {
+    transform: scale(0.76) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .ball {
+    bottom: clamp(74px, 23vw, 92px) !important;
+  }
+
+  .shot-line {
+    bottom: calc(clamp(74px, 23vw, 92px) + 14px) !important;
+  }
+
+  .visual-only-question .visual-mitsubishi.has-image {
+    padding: 9px !important;
+  }
+
+  .visual-only-question .visual-mitsubishi.has-image img {
+    transform: scale(0.72) !important;
+  }
+}
