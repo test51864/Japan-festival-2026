@@ -11,6 +11,7 @@ import "./SaveDogBallFix.css";
 import "./HeaderTeamFix.css";
 import "./HeaderBallRevision.css";
 import "./SleekFinalPolish.css";
+import "./MobileFirstGameFix.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
