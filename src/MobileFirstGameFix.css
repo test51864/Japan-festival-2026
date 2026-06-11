@@ -1,0 +1,468 @@
+@media (max-width: 759px) {
+  .app-game {
+    align-items: flex-start !important;
+    padding: max(6px, env(safe-area-inset-top)) 6px max(8px, env(safe-area-inset-bottom)) !important;
+    background: linear-gradient(180deg, #07090d, #11151c) !important;
+  }
+
+  .game-shell {
+    width: 100% !important;
+    max-width: 430px !important;
+    margin: 0 auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    background: #eef1f5 !important;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.32) !important;
+  }
+
+  .game-header {
+    min-height: 46px !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    padding: 8px 9px !important;
+  }
+
+  .game-brand {
+    min-height: 26px !important;
+    gap: 7px !important;
+  }
+
+  .game-brand::before {
+    font-size: clamp(20px, 7vw, 28px) !important;
+  }
+
+  .game-brand span {
+    min-height: 22px !important;
+    padding: 4px 0 3px 7px !important;
+    border-left-width: 2px !important;
+    font-size: clamp(10px, 3.4vw, 14px) !important;
+  }
+
+  .match-info {
+    gap: 6px !important;
+  }
+
+  .team-chip,
+  .match-info strong {
+    min-height: 27px !important;
+    padding: 6px 8px !important;
+    border-radius: 7px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .team-chip {
+    max-width: calc(100vw - 126px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .progress-bar {
+    height: 4px !important;
+  }
+
+  .timer-row {
+    gap: 7px !important;
+    padding: 6px 8px !important;
+  }
+
+  .timer-track {
+    height: 8px !important;
+  }
+
+  .timer-row strong {
+    min-width: 30px !important;
+    font-size: 11px !important;
+  }
+
+  .game-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  .arena-card {
+    order: -1 !important;
+    height: clamp(220px, 58vw, 282px) !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 2px solid #101114 !important;
+    border-radius: 8px !important;
+    background: #0b0f12 !important;
+    box-shadow: 0 7px 0 rgba(16, 17, 20, 0.18), 0 14px 28px rgba(16, 17, 20, 0.16) !important;
+  }
+
+  .arena-field {
+    height: 100% !important;
+    min-height: 0 !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      repeating-linear-gradient(0deg, #087936 0 34px, #14a64d 34px 68px) !important;
+    background-size: 36px 36px, 36px 36px, auto !important;
+  }
+
+  .goal-net {
+    top: 16px !important;
+    width: 78% !important;
+    height: 78px !important;
+    border-width: 5px !important;
+    border-radius: 7px 7px 0 0 !important;
+    background-size: 14px 14px !important;
+  }
+
+  .goal-line {
+    top: 94px !important;
+    left: 11% !important;
+    width: 78% !important;
+    height: 4px !important;
+  }
+
+  .result-flash {
+    top: 27px !important;
+    min-width: 104px !important;
+    padding: 6px 12px !important;
+    border-width: 2px !important;
+    border-radius: 7px !important;
+    font-size: clamp(24px, 8vw, 34px) !important;
+    box-shadow: 0 7px 0 rgba(16, 17, 20, 0.22) !important;
+  }
+
+  .field-cat {
+    display: none !important;
+  }
+
+  .sprite {
+    width: 92px !important;
+    height: 116px !important;
+  }
+
+  .keeper-sprite {
+    top: 70px !important;
+    z-index: 24 !important;
+    transform: translateX(-50%) scale(0.64) !important;
+  }
+
+  .keeper-sprite.dive-left {
+    transform: translateX(-124%) translateY(-4px) rotate(-28deg) scale(0.64) !important;
+  }
+
+  .keeper-sprite.dive-right {
+    transform: translateX(24%) translateY(-4px) rotate(28deg) scale(0.64) !important;
+  }
+
+  .keeper-sprite.save-center {
+    transform: translateX(-50%) translateY(-10px) scale(0.72) !important;
+  }
+
+  .keeper-sprite.miss-left {
+    transform: translateX(-70%) translateY(-3px) rotate(-9deg) scale(0.64) !important;
+  }
+
+  .keeper-sprite.miss-right {
+    transform: translateX(-30%) translateY(-3px) rotate(9deg) scale(0.64) !important;
+  }
+
+  .striker-sprite {
+    bottom: -10px !important;
+    z-index: 20 !important;
+    transform: translateX(-50%) scale(0.7) !important;
+  }
+
+  .ball {
+    left: 50% !important;
+    bottom: clamp(74px, 22vw, 96px) !important;
+    z-index: 23 !important;
+    width: 28px !important;
+    height: 28px !important;
+    margin-left: -14px !important;
+    border-width: 2px !important;
+  }
+
+  .shot-line {
+    left: 50% !important;
+    bottom: calc(clamp(74px, 22vw, 96px) + 14px) !important;
+    width: 4px !important;
+    transform-origin: bottom center !important;
+  }
+
+  .ball.goal-left {
+    animation: mobileGoalLeft 0.82s cubic-bezier(.17, .78, .24, 1) forwards !important;
+  }
+
+  .ball.goal-right {
+    animation: mobileGoalRight 0.82s cubic-bezier(.17, .78, .24, 1) forwards !important;
+  }
+
+  .ball.save-center {
+    z-index: 60 !important;
+    animation: mobileSaveCenter 0.76s cubic-bezier(.2, .72, .2, 1) forwards !important;
+  }
+
+  .ball.miss-left {
+    animation: mobileMissLeft 0.76s cubic-bezier(.2, .72, .2, 1) forwards !important;
+  }
+
+  .ball.miss-right {
+    animation: mobileMissRight 0.76s cubic-bezier(.2, .72, .2, 1) forwards !important;
+  }
+
+  .shot-line.goal-left {
+    height: 118px !important;
+    transform: rotate(-18deg) !important;
+    animation: lineShow 0.32s ease forwards !important;
+  }
+
+  .shot-line.goal-right {
+    height: 118px !important;
+    transform: rotate(18deg) !important;
+    animation: lineShow 0.32s ease forwards !important;
+  }
+
+  .shot-line.save-center {
+    height: 82px !important;
+    transform: rotate(0deg) !important;
+    animation: lineShow 0.32s ease forwards !important;
+  }
+
+  .shot-line.miss-left {
+    height: 96px !important;
+    transform: rotate(-34deg) !important;
+    animation: lineShow 0.32s ease forwards !important;
+  }
+
+  .shot-line.miss-right {
+    height: 96px !important;
+    transform: rotate(34deg) !important;
+    animation: lineShow 0.32s ease forwards !important;
+  }
+
+  @keyframes mobileGoalLeft {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    68% { transform: translate3d(-54px, -76px, 0) scale(0.78) rotate(520deg); }
+    100% { transform: translate3d(-76px, -116px, 0) scale(0.62) rotate(860deg); }
+  }
+
+  @keyframes mobileGoalRight {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    68% { transform: translate3d(54px, -76px, 0) scale(0.78) rotate(520deg); }
+    100% { transform: translate3d(76px, -116px, 0) scale(0.62) rotate(860deg); }
+  }
+
+  @keyframes mobileSaveCenter {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    70% { transform: translate3d(-3px, -58px, 0) scale(0.88) rotate(420deg); }
+    100% { transform: translate3d(-6px, -50px, 0) scale(0.84) rotate(520deg); }
+  }
+
+  @keyframes mobileMissLeft {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    62% { transform: translate3d(-78px, -54px, 0) scale(0.82) rotate(-420deg); }
+    100% { transform: translate3d(-220px, -66px, 0) scale(0.68) rotate(-720deg); }
+  }
+
+  @keyframes mobileMissRight {
+    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+    62% { transform: translate3d(78px, -54px, 0) scale(0.82) rotate(420deg); }
+    100% { transform: translate3d(220px, -66px, 0) scale(0.68) rotate(720deg); }
+  }
+
+  .question-card {
+    order: 0 !important;
+    border: 1px solid rgba(16, 17, 20, 0.2) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 0 rgba(16, 17, 20, 0.1) !important;
+  }
+
+  .question-copy {
+    padding: 10px 11px 7px !important;
+  }
+
+  .question-copy .eyebrow {
+    margin-bottom: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .question-copy h1 {
+    font-size: clamp(21px, 6.8vw, 28px) !important;
+    line-height: 0.98 !important;
+    text-wrap: balance !important;
+  }
+
+  .answer-grid {
+    gap: 7px !important;
+    padding: 8px 8px 0 !important;
+  }
+
+  .answer-button {
+    min-height: 58px !important;
+    grid-template-columns: 46px 27px 1fr !important;
+    gap: 7px !important;
+    padding: 7px !important;
+    border-radius: 7px !important;
+    box-shadow: 0 5px 0 rgba(16, 17, 20, 0.1) !important;
+  }
+
+  .answer-letter {
+    width: 27px !important;
+    height: 27px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+  }
+
+  .answer-button strong,
+  .answer-title {
+    font-size: clamp(12.5px, 3.6vw, 14.5px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .no-visual-answer {
+    grid-template-columns: 27px 1fr !important;
+    min-height: 56px !important;
+    padding: 10px 11px !important;
+  }
+
+  .no-visual-answer .answer-letter {
+    grid-column: 1 !important;
+  }
+
+  .no-visual-answer .answer-title {
+    grid-column: 2 !important;
+  }
+
+  .visual-only-question .answer-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .visual-only-question .answer-button {
+    min-height: clamp(88px, 25vw, 108px) !important;
+    grid-template-columns: 1fr !important;
+    align-content: center !important;
+    justify-items: stretch !important;
+    padding: 6px !important;
+  }
+
+  .visual-only-question .answer-visual {
+    width: 100% !important;
+    height: clamp(72px, 21vw, 90px) !important;
+    border-radius: 7px !important;
+  }
+
+  .visual-only-question .answer-letter {
+    position: absolute !important;
+    top: 5px !important;
+    left: 5px !important;
+    z-index: 3 !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 11px !important;
+  }
+
+  .visual-only-question .answer-title {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+  }
+
+  .visual-only-question .answer-visual.has-image {
+    padding: 8px !important;
+  }
+
+  .visual-only-question .answer-visual.has-image img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: none !important;
+    clip-path: none !important;
+    filter: none !important;
+  }
+
+  .image-choice-question .answer-button {
+    grid-template-columns: minmax(104px, 36%) 26px 1fr !important;
+    min-height: 112px !important;
+    padding: 7px !important;
+  }
+
+  .image-choice-question .answer-visual {
+    width: 100% !important;
+    height: 96px !important;
+    border-radius: 7px !important;
+  }
+
+  .image-choice-question .answer-title {
+    font-size: clamp(12.5px, 3.5vw, 14px) !important;
+  }
+
+  .swatch-question .answer-button {
+    grid-template-columns: 64px 27px 1fr !important;
+  }
+
+  .swatch-question .answer-visual {
+    width: 64px !important;
+    height: 44px !important;
+  }
+
+  .feedback {
+    min-height: 54px !important;
+    gap: 7px !important;
+    padding: 8px !important;
+  }
+
+  .feedback strong {
+    font-size: 13px !important;
+  }
+
+  .next-action {
+    min-height: 44px !important;
+    border-radius: 7px !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .game-grid {
+    padding: 6px !important;
+  }
+
+  .arena-card {
+    height: 216px !important;
+  }
+
+  .question-copy h1 {
+    font-size: clamp(19px, 6.2vw, 24px) !important;
+  }
+
+  .visual-only-question .answer-grid {
+    gap: 5px !important;
+  }
+
+  .visual-only-question .answer-button {
+    min-height: 82px !important;
+    padding: 5px !important;
+  }
+
+  .visual-only-question .answer-visual {
+    height: 68px !important;
+  }
+
+  .image-choice-question .answer-button {
+    grid-template-columns: 96px 25px 1fr !important;
+    min-height: 104px !important;
+  }
+
+  .image-choice-question .answer-visual {
+    height: 88px !important;
+  }
+}
