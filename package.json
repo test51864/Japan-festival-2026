@@ -2,6 +2,7 @@
   "name": "japan-festival-2026",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://test51864.github.io/Japan-festival-2026",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
