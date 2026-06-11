@@ -86,7 +86,7 @@
 
   .arena-card {
     order: -1 !important;
-    height: clamp(220px, 58vw, 282px) !important;
+    height: clamp(292px, 78vw, 342px) !important;
     min-height: 0 !important;
     padding: 0 !important;
     border: 2px solid #101114 !important;
@@ -109,17 +109,17 @@
 
   .goal-net {
     top: 16px !important;
-    width: 78% !important;
-    height: 78px !important;
+    width: 80% !important;
+    height: clamp(82px, 24vw, 104px) !important;
     border-width: 5px !important;
     border-radius: 7px 7px 0 0 !important;
     background-size: 14px 14px !important;
   }
 
   .goal-line {
-    top: 94px !important;
-    left: 11% !important;
-    width: 78% !important;
+    top: clamp(100px, 28vw, 122px) !important;
+    left: 10% !important;
+    width: 80% !important;
     height: 4px !important;
   }
 
@@ -138,45 +138,45 @@
   }
 
   .sprite {
-    width: 92px !important;
-    height: 116px !important;
+    width: 88px !important;
+    height: 112px !important;
   }
 
   .keeper-sprite {
-    top: 70px !important;
+    top: clamp(60px, 17vw, 76px) !important;
     z-index: 24 !important;
-    transform: translateX(-50%) scale(0.64) !important;
+    transform: translateX(-50%) scale(0.56) !important;
   }
 
   .keeper-sprite.dive-left {
-    transform: translateX(-124%) translateY(-4px) rotate(-28deg) scale(0.64) !important;
+    transform: translateX(-124%) translateY(-4px) rotate(-28deg) scale(0.56) !important;
   }
 
   .keeper-sprite.dive-right {
-    transform: translateX(24%) translateY(-4px) rotate(28deg) scale(0.64) !important;
+    transform: translateX(24%) translateY(-4px) rotate(28deg) scale(0.56) !important;
   }
 
   .keeper-sprite.save-center {
-    transform: translateX(-50%) translateY(-10px) scale(0.72) !important;
+    transform: translateX(-50%) translateY(-10px) scale(0.64) !important;
   }
 
   .keeper-sprite.miss-left {
-    transform: translateX(-70%) translateY(-3px) rotate(-9deg) scale(0.64) !important;
+    transform: translateX(-70%) translateY(-3px) rotate(-9deg) scale(0.56) !important;
   }
 
   .keeper-sprite.miss-right {
-    transform: translateX(-30%) translateY(-3px) rotate(9deg) scale(0.64) !important;
+    transform: translateX(-30%) translateY(-3px) rotate(9deg) scale(0.56) !important;
   }
 
   .striker-sprite {
-    bottom: -10px !important;
+    bottom: -8px !important;
     z-index: 20 !important;
-    transform: translateX(-50%) scale(0.7) !important;
+    transform: translateX(-50%) scale(0.62) !important;
   }
 
   .ball {
     left: 50% !important;
-    bottom: clamp(74px, 22vw, 96px) !important;
+    bottom: clamp(84px, 26vw, 122px) !important;
     z-index: 23 !important;
     width: 28px !important;
     height: 28px !important;
@@ -186,7 +186,7 @@
 
   .shot-line {
     left: 50% !important;
-    bottom: calc(clamp(74px, 22vw, 96px) + 14px) !important;
+    bottom: calc(clamp(84px, 26vw, 122px) + 14px) !important;
     width: 4px !important;
     transform-origin: bottom center !important;
   }
@@ -213,19 +213,19 @@
   }
 
   .shot-line.goal-left {
-    height: 118px !important;
-    transform: rotate(-18deg) !important;
+    height: clamp(128px, 36vw, 160px) !important;
+    transform: rotate(-17deg) !important;
     animation: lineShow 0.32s ease forwards !important;
   }
 
   .shot-line.goal-right {
-    height: 118px !important;
-    transform: rotate(18deg) !important;
+    height: clamp(128px, 36vw, 160px) !important;
+    transform: rotate(17deg) !important;
     animation: lineShow 0.32s ease forwards !important;
   }
 
   .shot-line.save-center {
-    height: 82px !important;
+    height: clamp(76px, 22vw, 98px) !important;
     transform: rotate(0deg) !important;
     animation: lineShow 0.32s ease forwards !important;
   }
@@ -244,20 +244,20 @@
 
   @keyframes mobileGoalLeft {
     0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-    68% { transform: translate3d(-54px, -76px, 0) scale(0.78) rotate(520deg); }
-    100% { transform: translate3d(-76px, -116px, 0) scale(0.62) rotate(860deg); }
+    68% { transform: translate3d(-58px, -98px, 0) scale(0.78) rotate(520deg); }
+    100% { transform: translate3d(-86px, -150px, 0) scale(0.62) rotate(860deg); }
   }
 
   @keyframes mobileGoalRight {
     0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-    68% { transform: translate3d(54px, -76px, 0) scale(0.78) rotate(520deg); }
-    100% { transform: translate3d(76px, -116px, 0) scale(0.62) rotate(860deg); }
+    68% { transform: translate3d(58px, -98px, 0) scale(0.78) rotate(520deg); }
+    100% { transform: translate3d(86px, -150px, 0) scale(0.62) rotate(860deg); }
   }
 
   @keyframes mobileSaveCenter {
     0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-    70% { transform: translate3d(-3px, -58px, 0) scale(0.88) rotate(420deg); }
-    100% { transform: translate3d(-6px, -50px, 0) scale(0.84) rotate(520deg); }
+    70% { transform: translate3d(-3px, -70px, 0) scale(0.88) rotate(420deg); }
+    100% { transform: translate3d(-6px, -62px, 0) scale(0.84) rotate(520deg); }
   }
 
   @keyframes mobileMissLeft {
@@ -341,7 +341,7 @@
   }
 
   .visual-only-question .answer-button {
-    min-height: clamp(88px, 25vw, 108px) !important;
+    min-height: clamp(82px, 23vw, 104px) !important;
     grid-template-columns: 1fr !important;
     align-content: center !important;
     justify-items: stretch !important;
@@ -350,7 +350,7 @@
 
   .visual-only-question .answer-visual {
     width: 100% !important;
-    height: clamp(72px, 21vw, 90px) !important;
+    height: clamp(66px, 19vw, 84px) !important;
     border-radius: 7px !important;
   }
 
@@ -437,7 +437,7 @@
   }
 
   .arena-card {
-    height: 216px !important;
+    height: 282px !important;
   }
 
   .question-copy h1 {
@@ -449,12 +449,12 @@
   }
 
   .visual-only-question .answer-button {
-    min-height: 82px !important;
+    min-height: 80px !important;
     padding: 5px !important;
   }
 
   .visual-only-question .answer-visual {
-    height: 68px !important;
+    height: 64px !important;
   }
 
   .image-choice-question .answer-button {
