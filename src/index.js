@@ -12,6 +12,7 @@ import "./HeaderTeamFix.css";
 import "./HeaderBallRevision.css";
 import "./SleekFinalPolish.css";
 import "./MobileFirstGameFix.css";
+import "./BallLogoTouchup.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
