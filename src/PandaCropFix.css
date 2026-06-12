@@ -1,0 +1,25 @@
+.image-choice-question .visual-red-panda.has-image {
+  overflow: hidden !important;
+  padding: clamp(6px, 1.6vw, 10px) !important;
+  background: linear-gradient(135deg, #f7f4eb 0%, #ffffff 62%, #eef4e8 100%) !important;
+}
+
+.image-choice-question .visual-red-panda.has-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: scale(0.9) !important;
+  transform-origin: center center !important;
+  filter: saturate(1.08) contrast(1.03) !important;
+}
+
+@media (max-width: 759px) {
+  .image-choice-question .visual-red-panda.has-image {
+    padding: 4px !important;
+  }
+
+  .image-choice-question .visual-red-panda.has-image img {
+    transform: scale(0.86) !important;
+  }
+}
