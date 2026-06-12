@@ -13,6 +13,7 @@ import "./HeaderBallRevision.css";
 import "./SleekFinalPolish.css";
 import "./MobileFirstGameFix.css";
 import "./BallLogoTouchup.css";
+import "./PandaCropFix.css";
 import "./randomDistractions";
 
 const rootElement = document.getElementById("root");
