@@ -14,7 +14,7 @@ import "./SleekFinalPolish.css";
 import "./MobileFirstGameFix.css";
 import "./BallLogoTouchup.css";
 import "./PandaCropFix.css";
-import "./randomDistractions";
+import "./NoDistractions.css";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
