@@ -1,7 +1,9 @@
 .image-choice-question .visual-red-panda.has-image {
   overflow: hidden !important;
   padding: clamp(6px, 1.6vw, 10px) !important;
-  background: linear-gradient(135deg, #f7f4eb 0%, #ffffff 62%, #eef4e8 100%) !important;
+  background:
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Red_Panda_just_chillin.jpg?width=900") center center / contain no-repeat,
+    linear-gradient(135deg, #f7f4eb 0%, #ffffff 62%, #eef4e8 100%) !important;
 }
 
 .image-choice-question .visual-red-panda.has-image img {
@@ -15,11 +17,35 @@
 }
 
 @media (max-width: 759px) {
+  .image-choice-question .answer-button:has(.visual-red-panda) {
+    grid-template-columns: minmax(132px, 44%) 26px 1fr !important;
+    min-height: 136px !important;
+  }
+
+  .image-choice-question .answer-button:has(.visual-red-panda) .answer-visual {
+    height: 120px !important;
+    min-width: 132px !important;
+  }
+
   .image-choice-question .visual-red-panda.has-image {
-    padding: 4px !important;
+    padding: 5px !important;
+    background-size: calc(100% - 10px) calc(100% - 10px), auto !important;
   }
 
   .image-choice-question .visual-red-panda.has-image img {
+    opacity: 0 !important;
     transform: scale(0.86) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .image-choice-question .answer-button:has(.visual-red-panda) {
+    grid-template-columns: minmax(118px, 43%) 25px 1fr !important;
+    min-height: 126px !important;
+  }
+
+  .image-choice-question .answer-button:has(.visual-red-panda) .answer-visual {
+    height: 110px !important;
+    min-width: 118px !important;
   }
 }
