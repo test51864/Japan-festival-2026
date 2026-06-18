@@ -1,49 +1,69 @@
 const CURRENT_PLAYER_KEY = 'yanmar-festival-current-player';
-const DEFAULT_API_ORIGIN = 'https://japan-festival-2026.vercel.app';
+const DEFAULT_API_ORIGINS = [
+  'https://japan-festival-2026-ardidelawi01-2135s-projects.vercel.app',
+  'https://japan-festival-2026.vercel.app',
+];
 
 const LEADERBOARD_COPY = {
   en: {
     title: 'Live leaderboard',
-    note: 'Only players who save their e-mail count for the prize. E-mail addresses are hidden here.',
+    note: 'Top saved scores from the database.',
     loading: 'Loading live scores...',
-    empty: 'No saved prize scores yet.',
+    empty: 'No saved scores yet.',
     error: 'Live leaderboard is not available yet.',
     points: 'pts',
     correct: 'correct',
-    prizeStatus: 'No e-mail means no prize entry is saved. Public leaderboard shows name and score only.',
   },
   nl: {
     title: 'Live leaderboard',
-    note: 'Alleen spelers die hun e-mail opslaan tellen mee voor de prijsvraag. E-mailadressen worden hier niet getoond.',
+    note: 'Top scores uit de database.',
     loading: 'Live scores laden...',
-    empty: 'Nog geen opgeslagen prijsvraag-scores.',
+    empty: 'Nog geen opgeslagen scores.',
     error: 'Live leaderboard is nog niet beschikbaar.',
     points: 'pt',
     correct: 'goed',
-    prizeStatus: 'Zonder e-mail wordt je score niet opgeslagen voor de prijsvraag. De publieke leaderboard toont alleen naam en score.',
   },
   ja: {
     title: '\u30e9\u30a4\u30d6\u30ea\u30fc\u30c0\u30fc\u30dc\u30fc\u30c9',
-    note: '\u30e1\u30fc\u30eb\u3092\u4fdd\u5b58\u3057\u305f\u30d7\u30ec\u30a4\u30e4\u30fc\u3060\u3051\u304c\u62bd\u9078\u5bfe\u8c61\u3067\u3059\u3002\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306f\u8868\u793a\u3055\u308c\u307e\u305b\u3093\u3002',
+    note: '\u30c7\u30fc\u30bf\u30d9\u30fc\u30b9\u306e\u4e0a\u4f4d\u30b9\u30b3\u30a2\u3002',
     loading: '\u30e9\u30a4\u30d6\u30b9\u30b3\u30a2\u3092\u8aad\u307f\u8fbc\u307f\u4e2d...',
     empty: '\u307e\u3060\u4fdd\u5b58\u3055\u308c\u305f\u30b9\u30b3\u30a2\u306f\u3042\u308a\u307e\u305b\u3093\u3002',
     error: '\u30e9\u30a4\u30d6\u30ea\u30fc\u30c0\u30fc\u30dc\u30fc\u30c9\u306f\u307e\u3060\u5229\u7528\u3067\u304d\u307e\u305b\u3093\u3002',
     points: 'pt',
     correct: '\u6b63\u89e3',
-    prizeStatus: '\u30e1\u30fc\u30eb\u306a\u3057\u3067\u306f\u62bd\u9078\u7528\u30b9\u30b3\u30a2\u306f\u4fdd\u5b58\u3055\u308c\u307e\u305b\u3093\u3002',
   },
 };
 
 let lastSuccessMessage = '';
 
-function getApiOrigin() {
-  if (window.YANMAR_SCORE_API_ORIGIN) return window.YANMAR_SCORE_API_ORIGIN.replace(/\/$/, '');
-  if (window.location.hostname.includes('raw.githack.com')) return DEFAULT_API_ORIGIN;
-  return '';
+function getApiOrigins() {
+  const configured = Array.isArray(window.YANMAR_SCORE_API_ORIGINS)
+    ? window.YANMAR_SCORE_API_ORIGINS
+    : [window.YANMAR_SCORE_API_ORIGIN].filter(Boolean);
+  const sameOrigin = window.location.hostname.includes('raw.githack.com') ? [] : [''];
+  return [...new Set([...sameOrigin, ...configured, ...DEFAULT_API_ORIGINS].filter((origin) => origin !== undefined && origin !== null).map((origin) => String(origin).replace(/\/$/, '')))];
 }
 
-function apiUrl(path) {
-  return `${getApiOrigin()}${path}`;
+function apiUrl(origin, path) {
+  return `${origin}${path}`;
+}
+
+async function fetchJsonWithFallback(path) {
+  let lastError = 'API niet bereikbaar.';
+  for (const origin of getApiOrigins()) {
+    try {
+      const response = await fetch(apiUrl(origin, path));
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok && payload.ok !== false) return payload;
+      lastError = payload.error || `API antwoordde met ${response.status}`;
+      if (![401, 403, 404].includes(response.status)) break;
+    } catch (error) {
+      lastError = error?.message === 'Failed to fetch'
+        ? 'API niet bereikbaar. Controleer of Vercel public access aan staat.'
+        : (error?.message || 'API niet bereikbaar.');
+    }
+  }
+  throw new Error(lastError);
 }
 
 function safeJsonParse(value, fallback) {
@@ -83,9 +103,7 @@ function sortEntries(entries) {
 }
 
 async function fetchPublicScores() {
-  const response = await fetch(apiUrl('/api/public-scores'));
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) throw new Error(payload.error || 'Scores ophalen is mislukt');
+  const payload = await fetchJsonWithFallback('/api/public-scores');
   return sortEntries(payload.entries || []);
 }
 
@@ -143,28 +161,6 @@ function injectDatabaseLeaderboard() {
   loadDatabaseLeaderboard(panel);
 }
 
-function polishPrizePanel() {
-  const status = document.querySelector('.prize-entry-status');
-  if (status && !status.dataset.state && status.dataset.copyLocked !== 'true') {
-    status.textContent = currentCopy().prizeStatus;
-    status.dataset.copyLocked = 'true';
-  }
-}
-
-function polishAdminActions() {
-  const link = document.querySelector('.admin-issue-link');
-  if (!link || link.dataset.databaseAction === 'ready') return;
-  link.dataset.databaseAction = 'ready';
-  link.textContent = 'Ververs scores';
-  link.removeAttribute('href');
-  link.removeAttribute('target');
-  link.setAttribute('role', 'button');
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    document.querySelector('.admin-refresh')?.click();
-  });
-}
-
 function refreshAfterSubmission() {
   const status = document.querySelector('.prize-entry-status[data-state="success"]');
   if (!status || status.textContent === lastSuccessMessage) return;
@@ -174,8 +170,6 @@ function refreshAfterSubmission() {
 
 function scan() {
   injectDatabaseLeaderboard();
-  polishPrizePanel();
-  polishAdminActions();
   refreshAfterSubmission();
 }
 
