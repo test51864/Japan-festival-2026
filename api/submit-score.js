@@ -2,7 +2,7 @@ const TABLE_NAME = process.env.SUPABASE_SCORE_TABLE || 'yanmar_festival_scores';
 
 function setCors(response) {
   response.setHeader('Access-Control-Allow-Origin', process.env.SCORE_ALLOWED_ORIGIN || '*');
-  response.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
@@ -30,6 +30,21 @@ function readBody(request) {
     request.on('end', () => resolve(body));
     request.on('error', reject);
   });
+}
+
+function readQueryPayload(request) {
+  const url = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`);
+  const encodedPayload = url.searchParams.get('payload');
+  if (encodedPayload) return JSON.parse(encodedPayload);
+  return Object.fromEntries(url.searchParams.entries());
+}
+
+async function readPayload(request) {
+  const queryPayload = readQueryPayload(request);
+  if (request.method === 'GET') return queryPayload;
+  const rawBody = await readBody(request);
+  if (!rawBody) return queryPayload;
+  return { ...queryPayload, ...JSON.parse(rawBody) };
 }
 
 function supabaseConfig() {
@@ -75,14 +90,15 @@ module.exports = async function handler(request, response) {
     return;
   }
 
-  if (request.method !== 'POST') {
+  if (!['GET', 'POST'].includes(request.method)) {
     response.status(405).json({ ok: false, error: 'Method not allowed' });
     return;
   }
 
   try {
-    const payload = JSON.parse(await readBody(request) || '{}');
-    const contact = cleanText(payload.email, 140).toLowerCase();
+    const payload = await readPayload(request);
+    const contactRaw = cleanText(payload.email || payload.contact, 140);
+    const contact = contactRaw.includes('@') ? contactRaw.toLowerCase() : contactRaw;
     if (!hasContact(contact)) {
       response.status(400).json({ ok: false, error: 'Contact is required' });
       return;
