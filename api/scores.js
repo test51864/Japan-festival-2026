@@ -17,9 +17,9 @@ function sortEntries(entries) {
 
 function supabaseConfig() {
   const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
   if (!url || !key) {
-    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
+    const error = new Error('Admin scores need SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY so e-mail addresses stay private');
     error.status = 500;
     throw error;
   }
@@ -54,6 +54,7 @@ async function fetchScores() {
     date: row.created_at,
     name: row.name,
     email: row.email,
+    hasEmail: row.has_email,
     points: row.points,
     correct: row.correct,
     total: row.total,
