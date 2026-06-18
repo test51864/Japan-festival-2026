@@ -36,7 +36,7 @@ function supabaseConfig() {
   const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
   if (!url || !key) {
-    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
+    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY');
     error.status = 500;
     throw error;
   }
@@ -96,6 +96,7 @@ module.exports = async function handler(request, response) {
     const entry = {
       name: cleanText(payload.name, 60) || 'Player',
       email,
+      has_email: true,
       points,
       correct,
       total,
@@ -106,7 +107,20 @@ module.exports = async function handler(request, response) {
     };
 
     const saved = await insertScore(entry);
-    response.status(200).json({ ok: true, entry: { ...saved, date: saved.created_at || new Date().toISOString() } });
+    response.status(200).json({
+      ok: true,
+      entry: {
+        id: saved.id,
+        date: saved.created_at || new Date().toISOString(),
+        name: saved.name,
+        points: saved.points,
+        correct: saved.correct,
+        total: saved.total,
+        percentage: saved.percentage,
+        team: saved.team,
+        language: saved.language,
+      },
+    });
   } catch (error) {
     response.status(error.status || 500).json({ ok: false, error: error.message || 'Unknown error' });
   }
