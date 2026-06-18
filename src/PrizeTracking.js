@@ -1,15 +1,38 @@
 const CURRENT_PLAYER_KEY = 'yanmar-festival-current-player';
 const ADMIN_SECRET_NAME = 'yanmar-score-2026';
-const DEFAULT_API_ORIGIN = 'https://japan-festival-2026.vercel.app';
+const DEFAULT_API_ORIGINS = [
+  'https://japan-festival-2026-ardidelawi01-2135s-projects.vercel.app',
+  'https://japan-festival-2026.vercel.app',
+];
 
-function getApiOrigin() {
-  if (window.YANMAR_SCORE_API_ORIGIN) return window.YANMAR_SCORE_API_ORIGIN.replace(/\/$/, '');
-  if (window.location.hostname.includes('raw.githack.com')) return DEFAULT_API_ORIGIN;
-  return '';
+function getApiOrigins() {
+  const configured = Array.isArray(window.YANMAR_SCORE_API_ORIGINS)
+    ? window.YANMAR_SCORE_API_ORIGINS
+    : [window.YANMAR_SCORE_API_ORIGIN].filter(Boolean);
+  const sameOrigin = window.location.hostname.includes('raw.githack.com') ? [] : [''];
+  return [...new Set([...sameOrigin, ...configured, ...DEFAULT_API_ORIGINS].filter((origin) => origin !== undefined && origin !== null).map((origin) => String(origin).replace(/\/$/, '')))];
 }
 
-function apiUrl(path) {
-  return `${getApiOrigin()}${path}`;
+function apiUrl(origin, path) {
+  return `${origin}${path}`;
+}
+
+async function fetchJsonWithFallback(path, options = {}) {
+  let lastError = 'API niet bereikbaar.';
+  for (const origin of getApiOrigins()) {
+    try {
+      const response = await fetch(apiUrl(origin, path), options);
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok && payload.ok !== false) return payload;
+      lastError = payload.error || `API antwoordde met ${response.status}`;
+      if (![401, 403, 404].includes(response.status)) break;
+    } catch (error) {
+      lastError = error?.message === 'Failed to fetch'
+        ? 'API niet bereikbaar. Controleer of Vercel public access aan staat.'
+        : (error?.message || 'API niet bereikbaar.');
+    }
+  }
+  throw new Error(lastError);
 }
 
 function safeJsonParse(value, fallback) {
@@ -86,20 +109,16 @@ function parseFinalResult() {
 
 async function submitPrizeEntry(email) {
   const result = parseFinalResult();
-  const response = await fetch(apiUrl('/api/submit-score'), {
+  const payload = await fetchJsonWithFallback('/api/submit-score', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, ...result }),
   });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) throw new Error(payload.error || 'Score opslaan is mislukt');
   return payload.entry;
 }
 
 async function fetchAdminScores(pin) {
-  const response = await fetch(apiUrl(`/api/scores?pin=${encodeURIComponent(pin)}`));
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) throw new Error(payload.error || 'Scores ophalen is mislukt');
+  const payload = await fetchJsonWithFallback(`/api/scores?pin=${encodeURIComponent(pin)}`);
   return sortEntries(payload.entries || []);
 }
 
@@ -112,18 +131,18 @@ function injectPrizeForm() {
   const text = formsPanel.querySelector('p');
   const formLink = formsPanel.querySelector('.form-link');
   if (title) title.textContent = 'Prijsvraag deelname';
-  if (text) text.textContent = 'Laat je e-mail achter om mee te doen. We slaan je score centraal op, zodat de prijs eerlijk naar de beste inzending kan gaan.';
+  if (text) text.textContent = 'Vul je e-mail/contact in om je score op te slaan. De publieke leaderboard toont alleen naam en score.';
   if (formLink) formLink.remove();
 
   const panel = document.createElement('div');
   panel.className = 'prize-entry-panel';
   panel.innerHTML = `
     <label class="prize-entry-label">
-      <span>E-mail voor prijsvraag</span>
-      <input class="prize-email-input" type="email" autocomplete="email" inputmode="email" placeholder="naam@example.com" />
+      <span>E-mail / contact</span>
+      <input class="prize-email-input" type="text" autocomplete="email" inputmode="email" placeholder="naam@example.com" />
     </label>
-    <button class="secondary-cta prize-save-button" type="button">Sla score + e-mail op</button>
-    <p class="prize-entry-status" role="status">Naam, e-mail, punten, goede antwoorden en percentage worden centraal opgeslagen.</p>
+    <button class="secondary-cta prize-save-button" type="button">Sla score op</button>
+    <p class="prize-entry-status" role="status"></p>
   `;
 
   formsPanel.appendChild(panel);
@@ -134,8 +153,8 @@ function injectPrizeForm() {
 
   button.addEventListener('click', async () => {
     const email = input.value.trim();
-    if (!input.checkValidity() || !email) {
-      status.textContent = 'Vul eerst een geldig e-mailadres in.';
+    if (!email) {
+      status.textContent = 'Vul eerst je e-mail/contact in.';
       status.dataset.state = 'error';
       input.focus();
       return;
@@ -143,7 +162,7 @@ function injectPrizeForm() {
 
     button.disabled = true;
     button.textContent = 'Opslaan...';
-    status.textContent = 'Score wordt centraal opgeslagen.';
+    status.textContent = 'Score wordt opgeslagen.';
     status.dataset.state = 'busy';
 
     try {
@@ -213,7 +232,7 @@ function renderAdminScreen(pin = ADMIN_SECRET_NAME) {
         </div>
         <div class="admin-actions">
           <button class="primary-cta admin-export" type="button">Export CSV</button>
-          <a class="secondary-cta admin-issue-link" href="https://github.com/test51864/Japan-festival-2026/issues/1" target="_blank" rel="noreferrer">Open GitHub opslag</a>
+          <button class="secondary-cta admin-issue-link" type="button">Ververs scores</button>
         </div>
         <div class="admin-table-wrap">
           ${entries.length ? renderEntriesTable(entries) : '<p class="admin-empty">Nog geen prijsvraag-inzendingen.</p>'}
@@ -221,6 +240,7 @@ function renderAdminScreen(pin = ADMIN_SECRET_NAME) {
         <p class="admin-note">Winnaar kiezen: sorteer op meeste punten. Bij gelijke stand: meeste goede antwoorden en hoogste percentage.</p>
       `;
       content.querySelector('.admin-export')?.addEventListener('click', () => downloadCsv(entries));
+      content.querySelector('.admin-issue-link')?.addEventListener('click', () => loadAdminScores(pinInput.value.trim()));
     } catch (error) {
       status.textContent = `Niet gelukt: ${error.message}`;
       status.dataset.state = 'error';
@@ -247,7 +267,7 @@ function renderEntriesTable(entries) {
   return `
     <table class="admin-table">
       <thead>
-        <tr><th>#</th><th>Naam</th><th>E-mail</th><th>Punten</th><th>Goed</th><th>%</th><th>Team</th><th>Tijd</th></tr>
+        <tr><th>#</th><th>Naam</th><th>E-mail/contact</th><th>Punten</th><th>Goed</th><th>%</th><th>Team</th><th>Tijd</th></tr>
       </thead>
       <tbody>${rows}</tbody>
     </table>
@@ -255,7 +275,7 @@ function renderEntriesTable(entries) {
 }
 
 function downloadCsv(entries) {
-  const header = ['rank', 'name', 'email', 'points', 'correct', 'total', 'percentage', 'team', 'language', 'date'];
+  const header = ['rank', 'name', 'email_or_contact', 'points', 'correct', 'total', 'percentage', 'team', 'language', 'date'];
   const lines = [header.join(',')];
   entries.forEach((entry, index) => {
     lines.push([
