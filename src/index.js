@@ -16,6 +16,7 @@ import "./BallLogoTouchup.css";
 import "./PandaCropFix.css";
 import "./NoDistractions.css";
 import "./PrizeTracking.css";
+import "./ScoreApiOrigin";
 import "./PrizeTracking";
 import "./DatabaseLeaderboard";
 
