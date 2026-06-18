@@ -4,6 +4,7 @@ const DEFAULT_API_ORIGINS = [
   'https://japan-festival-2026-ardidelawi01-2135s-projects.vercel.app',
   'https://japan-festival-2026.vercel.app',
 ];
+const SUBMIT_PATHS = ['/api/submit-score', '/api/save-score'];
 
 function getApiOrigins() {
   const configured = Array.isArray(window.YANMAR_SCORE_API_ORIGINS)
@@ -25,13 +26,39 @@ async function fetchJsonWithFallback(path, options = {}) {
       const payload = await response.json().catch(() => ({}));
       if (response.ok && payload.ok !== false) return payload;
       lastError = payload.error || `API antwoordde met ${response.status}`;
-      if (![401, 403, 404].includes(response.status)) break;
+      if (![401, 403, 404, 405].includes(response.status)) break;
     } catch (error) {
       lastError = error?.message === 'Failed to fetch'
         ? 'API niet bereikbaar. Controleer of Vercel public access aan staat.'
         : (error?.message || 'API niet bereikbaar.');
     }
   }
+  throw new Error(lastError);
+}
+
+async function submitJsonWithFallback(paths, payload) {
+  let lastError = 'Opslaan is niet gelukt.';
+  for (const path of paths) {
+    try {
+      return await fetchJsonWithFallback(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (error) {
+      lastError = error.message;
+    }
+  }
+
+  const encoded = encodeURIComponent(JSON.stringify(payload));
+  for (const path of paths) {
+    try {
+      return await fetchJsonWithFallback(`${path}?payload=${encoded}`, { method: 'GET' });
+    } catch (error) {
+      lastError = error.message;
+    }
+  }
+
   throw new Error(lastError);
 }
 
@@ -109,11 +136,7 @@ function parseFinalResult() {
 
 async function submitPrizeEntry(email) {
   const result = parseFinalResult();
-  const payload = await fetchJsonWithFallback('/api/submit-score', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, ...result }),
-  });
+  const payload = await submitJsonWithFallback(SUBMIT_PATHS, { email, contact: email, ...result });
   return payload.entry;
 }
 
