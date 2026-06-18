@@ -1,4 +1,5 @@
 const TABLE_NAME = process.env.SUPABASE_SCORE_TABLE || 'yanmar_festival_scores';
+const ADMIN_RPC_NAME = process.env.SUPABASE_ADMIN_SCORE_RPC || 'yanmar_festival_admin_scores';
 
 function setCors(response) {
   response.setHeader('Access-Control-Allow-Origin', process.env.SCORE_ALLOWED_ORIGIN || '*');
@@ -17,17 +18,34 @@ function sortEntries(entries) {
 
 function supabaseConfig() {
   const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  const anonKey = process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+  const key = serviceKey || anonKey;
   if (!url || !key) {
-    const error = new Error('Admin scores need SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY so e-mail addresses stay private');
+    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_ANON_KEY');
     error.status = 500;
     throw error;
   }
-  return { url, key };
+  return { url, key, hasServiceRole: Boolean(serviceKey) };
 }
 
-async function fetchScores() {
-  const { url, key } = supabaseConfig();
+function mapScore(row) {
+  return {
+    id: row.id,
+    date: row.created_at,
+    name: row.name,
+    email: row.email,
+    hasEmail: row.has_email,
+    points: row.points,
+    correct: row.correct,
+    total: row.total,
+    percentage: row.percentage,
+    team: row.team,
+    language: row.language,
+  };
+}
+
+async function fetchScoresWithServiceRole(url, key) {
   const query = new URLSearchParams({
     select: '*',
     order: 'points.desc,correct.desc,percentage.desc,created_at.asc',
@@ -48,20 +66,37 @@ async function fetchScores() {
     throw error;
   }
 
-  const rows = await response.json();
-  return sortEntries(rows.map((row) => ({
-    id: row.id,
-    date: row.created_at,
-    name: row.name,
-    email: row.email,
-    hasEmail: row.has_email,
-    points: row.points,
-    correct: row.correct,
-    total: row.total,
-    percentage: row.percentage,
-    team: row.team,
-    language: row.language,
-  })));
+  return response.json();
+}
+
+async function fetchScoresWithRpc(url, key, pin) {
+  const response = await fetch(`${url}/rest/v1/rpc/${ADMIN_RPC_NAME}`, {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({ admin_pin: pin }),
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    const error = new Error(`Supabase admin read failed: ${message}`);
+    error.status = response.status;
+    throw error;
+  }
+
+  return response.json();
+}
+
+async function fetchScores(pin) {
+  const { url, key, hasServiceRole } = supabaseConfig();
+  const rows = hasServiceRole
+    ? await fetchScoresWithServiceRole(url, key)
+    : await fetchScoresWithRpc(url, key, pin);
+  return sortEntries(rows.map(mapScore));
 }
 
 module.exports = async function handler(request, response) {
@@ -85,7 +120,7 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const entries = await fetchScores();
+    const entries = await fetchScores(pin);
     response.status(200).json({
       ok: true,
       entries,
