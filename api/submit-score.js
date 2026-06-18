@@ -1,6 +1,4 @@
-const SCORE_REPO = process.env.SCORE_REPO || 'test51864/Japan-festival-2026';
-const SCORE_ISSUE = Number(process.env.SCORE_ISSUE || 1);
-const ENTRY_MARKER = '<!-- yanmar-score-entry:v1 -->';
+const TABLE_NAME = process.env.SUPABASE_SCORE_TABLE || 'yanmar_festival_scores';
 
 function setCors(response) {
   response.setHeader('Access-Control-Allow-Origin', process.env.SCORE_ALLOWED_ORIGIN || '*');
@@ -34,36 +32,39 @@ function readBody(request) {
   });
 }
 
-async function createIssueComment(entry) {
-  const token = process.env.SCORE_GITHUB_TOKEN;
-  if (!token) {
-    const error = new Error('SCORE_GITHUB_TOKEN is missing');
+function supabaseConfig() {
+  const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+  if (!url || !key) {
+    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
     error.status = 500;
     throw error;
   }
+  return { url, key };
+}
 
-  const [owner, repo] = SCORE_REPO.split('/');
-  const body = `${ENTRY_MARKER}\n\`\`\`json\n${JSON.stringify(entry, null, 2)}\n\`\`\``;
-  const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${SCORE_ISSUE}/comments`, {
+async function insertScore(entry) {
+  const { url, key } = supabaseConfig();
+  const response = await fetch(`${url}/rest/v1/${TABLE_NAME}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
+      apikey: key,
+      Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
-      'User-Agent': 'yanmar-festival-cup-scoreboard',
-      'X-GitHub-Api-Version': '2022-11-28',
+      Prefer: 'return=representation',
     },
-    body: JSON.stringify({ body }),
+    body: JSON.stringify(entry),
   });
 
   if (!response.ok) {
     const message = await response.text();
-    const error = new Error(`GitHub write failed: ${message}`);
+    const error = new Error(`Supabase insert failed: ${message}`);
     error.status = response.status;
     throw error;
   }
 
-  return response.json();
+  const rows = await response.json();
+  return rows[0] || entry;
 }
 
 module.exports = async function handler(request, response) {
@@ -93,8 +94,6 @@ module.exports = async function handler(request, response) {
     const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
 
     const entry = {
-      id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
-      date: new Date().toISOString(),
       name: cleanText(payload.name, 60) || 'Player',
       email,
       points,
@@ -103,11 +102,11 @@ module.exports = async function handler(request, response) {
       percentage,
       team: cleanText(payload.team, 50),
       language: cleanText(payload.language, 12),
-      userAgent: cleanText(request.headers['user-agent'], 180),
+      user_agent: cleanText(request.headers['user-agent'], 180),
     };
 
-    await createIssueComment(entry);
-    response.status(200).json({ ok: true, entry });
+    const saved = await insertScore(entry);
+    response.status(200).json({ ok: true, entry: { ...saved, date: saved.created_at || new Date().toISOString() } });
   } catch (error) {
     response.status(error.status || 500).json({ ok: false, error: error.message || 'Unknown error' });
   }
