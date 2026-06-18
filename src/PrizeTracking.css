@@ -33,19 +33,28 @@
   width: 100%;
 }
 
-.prize-entry-status {
+.prize-entry-status,
+.admin-status {
   margin: 0;
   color: #5f6572;
   font-size: 13px;
   line-height: 1.35;
 }
 
-.prize-entry-status[data-state='success'] {
+.prize-entry-status[data-state='busy'],
+.admin-status[data-state='busy'] {
+  color: #101114;
+  font-weight: 900;
+}
+
+.prize-entry-status[data-state='success'],
+.admin-status[data-state='success'] {
   color: #128a43;
   font-weight: 900;
 }
 
-.prize-entry-status[data-state='error'] {
+.prize-entry-status[data-state='error'],
+.admin-status[data-state='error'] {
   color: #d01822;
   font-weight: 900;
 }
@@ -80,11 +89,28 @@
   text-transform: uppercase;
 }
 
+.admin-pin-row,
 .admin-stats,
 .admin-actions {
   display: grid;
   gap: 10px;
   margin-top: 14px;
+}
+
+.admin-pin-row,
+.admin-actions {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+.admin-pin-row .primary-cta {
+  margin: 0;
+  width: auto;
+  min-width: 150px;
+}
+
+.admin-status {
+  margin-top: 12px;
 }
 
 .admin-stats {
@@ -115,9 +141,14 @@
 }
 
 .admin-actions .primary-cta,
-.admin-actions .secondary-cta {
+.admin-actions .secondary-cta,
+.admin-issue-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   width: 100%;
+  text-align: center;
 }
 
 .admin-table-wrap {
@@ -170,11 +201,16 @@
 @media (max-width: 620px) {
   .admin-topline,
   .admin-actions,
+  .admin-pin-row,
   .admin-stats {
     grid-template-columns: 1fr;
   }
 
   .admin-topline {
     display: grid;
+  }
+
+  .admin-pin-row .primary-cta {
+    width: 100%;
   }
 }
