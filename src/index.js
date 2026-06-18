@@ -15,6 +15,8 @@ import "./MobileFirstGameFix.css";
 import "./BallLogoTouchup.css";
 import "./PandaCropFix.css";
 import "./NoDistractions.css";
+import "./PrizeTracking.css";
+import "./PrizeTracking";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
