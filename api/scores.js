@@ -1,6 +1,4 @@
-const SCORE_REPO = process.env.SCORE_REPO || 'test51864/Japan-festival-2026';
-const SCORE_ISSUE = Number(process.env.SCORE_ISSUE || 1);
-const ENTRY_MARKER = '<!-- yanmar-score-entry:v1 -->';
+const TABLE_NAME = process.env.SUPABASE_SCORE_TABLE || 'yanmar_festival_scores';
 
 function setCors(response) {
   response.setHeader('Access-Control-Allow-Origin', process.env.SCORE_ALLOWED_ORIGIN || '*');
@@ -17,53 +15,52 @@ function sortEntries(entries) {
   ));
 }
 
-function parseEntryComment(comment) {
-  if (!comment.body || !comment.body.includes(ENTRY_MARKER)) return null;
-  const match = comment.body.match(/```json\s*([\s\S]*?)\s*```/);
-  if (!match) return null;
-
-  try {
-    const entry = JSON.parse(match[1]);
-    return { ...entry, commentId: comment.id, commentUrl: comment.html_url };
-  } catch {
-    return null;
-  }
-}
-
-async function fetchAllComments() {
-  const token = process.env.SCORE_GITHUB_TOKEN;
-  if (!token) {
-    const error = new Error('SCORE_GITHUB_TOKEN is missing');
+function supabaseConfig() {
+  const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+  if (!url || !key) {
+    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
     error.status = 500;
     throw error;
   }
+  return { url, key };
+}
 
-  const [owner, repo] = SCORE_REPO.split('/');
-  const entries = [];
+async function fetchScores() {
+  const { url, key } = supabaseConfig();
+  const query = new URLSearchParams({
+    select: '*',
+    order: 'points.desc,correct.desc,percentage.desc,created_at.asc',
+    limit: '1000',
+  });
+  const response = await fetch(`${url}/rest/v1/${TABLE_NAME}?${query.toString()}`, {
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      Accept: 'application/json',
+    },
+  });
 
-  for (let page = 1; page <= 10; page += 1) {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${SCORE_ISSUE}/comments?per_page=100&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-        'User-Agent': 'yanmar-festival-cup-scoreboard',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    });
-
-    if (!response.ok) {
-      const message = await response.text();
-      const error = new Error(`GitHub read failed: ${message}`);
-      error.status = response.status;
-      throw error;
-    }
-
-    const comments = await response.json();
-    comments.map(parseEntryComment).filter(Boolean).forEach((entry) => entries.push(entry));
-    if (comments.length < 100) break;
+  if (!response.ok) {
+    const message = await response.text();
+    const error = new Error(`Supabase read failed: ${message}`);
+    error.status = response.status;
+    throw error;
   }
 
-  return sortEntries(entries);
+  const rows = await response.json();
+  return sortEntries(rows.map((row) => ({
+    id: row.id,
+    date: row.created_at,
+    name: row.name,
+    email: row.email,
+    points: row.points,
+    correct: row.correct,
+    total: row.total,
+    percentage: row.percentage,
+    team: row.team,
+    language: row.language,
+  })));
 }
 
 module.exports = async function handler(request, response) {
@@ -87,7 +84,7 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const entries = await fetchAllComments();
+    const entries = await fetchScores();
     response.status(200).json({
       ok: true,
       entries,
