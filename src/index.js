@@ -17,6 +17,7 @@ import "./PandaCropFix.css";
 import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./PrizeTracking";
+import "./DatabaseLeaderboard";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
