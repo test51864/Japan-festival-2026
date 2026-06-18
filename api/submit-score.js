@@ -16,8 +16,8 @@ function cleanNumber(value, min = 0, max = 999999) {
   return Math.max(min, Math.min(max, Math.round(number)));
 }
 
-function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+function hasContact(value) {
+  return cleanText(value, 140).length > 1;
 }
 
 function readBody(request) {
@@ -36,7 +36,7 @@ function supabaseConfig() {
   const url = (process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL || '').replace(/\/$/, '');
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY || '';
   if (!url || !key) {
-    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY');
+    const error = new Error('Supabase env vars missing: set SUPABASE_URL and SUPABASE_ANON_KEY');
     error.status = 500;
     throw error;
   }
@@ -82,9 +82,9 @@ module.exports = async function handler(request, response) {
 
   try {
     const payload = JSON.parse(await readBody(request) || '{}');
-    const email = cleanText(payload.email, 140).toLowerCase();
-    if (!isEmail(email)) {
-      response.status(400).json({ ok: false, error: 'Valid email is required' });
+    const contact = cleanText(payload.email, 140).toLowerCase();
+    if (!hasContact(contact)) {
+      response.status(400).json({ ok: false, error: 'Contact is required' });
       return;
     }
 
@@ -95,7 +95,7 @@ module.exports = async function handler(request, response) {
 
     const entry = {
       name: cleanText(payload.name, 60) || 'Player',
-      email,
+      email: contact,
       has_email: true,
       points,
       correct,
