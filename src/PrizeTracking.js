@@ -1,6 +1,16 @@
-const PRIZE_ENTRIES_KEY = 'yanmar-festival-cup-prize-entries';
 const CURRENT_PLAYER_KEY = 'yanmar-festival-current-player';
 const ADMIN_SECRET_NAME = 'yanmar-score-2026';
+const DEFAULT_API_ORIGIN = 'https://japan-festival-2026.vercel.app';
+
+function getApiOrigin() {
+  if (window.YANMAR_SCORE_API_ORIGIN) return window.YANMAR_SCORE_API_ORIGIN.replace(/\/$/, '');
+  if (window.location.hostname.includes('raw.githack.com')) return DEFAULT_API_ORIGIN;
+  return '';
+}
+
+function apiUrl(path) {
+  return `${getApiOrigin()}${path}`;
+}
 
 function safeJsonParse(value, fallback) {
   try {
@@ -8,17 +18,6 @@ function safeJsonParse(value, fallback) {
   } catch {
     return fallback;
   }
-}
-
-function readEntries() {
-  if (typeof window === 'undefined') return [];
-  const entries = safeJsonParse(window.localStorage.getItem(PRIZE_ENTRIES_KEY), []);
-  return Array.isArray(entries) ? entries : [];
-}
-
-function writeEntries(entries) {
-  if (typeof window === 'undefined') return;
-  window.localStorage.setItem(PRIZE_ENTRIES_KEY, JSON.stringify(entries));
 }
 
 function escapeHtml(value) {
@@ -32,6 +31,15 @@ function escapeHtml(value) {
 
 function csvEscape(value) {
   return `"${String(value ?? '').replaceAll('"', '""')}"`;
+}
+
+function sortEntries(entries) {
+  return [...entries].sort((a, b) => (
+    Number(b.points || 0) - Number(a.points || 0)
+    || Number(b.correct || 0) - Number(a.correct || 0)
+    || Number(b.percentage || 0) - Number(a.percentage || 0)
+    || String(a.date || '').localeCompare(String(b.date || ''))
+  ));
 }
 
 function getSetupInfo() {
@@ -76,26 +84,23 @@ function parseFinalResult() {
   };
 }
 
-function sortEntries(entries) {
-  return [...entries].sort((a, b) => (
-    Number(b.points || 0) - Number(a.points || 0)
-    || Number(b.correct || 0) - Number(a.correct || 0)
-    || Number(b.percentage || 0) - Number(a.percentage || 0)
-    || String(a.date || '').localeCompare(String(b.date || ''))
-  ));
+async function submitPrizeEntry(email) {
+  const result = parseFinalResult();
+  const response = await fetch(apiUrl('/api/submit-score'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, ...result }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.ok) throw new Error(payload.error || 'Score opslaan is mislukt');
+  return payload.entry;
 }
 
-function savePrizeEntry(email) {
-  const result = parseFinalResult();
-  const entry = {
-    id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
-    date: new Date().toISOString(),
-    email,
-    ...result,
-  };
-  const entries = sortEntries([entry, ...readEntries()]);
-  writeEntries(entries);
-  return entry;
+async function fetchAdminScores(pin) {
+  const response = await fetch(apiUrl(`/api/scores?pin=${encodeURIComponent(pin)}`));
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.ok) throw new Error(payload.error || 'Scores ophalen is mislukt');
+  return sortEntries(payload.entries || []);
 }
 
 function injectPrizeForm() {
@@ -103,6 +108,13 @@ function injectPrizeForm() {
   if (!formsPanel || formsPanel.dataset.prizeTracking === 'ready') return;
 
   formsPanel.dataset.prizeTracking = 'ready';
+  const title = formsPanel.querySelector('h2');
+  const text = formsPanel.querySelector('p');
+  const formLink = formsPanel.querySelector('.form-link');
+  if (title) title.textContent = 'Prijsvraag deelname';
+  if (text) text.textContent = 'Laat je e-mail achter om mee te doen. We slaan je score centraal op, zodat de prijs eerlijk naar de beste inzending kan gaan.';
+  if (formLink) formLink.remove();
+
   const panel = document.createElement('div');
   panel.className = 'prize-entry-panel';
   panel.innerHTML = `
@@ -111,17 +123,16 @@ function injectPrizeForm() {
       <input class="prize-email-input" type="email" autocomplete="email" inputmode="email" placeholder="naam@example.com" />
     </label>
     <button class="secondary-cta prize-save-button" type="button">Sla score + e-mail op</button>
-    <p class="prize-entry-status" role="status">Naam, e-mail, punten en percentage worden opgeslagen in het verborgen scoreoverzicht.</p>
+    <p class="prize-entry-status" role="status">Naam, e-mail, punten, goede antwoorden en percentage worden centraal opgeslagen.</p>
   `;
 
-  const formLink = formsPanel.querySelector('.form-link');
-  formsPanel.insertBefore(panel, formLink || null);
+  formsPanel.appendChild(panel);
 
   const input = panel.querySelector('.prize-email-input');
   const button = panel.querySelector('.prize-save-button');
   const status = panel.querySelector('.prize-entry-status');
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async () => {
     const email = input.value.trim();
     if (!input.checkValidity() || !email) {
       status.textContent = 'Vul eerst een geldig e-mailadres in.';
@@ -130,19 +141,28 @@ function injectPrizeForm() {
       return;
     }
 
-    const entry = savePrizeEntry(email);
-    status.textContent = `Opgeslagen: ${entry.points} punten, ${entry.correct}/${entry.total} goed (${entry.percentage}%).`;
-    status.dataset.state = 'success';
-    button.textContent = 'Opgeslagen';
+    button.disabled = true;
+    button.textContent = 'Opslaan...';
+    status.textContent = 'Score wordt centraal opgeslagen.';
+    status.dataset.state = 'busy';
+
+    try {
+      const entry = await submitPrizeEntry(email);
+      status.textContent = `Opgeslagen: ${entry.points} punten, ${entry.correct}/${entry.total} goed (${entry.percentage}%).`;
+      status.dataset.state = 'success';
+      button.textContent = 'Opgeslagen';
+    } catch (error) {
+      status.textContent = `Niet opgeslagen: ${error.message}`;
+      status.dataset.state = 'error';
+      button.disabled = false;
+      button.textContent = 'Probeer opnieuw';
+    }
   });
 }
 
-function renderAdminScreen() {
+function renderAdminScreen(pin = ADMIN_SECRET_NAME) {
   const root = document.getElementById('root');
   if (!root) return;
-  const entries = sortEntries(readEntries());
-  const perfectCount = entries.filter((entry) => Number(entry.correct) === Number(entry.total) && Number(entry.total) > 0).length;
-  const best = entries[0];
 
   root.innerHTML = `
     <main class="app app-admin">
@@ -154,6 +174,38 @@ function renderAdminScreen() {
           </div>
           <button class="secondary-cta admin-back" type="button">Terug</button>
         </div>
+        <div class="admin-pin-row">
+          <label class="prize-entry-label">
+            <span>Admin pin</span>
+            <input class="prize-email-input admin-pin-input" type="password" value="${escapeHtml(pin)}" />
+          </label>
+          <button class="primary-cta admin-refresh" type="button">Laad scores</button>
+        </div>
+        <div class="admin-status">Scores laden...</div>
+        <div class="admin-content"></div>
+      </section>
+    </main>
+  `;
+
+  const pinInput = root.querySelector('.admin-pin-input');
+  const content = root.querySelector('.admin-content');
+  const status = root.querySelector('.admin-status');
+
+  root.querySelector('.admin-back')?.addEventListener('click', () => window.location.reload());
+  root.querySelector('.admin-refresh')?.addEventListener('click', () => loadAdminScores(pinInput.value.trim()));
+
+  async function loadAdminScores(nextPin) {
+    status.textContent = 'Scores laden...';
+    status.dataset.state = 'busy';
+    content.innerHTML = '';
+
+    try {
+      const entries = await fetchAdminScores(nextPin);
+      const perfectCount = entries.filter((entry) => Number(entry.correct) === Number(entry.total) && Number(entry.total) > 0).length;
+      const best = entries[0];
+      status.textContent = entries.length ? 'Centrale scores geladen.' : 'Nog geen centrale inzendingen.';
+      status.dataset.state = 'success';
+      content.innerHTML = `
         <div class="admin-stats">
           <span><strong>${entries.length}</strong>inzendingen</span>
           <span><strong>${perfectCount}</strong>alles goed</span>
@@ -161,23 +213,21 @@ function renderAdminScreen() {
         </div>
         <div class="admin-actions">
           <button class="primary-cta admin-export" type="button">Export CSV</button>
-          <button class="secondary-cta admin-clear" type="button">Wis lokaal overzicht</button>
+          <a class="secondary-cta admin-issue-link" href="https://github.com/test51864/Japan-festival-2026/issues/1" target="_blank" rel="noreferrer">Open GitHub opslag</a>
         </div>
         <div class="admin-table-wrap">
-          ${entries.length ? renderEntriesTable(entries) : '<p class="admin-empty">Nog geen prijsvraag-inzendingen op dit device.</p>'}
+          ${entries.length ? renderEntriesTable(entries) : '<p class="admin-empty">Nog geen prijsvraag-inzendingen.</p>'}
         </div>
-        <p class="admin-note">Tip: kies eerst op meeste punten. Bij gelijke stand gebruik je goede antwoorden en percentage.</p>
-      </section>
-    </main>
-  `;
+        <p class="admin-note">Winnaar kiezen: sorteer op meeste punten. Bij gelijke stand: meeste goede antwoorden en hoogste percentage.</p>
+      `;
+      content.querySelector('.admin-export')?.addEventListener('click', () => downloadCsv(entries));
+    } catch (error) {
+      status.textContent = `Niet gelukt: ${error.message}`;
+      status.dataset.state = 'error';
+    }
+  }
 
-  root.querySelector('.admin-back')?.addEventListener('click', () => window.location.reload());
-  root.querySelector('.admin-export')?.addEventListener('click', () => downloadCsv(entries));
-  root.querySelector('.admin-clear')?.addEventListener('click', () => {
-    if (!window.confirm('Weet je zeker dat je het lokale scoreoverzicht wilt wissen?')) return;
-    writeEntries([]);
-    renderAdminScreen();
-  });
+  loadAdminScores(pin);
 }
 
 function renderEntriesTable(entries) {
@@ -190,7 +240,7 @@ function renderEntriesTable(entries) {
       <td>${Number(entry.correct || 0)}/${Number(entry.total || 0)}</td>
       <td>${Number(entry.percentage || 0)}%</td>
       <td>${escapeHtml(entry.team)}</td>
-      <td>${new Date(entry.date).toLocaleString()}</td>
+      <td>${entry.date ? new Date(entry.date).toLocaleString() : ''}</td>
     </tr>
   `).join('');
 
