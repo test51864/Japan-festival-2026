@@ -23,18 +23,11 @@ const LEADERBOARD_COPY = {
     points: 'pt',
     correct: 'goed',
   },
-  ja: {
-    title: '\u30e9\u30a4\u30d6\u30ea\u30fc\u30c0\u30fc\u30dc\u30fc\u30c9',
-    note: '\u30c7\u30fc\u30bf\u30d9\u30fc\u30b9\u306e\u4e0a\u4f4d\u30b9\u30b3\u30a2\u3002',
-    loading: '\u30e9\u30a4\u30d6\u30b9\u30b3\u30a2\u3092\u8aad\u307f\u8fbc\u307f\u4e2d...',
-    empty: '\u307e\u3060\u4fdd\u5b58\u3055\u308c\u305f\u30b9\u30b3\u30a2\u306f\u3042\u308a\u307e\u305b\u3093\u3002',
-    error: '\u30e9\u30a4\u30d6\u30ea\u30fc\u30c0\u30fc\u30dc\u30fc\u30c9\u306f\u307e\u3060\u5229\u7528\u3067\u304d\u307e\u305b\u3093\u3002',
-    points: 'pt',
-    correct: '\u6b63\u89e3',
-  },
 };
 
+const settledPanels = new WeakSet();
 let lastSuccessMessage = '';
+let reloadTimer = 0;
 
 function getApiOrigins() {
   const configured = Array.isArray(window.YANMAR_SCORE_API_ORIGINS)
@@ -58,9 +51,7 @@ async function fetchJsonWithFallback(path) {
       lastError = payload.error || `API antwoordde met ${response.status}`;
       if (![401, 403, 404].includes(response.status)) break;
     } catch (error) {
-      lastError = error?.message === 'Failed to fetch'
-        ? 'API niet bereikbaar. Controleer of Vercel public access aan staat.'
-        : (error?.message || 'API niet bereikbaar.');
+      lastError = error?.message || 'API niet bereikbaar.';
     }
   }
   throw new Error(lastError);
@@ -86,10 +77,7 @@ function escapeHtml(value) {
 function currentCopy() {
   const setup = safeJsonParse(window.sessionStorage.getItem(CURRENT_PLAYER_KEY), {});
   const language = String(setup.language || '').toLowerCase();
-  if (language.includes('jpn') || language.includes('ja')) return LEADERBOARD_COPY.ja;
-  if (language.includes('nl')) return LEADERBOARD_COPY.nl;
-  if (document.body.textContent.includes('Speel opnieuw')) return LEADERBOARD_COPY.nl;
-  if (document.body.textContent.includes('\u3082\u3046\u4e00\u5ea6')) return LEADERBOARD_COPY.ja;
+  if (language.includes('nl') || document.body.textContent.includes('Speel opnieuw')) return LEADERBOARD_COPY.nl;
   return LEADERBOARD_COPY.en;
 }
 
@@ -118,9 +106,21 @@ function renderRows(entries, copy) {
   `).join('');
 }
 
+function renderLeaderboardShell(panel, copy) {
+  if (panel.dataset.databaseLeaderboard === 'ready') return;
+  panel.dataset.databaseLeaderboard = 'ready';
+  panel.innerHTML = `
+    <h2>${copy.title}</h2>
+    <p class="database-leaderboard-note">${copy.note}</p>
+    <p class="database-leaderboard-status" role="status">${copy.loading}</p>
+    <ol class="database-leaderboard-list"></ol>
+  `;
+}
+
 async function loadDatabaseLeaderboard(panel) {
   if (!panel || panel.dataset.databaseLoading === 'true') return;
   const copy = currentCopy();
+  renderLeaderboardShell(panel, copy);
   const status = panel.querySelector('.database-leaderboard-status');
   const list = panel.querySelector('.database-leaderboard-list');
   panel.dataset.databaseLoading = 'true';
@@ -147,33 +147,31 @@ async function loadDatabaseLeaderboard(panel) {
   }
 }
 
-function injectDatabaseLeaderboard() {
-  const panel = document.querySelector('.final-card .leaderboard-panel');
-  if (!panel || panel.dataset.databaseLeaderboard === 'ready') return;
-  const copy = currentCopy();
-  panel.dataset.databaseLeaderboard = 'ready';
-  panel.innerHTML = `
-    <h2>${copy.title}</h2>
-    <p class="database-leaderboard-note">${copy.note}</p>
-    <p class="database-leaderboard-status" role="status">${copy.loading}</p>
-    <ol class="database-leaderboard-list"></ol>
-  `;
-  loadDatabaseLeaderboard(panel);
+function scheduleLeaderboard(panel) {
+  if (!panel || settledPanels.has(panel)) return;
+  settledPanels.add(panel);
+  window.setTimeout(() => loadDatabaseLeaderboard(panel), 900);
+  window.setTimeout(() => loadDatabaseLeaderboard(panel), 1800);
 }
 
 function refreshAfterSubmission() {
   const status = document.querySelector('.prize-entry-status[data-state="success"]');
   if (!status || status.textContent === lastSuccessMessage) return;
   lastSuccessMessage = status.textContent;
-  window.setTimeout(() => loadDatabaseLeaderboard(document.querySelector('.final-card .leaderboard-panel')), 650);
+  window.clearTimeout(reloadTimer);
+  reloadTimer = window.setTimeout(() => {
+    const panel = document.querySelector('.final-card .leaderboard-panel');
+    if (panel) loadDatabaseLeaderboard(panel);
+  }, 700);
 }
 
 function scan() {
-  injectDatabaseLeaderboard();
+  const panel = document.querySelector('.final-card .leaderboard-panel');
+  if (panel) scheduleLeaderboard(panel);
   refreshAfterSubmission();
 }
 
 if (typeof window !== 'undefined') {
   window.requestAnimationFrame(scan);
-  new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-state'] });
+  window.setInterval(scan, 350);
 }
