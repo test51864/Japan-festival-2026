@@ -87,11 +87,9 @@ function parseFinalResult() {
 }
 
 function normalizeErrorMessage(message) {
-  return String(message || '')
-    .replace(/^Niet opgeslagen:\s*/i, '')
-    .replace(/^Not saved:\s*/i, '')
-    .replace(/^\u4fdd\u5b58\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f:\s*/i, '')
-    .trim();
+  const trimmed = String(message || '').trim();
+  const prefix = Object.values(PRIZE_COPY).map((copy) => copy.errorPrefix).find((value) => trimmed.startsWith(value));
+  return (prefix ? trimmed.slice(prefix.length) : trimmed).trim();
 }
 
 function translateErrorMessage(message, copy) {
@@ -100,6 +98,11 @@ function translateErrorMessage(message, copy) {
   if (/API niet bereikbaar|Failed to fetch|public access|server is not reachable/i.test(normalized)) return copy.apiUnavailable;
   if (/Opslaan is niet gelukt|Saving failed/i.test(normalized)) return copy.saveFailed;
   return normalized;
+}
+
+function isMissingContactError(status, input) {
+  const statusText = status?.textContent || '';
+  return !input?.value?.trim() || Object.values(PRIZE_COPY).some((copy) => statusText.includes(copy.missingContact));
 }
 
 function applyPrizeLanguage() {
@@ -131,9 +134,9 @@ function applyPrizeLanguage() {
     return;
   }
   if (state === 'error') {
-    const isMissingContact = !input?.value?.trim() || /Vul eerst|Enter your|\u30e1\u30fc\u30eb/.test(status.textContent || '');
-    setText(button, isMissingContact ? copy.saveButton : copy.retryButton);
-    setText(status, isMissingContact ? copy.missingContact : `${copy.errorPrefix} ${translateErrorMessage(status.textContent, copy)}`);
+    const missingContact = isMissingContactError(status, input);
+    setText(button, missingContact ? copy.saveButton : copy.retryButton);
+    setText(status, missingContact ? copy.missingContact : `${copy.errorPrefix} ${translateErrorMessage(status.textContent, copy)}`);
     return;
   }
 
