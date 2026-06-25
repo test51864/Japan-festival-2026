@@ -18,6 +18,7 @@ import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./ScoreApiOrigin";
 import "./FinalScreenVisibilityFix";
+import "./OptionalNameFix";
 import "./LiveGameFixes";
 import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
