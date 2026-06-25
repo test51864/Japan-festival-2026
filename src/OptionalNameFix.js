@@ -21,7 +21,7 @@ function cleanText(value, max) {
 function safeJsonParse(value, fallback) {
   try {
     return JSON.parse(value) || fallback;
-  } catch (error) {
+  } catch {
     return fallback;
   }
 }
