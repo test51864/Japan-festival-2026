@@ -51,6 +51,9 @@ const PRIZE_COPY = {
   },
 };
 
+const translatedPanels = new WeakSet();
+let statusPoll = 0;
+
 function safeJsonParse(value, fallback) {
   try {
     return JSON.parse(value) || fallback;
@@ -143,17 +146,36 @@ function applyPrizeLanguage() {
   setText(button, copy.saveButton);
 }
 
-function scan() {
-  applyPrizeLanguage();
+function translateAfterFinalSettles(panel) {
+  if (translatedPanels.has(panel)) return;
+  translatedPanels.add(panel);
+  window.setTimeout(applyPrizeLanguage, 850);
+  window.setTimeout(applyPrizeLanguage, 1500);
+}
+
+function scanForPrizePanel() {
+  const panel = document.querySelector('.final-card .forms-panel');
+  if (panel) translateAfterFinalSettles(panel);
+}
+
+function startStatusPolling() {
+  window.clearInterval(statusPoll);
+  const stopAt = Date.now() + 15000;
+  statusPoll = window.setInterval(() => {
+    applyPrizeLanguage();
+    if (Date.now() > stopAt || !document.querySelector('.final-card .forms-panel')) {
+      window.clearInterval(statusPoll);
+      statusPoll = 0;
+    }
+  }, 350);
 }
 
 if (typeof window !== 'undefined') {
-  window.requestAnimationFrame(scan);
-  new MutationObserver(scan).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
-    characterData: true,
-    attributes: true,
-    attributeFilter: ['data-state', 'placeholder', 'disabled'],
-  });
+  window.requestAnimationFrame(scanForPrizePanel);
+  window.setInterval(scanForPrizePanel, 350);
+  document.addEventListener('click', (event) => {
+    if (event.target.closest?.('.prize-save-button')) {
+      window.setTimeout(startStatusPolling, 80);
+    }
+  }, true);
 }
