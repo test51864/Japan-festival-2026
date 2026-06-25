@@ -17,6 +17,7 @@ import "./PandaCropFix.css";
 import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./ScoreApiOrigin";
+import "./FinalScreenVisibilityFix";
 import "./LiveGameFixes";
 import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
