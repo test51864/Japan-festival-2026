@@ -17,8 +17,7 @@ import "./PandaCropFix.css";
 import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./ScoreApiOrigin";
-import "./PrizeTracking";
-import "./PrizeLanguageFix";
+import "./LiveGameFixes";
 import "./DatabaseLeaderboard";
 
 const rootElement = document.getElementById("root");
