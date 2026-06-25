@@ -108,16 +108,18 @@ module.exports = async function handler(request, response) {
     const total = cleanNumber(payload.total, 0, 50);
     const points = cleanNumber(payload.points, 0, 10000);
     const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+    const team = cleanText(payload.team, 50);
+    const publicName = cleanText(payload.name, 60) || team || 'Player';
 
     const entry = {
-      name: cleanText(payload.name, 60) || 'Player',
+      name: publicName,
       email: contact,
       has_email: true,
       points,
       correct,
       total,
       percentage,
-      team: cleanText(payload.team, 50),
+      team,
       language: cleanText(payload.language, 12),
       user_agent: cleanText(request.headers['user-agent'], 180),
     };
