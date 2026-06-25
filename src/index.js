@@ -18,6 +18,7 @@ import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./ScoreApiOrigin";
 import "./LiveGameFixes";
+import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
 
 const rootElement = document.getElementById("root");
