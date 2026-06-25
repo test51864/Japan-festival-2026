@@ -18,6 +18,7 @@ import "./NoDistractions.css";
 import "./PrizeTracking.css";
 import "./ScoreApiOrigin";
 import "./PrizeTracking";
+import "./PrizeLanguageFix";
 import "./DatabaseLeaderboard";
 
 const rootElement = document.getElementById("root");
