@@ -95,11 +95,15 @@ async function fetchPublicScores() {
   return sortEntries(payload.entries || []);
 }
 
+function publicName(entry) {
+  return entry.name || entry.team || 'Player';
+}
+
 function renderRows(entries, copy) {
   return entries.slice(0, 10).map((entry, index) => `
     <li class="database-leaderboard-row">
       <span class="database-rank">#${index + 1}</span>
-      <strong>${escapeHtml(entry.name || 'Player')}</strong>
+      <strong>${escapeHtml(publicName(entry))}</strong>
       <em>${Number(entry.points || 0)} ${copy.points}</em>
       <small>${Number(entry.correct || 0)}/${Number(entry.total || 0)} ${copy.correct}</small>
     </li>
