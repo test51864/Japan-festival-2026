@@ -21,6 +21,7 @@ import "./FinalScreenVisibilityFix";
 import "./LiveGameFixes";
 import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
+import "./FinalScreenJumpStop";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
