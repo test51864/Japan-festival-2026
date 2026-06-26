@@ -1,0 +1,64 @@
+@media (max-width: 759px) {
+  .app-game .answer-button.is-muted {
+    display: none !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .app-game .image-choice-question .answer-button.is-correct,
+  .app-game .image-choice-question .answer-button.is-wrong {
+    grid-template-columns: 74px 25px 1fr !important;
+    min-height: 74px !important;
+    height: 74px !important;
+    padding: 6px !important;
+  }
+
+  .app-game .image-choice-question .answer-button.is-correct .answer-visual,
+  .app-game .image-choice-question .answer-button.is-wrong .answer-visual {
+    width: 74px !important;
+    height: 60px !important;
+  }
+
+  .app-game .image-choice-question .answer-button.is-correct .answer-title,
+  .app-game .image-choice-question .answer-button.is-wrong .answer-title {
+    font-size: clamp(12px, 3.4vw, 13px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .app-game .feedback.show {
+    min-height: 48px !important;
+    padding: 6px 8px !important;
+  }
+
+  .app-game .feedback.show strong {
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .app-game .next-action {
+    min-height: 42px !important;
+    height: 42px !important;
+  }
+}
+
+@media (max-height: 760px) and (max-width: 759px) {
+  .app-game .arena-card {
+    height: clamp(250px, 65vw, 292px) !important;
+  }
+
+  .app-game .image-choice-question .answer-button.is-correct,
+  .app-game .image-choice-question .answer-button.is-wrong {
+    grid-template-columns: 66px 24px 1fr !important;
+    min-height: 66px !important;
+    height: 66px !important;
+  }
+
+  .app-game .image-choice-question .answer-button.is-correct .answer-visual,
+  .app-game .image-choice-question .answer-button.is-wrong .answer-visual {
+    width: 66px !important;
+    height: 52px !important;
+  }
+}
