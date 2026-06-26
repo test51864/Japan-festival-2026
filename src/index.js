@@ -13,6 +13,7 @@ import "./HeaderBallRevision.css";
 import "./SleekFinalPolish.css";
 import "./MobileFirstGameFix.css";
 import "./BallLogoTouchup.css";
+import "./MobileArenaLayerFix.css";
 import "./PandaCropFix.css";
 import "./NoDistractions.css";
 import "./PrizeTracking.css";
@@ -22,6 +23,7 @@ import "./LiveGameFixes";
 import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
 import "./FinalScreenJumpStop";
+import "./EmailValidationFix";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
