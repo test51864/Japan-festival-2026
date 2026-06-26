@@ -1,0 +1,33 @@
+@media (max-width: 759px) {
+  .app-game .keeper-sprite {
+    z-index: 16 !important;
+  }
+
+  .app-game .shot-line {
+    z-index: 22 !important;
+  }
+
+  .app-game .ball {
+    z-index: 24 !important;
+  }
+
+  .app-game .ball.goal-left,
+  .app-game .ball.goal-right,
+  .app-game .ball.miss-left,
+  .app-game .ball.miss-right,
+  .app-game .ball.save-center {
+    z-index: 36 !important;
+  }
+
+  .app-game .keeper-sprite.save-center,
+  .app-game .keeper-sprite.dive-left,
+  .app-game .keeper-sprite.dive-right,
+  .app-game .keeper-sprite.miss-left,
+  .app-game .keeper-sprite.miss-right {
+    z-index: 18 !important;
+  }
+
+  .app-game .striker-sprite {
+    z-index: 42 !important;
+  }
+}
