@@ -38,15 +38,15 @@ function installFinalJumpStopStyles() {
 
     @media (max-height: 720px) {
       body.yanmar-final-page .app-final .forms-panel {
-        height: clamp(204px, 31svh, 232px) !important;
-        min-height: clamp(204px, 31svh, 232px) !important;
-        max-height: clamp(204px, 31svh, 232px) !important;
+        height: clamp(232px, 35svh, 258px) !important;
+        min-height: clamp(232px, 35svh, 258px) !important;
+        max-height: clamp(232px, 35svh, 258px) !important;
       }
 
       body.yanmar-final-page .app-final .prize-entry-panel {
-        min-height: 142px !important;
-        height: 142px !important;
-        max-height: 142px !important;
+        min-height: 155px !important;
+        height: 155px !important;
+        max-height: 155px !important;
       }
     }
   `;
