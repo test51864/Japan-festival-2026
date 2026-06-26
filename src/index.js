@@ -12,6 +12,7 @@ import "./HeaderTeamFix.css";
 import "./HeaderBallRevision.css";
 import "./SleekFinalPolish.css";
 import "./MobileFirstGameFix.css";
+import "./MobileSetupFit.css";
 import "./BallLogoTouchup.css";
 import "./PandaCropFix.css";
 import "./NoDistractions.css";
