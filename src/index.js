@@ -23,6 +23,7 @@ import "./AdminDeleteFix";
 import "./DatabaseLeaderboard";
 import "./FinalScreenJumpStop";
 import "./MobileSetupFit.css";
+import "./MobileRoundActionFit.css";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
