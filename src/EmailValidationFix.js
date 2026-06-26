@@ -35,7 +35,7 @@ function valid(email) {
 }
 
 function prepareEmailInputs() {
-  document.querySelectorAll('.final-card .prize-email-input').forEach((input) => {
+  document.querySelectorAll('.prize-email-input').forEach((input) => {
     input.type = 'email';
     input.required = true;
     input.autocomplete = 'email';
@@ -69,7 +69,7 @@ function blockInvalidPrizeEmail(event) {
   status.textContent = message;
   status.dataset.state = 'error';
   input.setAttribute('aria-invalid', 'true');
-  input.focus();
+  input.focus({ preventScroll: true });
 }
 
 if (typeof window !== 'undefined') {
