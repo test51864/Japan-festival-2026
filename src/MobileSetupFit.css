@@ -1,0 +1,155 @@
+@media (max-width: 759px) {
+  .app-setup {
+    align-items: flex-start !important;
+    min-height: 100vh !important;
+    min-height: 100svh !important;
+    padding: max(6px, env(safe-area-inset-top)) 6px max(6px, env(safe-area-inset-bottom)) !important;
+    overflow: hidden auto !important;
+  }
+
+  .setup-shell {
+    width: 100% !important;
+    max-width: 430px !important;
+    gap: 6px !important;
+    margin: 0 auto !important;
+  }
+
+  .setup-brand-panel {
+    min-height: 92px !important;
+    max-height: 92px !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .setup-brand-panel::before,
+  .setup-brand-panel::after,
+  .pitch-preview {
+    display: none !important;
+  }
+
+  .wordmark-only {
+    min-height: 40px !important;
+    padding: 6px 13px 4px !important;
+    border-width: 2px !important;
+    border-radius: 7px !important;
+    font-size: clamp(28px, 10vw, 36px) !important;
+    box-shadow: 5px 6px 0 rgba(16, 17, 20, 0.24) !important;
+  }
+
+  .festival-lockup {
+    margin-top: 7px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .setup-panel {
+    padding: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .setup-panel .eyebrow {
+    margin-bottom: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .setup-panel h1 {
+    font-size: clamp(24px, 7vw, 30px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .intro-copy {
+    display: none !important;
+  }
+
+  .setup-group {
+    gap: 6px !important;
+    margin-top: 8px !important;
+  }
+
+  .group-label {
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .segmented-control.language-flags {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .segmented-control.language-flags button[aria-label="Japanese"] {
+    display: none !important;
+  }
+
+  .segmented-control button,
+  .name-input {
+    min-height: 46px !important;
+    height: 46px !important;
+    box-shadow: 0 5px 0 rgba(16, 17, 20, 0.1) !important;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .team-card {
+    min-height: 72px !important;
+    grid-template-columns: 1fr !important;
+    justify-items: start !important;
+    gap: 6px !important;
+    padding: 7px !important;
+    box-shadow: 0 5px 0 rgba(16, 17, 20, 0.1) !important;
+  }
+
+  .team-card span {
+    width: 38px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+  }
+
+  .team-card strong {
+    font-size: 12px !important;
+    line-height: 1.05 !important;
+  }
+
+  .setup-panel .primary-cta {
+    min-height: 48px !important;
+    margin-top: 10px !important;
+    box-shadow: 0 6px 0 #8f0008 !important;
+  }
+}
+
+@media (max-width: 370px), (max-height: 700px) {
+  .setup-brand-panel {
+    min-height: 78px !important;
+    max-height: 78px !important;
+    padding: 8px !important;
+  }
+
+  .wordmark-only {
+    min-height: 34px !important;
+    font-size: 26px !important;
+  }
+
+  .festival-lockup {
+    margin-top: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .setup-panel {
+    padding: 10px !important;
+  }
+
+  .setup-panel h1 {
+    font-size: 23px !important;
+  }
+
+  .setup-group {
+    margin-top: 6px !important;
+  }
+
+  .team-card {
+    min-height: 64px !important;
+  }
+}
